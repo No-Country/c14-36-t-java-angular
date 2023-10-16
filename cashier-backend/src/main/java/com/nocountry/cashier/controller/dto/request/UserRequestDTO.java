@@ -18,7 +18,8 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Setter
 @Builder
-public class UserRequestDTO implements Serializable {
+public class
+UserRequestDTO implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 

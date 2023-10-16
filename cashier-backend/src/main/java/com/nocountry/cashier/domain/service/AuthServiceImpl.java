@@ -60,6 +60,7 @@ public class AuthServiceImpl implements AuthService {
         return AuthResponseDTO.builder()
                 .message("Se registró correctamente")
                 .token(token)
+                .id(user.get().getId())
                 .build();
     }
 

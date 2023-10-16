@@ -1,5 +1,6 @@
-package com.nocountry.cashier.domain.usecase;
+package com.nocountry.cashier.domain.usecase.firebase;
 
+import com.nocountry.cashier.domain.usecase.ImageService;
 import org.apache.http.client.methods.HttpHead;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -15,7 +16,7 @@ import java.util.UUID;
  * @license Lrpa, zephyr cygnus
  * @since 11/10/2023
  */
-public interface FirebaseService extends ImageService{
+public interface FirebaseService extends ImageService {
     String getUrlImageFirebase(String bucketName, String filename);
 
     void deleteImageFirebase(String fileName);

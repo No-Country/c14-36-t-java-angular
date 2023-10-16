@@ -14,7 +14,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.util.Locale;
 import java.util.Map;
 
 import static com.nocountry.cashier.util.Constant.API_VERSION;
@@ -32,13 +34,19 @@ import static com.nocountry.cashier.util.Constant.RESOURCE_AUTH;
 public class AuthController {
     private final AuthService authService;
     @PostMapping("/")
-    public ResponseEntity<?> registerCustomer(@Valid @RequestBody UserRequestDTO authRequestDTO) {
+    public ResponseEntity<?> registerCustomer(@Valid @RequestBody UserRequestDTO authRequestDTO,HttpServletRequest request) {
         AuthResponseDTO register = authService.register(authRequestDTO);
-        return ResponseEntity.ok().body(Map.of("data",register));
+        String uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/")
+                .path("{id}").buildAndExpand(register.getId()).toUriString();
+        String appUrl = "http://" + request.getServerName() +
+                        ":" + request.getServerPort() +
+                        request.getContextPath();
+        Locale locale = request.getLocale();
+        return ResponseEntity.ok().body(Map.of("data",register,"url",uri));
     }
 
     @GetMapping("/")
-    public ResponseEntity<?> authenticateCustomer(@Valid @RequestBody AuthRequestDTO authDto,HttpServletRequest request){
+    public ResponseEntity<?> authenticateCustomer(@Valid @RequestBody AuthRequestDTO authDto, HttpServletRequest request){
         String token = request.getHeader("Authorization");
         AuthResponseDTO authenticate = authService.authenticate(authDto, token);
         return ResponseEntity.ok().body(authenticate);

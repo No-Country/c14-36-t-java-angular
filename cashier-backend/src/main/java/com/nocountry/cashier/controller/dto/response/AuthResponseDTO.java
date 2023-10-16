@@ -21,11 +21,13 @@ public class AuthResponseDTO implements Serializable {
     private final String token;
     private final String message;
     private final LocalDateTime timeStamp;
+    private final String id;
 
     @Builder
-    public AuthResponseDTO(String token,String message) {
+    public AuthResponseDTO(String token,String message,String id) {
         this.token = token;
         this.message=message;
+        this.id= id;
         this.timeStamp = LocalDateTime.now();
     }
 }

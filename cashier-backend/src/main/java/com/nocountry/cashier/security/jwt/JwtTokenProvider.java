@@ -7,6 +7,7 @@ import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.Payload;
 import com.nocountry.cashier.exception.GenericException;
+import com.nocountry.cashier.exception.JwtGenericException;
 import com.nocountry.cashier.persistance.entity.UserEntity;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +41,8 @@ public class JwtTokenProvider {
     @Value("${jwt.client.id}")
     private String clientId;
 
+    public static final String TOKEN_TYPE = "JWT";
+
     /**
      * Ciclo de vida del bean: se ejecuta ni bien se construya el bean , codifica nuestra clave para la firma de mi token
      */
@@ -65,6 +68,7 @@ public class JwtTokenProvider {
             claims.put("role", "ROLE_USER");
 
             return JWT.create()
+                    .withHeader(Map.of("type",TOKEN_TYPE))
                     .withIssuedAt(Instant.now())
                     .withExpiresAt(expirationToken)
                     .withIssuer("cashier")
@@ -85,6 +89,7 @@ public class JwtTokenProvider {
     public boolean verifyToken(String token) {
         try {
             if (Objects.isNull(token)) throw new GenericException("El token esta vació", HttpStatus.BAD_REQUEST);
+            if (!isExpirationToken(token)) throw new JwtGenericException("El token ya expiró", HttpStatus.BAD_REQUEST);
             JWT.require(getSignatureKey())
                     .withIssuer("cashier")
                     .build()
@@ -95,6 +100,14 @@ public class JwtTokenProvider {
         }
     }
 
+    public boolean isExpirationToken(String token){
+        Instant extractExpiration = extractExpiration(token);
+        return extractExpiration.isBefore(Instant.now());
+    }
+
+    private Instant extractExpiration(String token) {
+        return extractAllClaims(token, Payload::getExpiresAtAsInstant);
+    }
     /**
      * Toma el token se extrae los claims que lo conforman y se pasa un key para traer informacion especifica del token
      *
@@ -116,7 +129,7 @@ public class JwtTokenProvider {
     /**
      * @param token           String
      * @param claimsTFunction Function
-     * @param <T>
+     * @param <T> Generico
      * @return Generic
      */
     private <T> T extractAllClaims(String token, Function<DecodedJWT, T> claimsTFunction) {
