@@ -1,7 +1,13 @@
 package com.nocountry.cashier.enums;
 
+
+
 public enum EnumsState {
     EARRING,
-    DONE,
-    REJECTED
+    REJECTED,
+    DONE;
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

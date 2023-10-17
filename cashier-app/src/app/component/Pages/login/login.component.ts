@@ -1,14 +1,17 @@
+
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { User } from 'src/app/interfaces/User.interface';
 import { UserService } from 'src/app/services/user.service';
 
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
+
 export class LoginComponent implements OnInit {
 
   created: boolean = false;
@@ -50,3 +53,4 @@ export class LoginComponent implements OnInit {
     });
   }
 }
+

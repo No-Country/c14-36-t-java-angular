@@ -1,47 +1,69 @@
-<div class="loginBox d-flex">
-  <div class="loginBox__left w-50">
-    <div class="loginBox__left__container">
-      <!-- -----------------------------------------contenedor del logo -->
-      <div
-        class="loginBox__left__container__imgContainer d-flex justify-content-center mb-5"
-      >
-        <img src="assets/cashier1.png" alt="logo_icon" />
+<div class="d-flex">
+  <div class="float-start izq">
+    <div class="container justify-content-center align-items-center">
+      <div class="container-fluid text-center mt-5">
+        <img src="../../../../assets/cashier 1.png" alt="" />
       </div>
-      <!-- ------------------------------formulario de login -------------->
-      <form class="loginBox__left__container__form">
-        <div class="loginBox__left__container__form__field">
-          <label for="user">Usuario</label>
-          <div class="loginBox__left__container__form__field__box">
-            <input type="text" id="user" placeholder="Nombre de usuario" />
-            <img src="assets/icon.png" alt="person_icon" />
+      <form class="text-green-special mx-5 mt-5" action="">
+        <div class="mx-5 mb-3">
+          <label class="pb-0" for="usuario"
+            >Usuario
+            <img src="../../../../assets/icon.png" alt="Imagen Placeholder" />
+          </label>
+
+          <input
+            class="form-control text-light "
+            type="text"
+            id="formFile"
+            placeholder=" ingresa usuario"
+          />
+          <hr class="text-light" />
+        </div>
+        <div class="mx-5 mb-3">
+          <label class="pb-0" for="usuario"
+            >Contraseña
+            <img src="../../../../assets/llave.png" alt="Imagen Placeholder"
+          /></label>
+          <div class="input-container">
+            <input
+              class="form-control text-light"
+              type="password"
+              id="formFile "
+              placeholder="ingrese contraseña"
+            />
+            <hr class="text-light" />
           </div>
         </div>
 
-        <div class="loginBox__left__container__form__field">
-          <label for="pass">Contraseña </label>
-          <div class="loginBox__left__container__form__field__box">
-            <input type="password" id="pass" placeholder="********" />
-            <img src="assets/llave.png" alt="key_icon" />
-            <button>
-              <img class="eye" src="assets/eyeClose.png" alt="eye_icon" />
-            </button>
-          </div>
-        </div>
 
         <div class="loginBox__left__container__form__actions">
           <button (click)="onSubmit()" type="submit" class="btnLogin">Iniciar Sesión</button>
           <button (click)="toRegist()" type="submit" class="btnRegist">Desea Registrarse?</button>
+
+        <div class="text-center">
+          <div class="my-4">
+            <button class="btn btn-green">Iniciar Sesión</button>
+          </div>
+          <div class="mb-4">
+            <button class="btn btn-outline-green">Registrarse</button>
+          </div>
+
         </div>
+        <a class="text-green-special float-end ps-2" href="">Condiciones</a>
+        <a class="text-green-special float-end" href="">Privacidad</a>
       </form>
-      <!---------------------- terminos y condiciones ----------------------->
-      <div class="loginBox__left__container__terms d-flex justify-content-end">
-        <a class="ms-2" href="#">Privacidad</a>
-        <a class="ms-2" href="#">Condiciones</a>
-      </div>
     </div>
   </div>
-  <div class="loginBox__right w-50">
-    <img src="assets/imgLogin.png" alt="img-login" />
+  <div class="float-end der">
+    <div class="container-fluid text-center align-items-center mt-5">
+      <img
+        class="mt-5"
+        src="../../../../assets/image 4login.png"
+        alt=""
+        sizes=""
+        srcset=""
+      />
+    </div>
   </div>
 </div>
 <app-footer></app-footer>
