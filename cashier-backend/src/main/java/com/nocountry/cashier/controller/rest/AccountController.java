@@ -1,5 +1,6 @@
 package com.nocountry.cashier.controller.rest;
 
+import com.nocountry.cashier.controller.dto.response.AccountResponseDTO;
 import com.nocountry.cashier.domain.usecase.AccountService;
 import com.nocountry.cashier.exception.RegisterNotFound;
 
@@ -10,9 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static io.opencensus.trace.Status.OK;
+import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
 @RequestMapping("/api/account")
@@ -23,9 +28,9 @@ public class AccountController {
     private AccountService accountService;
 
     @GetMapping
-    public List<AccountEntity> getAllAccount(){
+    public List<AccountResponseDTO> getAllAccount(){
 
-        List<AccountEntity> accountList= accountService.getAllAccounts();
+        List<AccountResponseDTO> accountList= accountService.getAllAccounts();
 
         accountList.forEach(application -> logger.info(accountList.toString()));
 
@@ -33,9 +38,9 @@ public class AccountController {
     }
 
     @GetMapping("/{idAccount}")
-    public ResponseEntity<AccountEntity> getAccount(@PathVariable long idAccount){
+    public ResponseEntity<AccountResponseDTO> getAccount(@PathVariable String idAccount){
 
-        AccountEntity account = accountService.getAccount(idAccount);
+        AccountResponseDTO account = accountService.getAccount(idAccount);
 
         if(account == null){
             throw new RegisterNotFound("Doesn´t Found account id: " +idAccount);
@@ -44,21 +49,24 @@ public class AccountController {
     }
 
     @PostMapping
-    public AccountEntity createAccount(@RequestBody AccountEntity account){
-        logger.info("Account to create: " +account);
-        return accountService.createAccount(account);
+    public AccountResponseDTO createAccount(@RequestParam("uuidUser") String uuidUser){
 
+        //var accountResponseDTO = accountService.createAccount(uuidUser);
+
+        //return new ResponseEntity<>(Map.of("exeq", accountResponseDTO), OK);
+
+        return accountService.createAccount(uuidUser);
     }
 
     @DeleteMapping("/{idAccount}")
     public ResponseEntity<Map<String, Boolean>>
-    deleteAccount(@PathVariable Long idAccount){
-        AccountEntity account = accountService.getAccount(idAccount);
+    deleteAccount(@PathVariable String idAccount){
+        AccountResponseDTO account = accountService.getAccount(idAccount);
 
         if(account == null){
             throw new RegisterNotFound("ID not found " +idAccount);
         }
-        accountService.deleteAccount(account);
+        accountService.deleteAccount(idAccount);
         //JSON{"delete" : true}
         Map<String, Boolean> response = new HashMap<>();
         response.put("Delete", Boolean.TRUE);

@@ -5,6 +5,10 @@ public enum EnumsTransactions {
     EGRESS,
     TRANSFER,
     DEPOSIT,
-    PAYMENT_QR
+    PAYMENT_QR;
 
+    @Override
+    public String toString() {
+        return "EnumsTransactions{}";
+    }
 }

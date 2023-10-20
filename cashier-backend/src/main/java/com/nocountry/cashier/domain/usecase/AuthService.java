@@ -16,10 +16,5 @@ import java.util.Map;
 public interface AuthService{
     AuthResponseDTO register(UserRequestDTO userRequestDTO, String url);
     AuthResponseDTO authenticate(AuthRequestDTO authRequestDTO);
-
-    /*default Map<String, Object> verifyAccount(String otp){
-        if (user.getOtp().equals(otp) && Duration.between(user.getOtpGeneratedTime(),
-                LocalDateTime.now()).getSeconds() < (1 * 60)) {
-    }*/
     Map<String, Object> confirm(String token);
 }

@@ -19,8 +19,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.util.Locale;
 import java.util.Map;
 
-import static com.nocountry.cashier.util.Constant.API_VERSION;
-import static com.nocountry.cashier.util.Constant.RESOURCE_AUTH;
+import static com.nocountry.cashier.util.Constant.*;
 
 /**
  * @author ROMULO
@@ -28,19 +27,20 @@ import static com.nocountry.cashier.util.Constant.RESOURCE_AUTH;
  * @license Lrpa, zephyr cygnus
  * @since 12/10/2023
  */
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = API_VERSION + RESOURCE_AUTH)
+@RequestMapping(value = API_VERSION )
 public class AuthController {
     private final AuthService authService;
-    @PostMapping("/")
+    @PostMapping(RESOURCE_REGISTER+"/")
     public ResponseEntity<?> registerCustomer(@Valid @RequestBody UserRequestDTO authRequestDTO) {
         String url = ServletUriComponentsBuilder.fromCurrentRequest().path("{path}").buildAndExpand("confirm").toUriString()+"?token=";
         AuthResponseDTO register = authService.register(authRequestDTO,url);
         return ResponseEntity.ok().body(Map.of("data",register));
     }
 
-    @GetMapping("/")
+    @PostMapping(RESOURCE_AUTH+"/")
     public ResponseEntity<?> authenticateCustomer(@Valid @RequestBody AuthRequestDTO authDto){
         AuthResponseDTO authenticate = authService.authenticate(authDto);
         return ResponseEntity.ok().body(authenticate);

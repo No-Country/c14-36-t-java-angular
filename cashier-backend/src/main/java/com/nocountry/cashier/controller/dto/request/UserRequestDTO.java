@@ -40,7 +40,9 @@ UserRequestDTO implements Serializable {
 
     @NotEmpty(message = "Debe ingresar un número de dni")
     private String dni;
-    @Pattern(regexp = "^[0-9]{9}$", message = "El número de celular debe tener 9 dígitos")
+
+    @Pattern(regexp = "^[0-9]{6,12}$", message = "El número de celular debe tener hasta 12 dígitos")
+
     @NotEmpty(message = "Debe ingresar un número de celular")
     private String phone;
 
@@ -51,7 +53,7 @@ UserRequestDTO implements Serializable {
 
     private String address;
 
-    @JsonFormat(pattern = "dd-MM-yyyy")
-    @Pattern(regexp = "^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-\\d{4}$", message = "Ingresa el siguiente formato de fecha dd-MM-yyyy")
-    private String birthDate;
+   @JsonFormat(pattern = "yyyy-MM-dd", timezone = "UTC")
+   @Pattern(regexp = "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$", message = "Ingresa el siguiente formato de fecha yyyy-MM-dd")
+   private String birthDate;
 }

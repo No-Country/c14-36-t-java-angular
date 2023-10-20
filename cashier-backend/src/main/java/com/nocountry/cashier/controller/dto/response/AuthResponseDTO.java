@@ -1,6 +1,5 @@
 package com.nocountry.cashier.controller.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -23,9 +22,9 @@ public class AuthResponseDTO implements Serializable {
     private final LocalDateTime timeStamp;
 
     @Builder
-    public AuthResponseDTO(String token,String message) {
+    public AuthResponseDTO(String token, String message) {
         this.token = token;
-        this.message=message;
+        this.message = message;
         this.timeStamp = LocalDateTime.now();
     }
 }

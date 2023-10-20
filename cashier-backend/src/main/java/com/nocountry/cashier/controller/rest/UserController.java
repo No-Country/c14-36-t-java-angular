@@ -75,5 +75,4 @@ public class UserController {
         return ResponseEntity.ok(new GenericResponseDTO<>(true,"Usuario Encontrado",userService.getById(uuid).get()));
     }
 
-
 }
