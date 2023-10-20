@@ -1,5 +1,7 @@
 package com.nocountry.cashier.domain.usecase.email;
 
+import com.nocountry.cashier.enums.EnumsEmail;
+
 import java.io.File;
 
 /**
@@ -10,8 +12,8 @@ import java.io.File;
  */
 public interface EmailService {
 
-    Boolean sendEmail(String[] to, String subject, String textMessage);
-    Boolean sendEmailFile(String[] to, String subject, String textMessage, File... attachment);
-    void setTemplateStrategy(TemplateStrategy strategy);
-    String executeTemplate(String... values);
+    void sendEmail(String[] to, String subject, String textMessage);
+    Boolean sendEmailFile(String[] to, String subject, String textMessage, Object attachment);
+    EnumsEmail getProviderEmail();
+    String generateEmailTemplate(TemplateStrategy templateStrategy, Object... values);
 }

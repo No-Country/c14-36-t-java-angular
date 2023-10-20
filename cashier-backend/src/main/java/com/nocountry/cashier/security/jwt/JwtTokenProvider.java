@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.Base64;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
@@ -61,18 +60,15 @@ public class JwtTokenProvider {
     public String generateToken(UserEntity user) {
         try {
             Instant expirationToken = Instant.now().plusMillis(Long.parseLong(expiration));
-            Map<String, Object> claims = new HashMap<>();
-            claims.put("sub", user.getEmail());
-            claims.put("name", user.getName()+" "+user.getLastName());
-            claims.put("phone", user.getPhone());
-            claims.put("role", "ROLE_USER");
-
             return JWT.create()
-                    .withHeader(Map.of("type",TOKEN_TYPE))
+                    .withHeader(Map.of("type", TOKEN_TYPE))
                     .withIssuedAt(Instant.now())
                     .withExpiresAt(expirationToken)
                     .withIssuer("cashier")
-                    .withClaim("data", claims)
+                    .withClaim("dni",user.getDni())
+                    .withSubject(user.getEmail())
+                    .withClaim("name", user.getName() + " " + user.getLastName())
+                    .withClaim("role", "ROLE_USER")
                     .sign(getSignatureKey());
         } catch (JWTCreationException exception) {
             log.warn("Invalid Creation Token");
@@ -89,39 +85,40 @@ public class JwtTokenProvider {
     public boolean verifyToken(String token) {
         try {
             if (Objects.isNull(token)) throw new GenericException("El token esta vació", HttpStatus.BAD_REQUEST);
-            if (!isExpirationToken(token)) throw new JwtGenericException("El token ya expiró", HttpStatus.BAD_REQUEST);
+            if (isExpirationToken(token)) throw new JwtGenericException("El token ya expiró", HttpStatus.BAD_REQUEST);
             JWT.require(getSignatureKey())
                     .withIssuer("cashier")
                     .build()
                     .verify(token);
             return true;
         } catch (Exception ex) {
-            throw new GenericException(ex.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new JwtGenericException("El token no es válido "+ex.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    public boolean isExpirationToken(String token){
+    public boolean isExpirationToken(String token) {
         Instant extractExpiration = extractExpiration(token);
         return extractExpiration.isBefore(Instant.now());
     }
 
-    private Instant extractExpiration(String token) {
+    public Instant extractExpiration(String token) {
         return extractAllClaims(token, Payload::getExpiresAtAsInstant);
     }
+
     /**
      * Toma el token se extrae los claims que lo conforman y se pasa un key para traer informacion especifica del token
      *
      * @param token String
      * @param key   sub|id|email|phone|role
-     * @return
+     * @return String
      */
     public String getClaimForToken(String token, String key) {
         Map<String, Claim> claims = extractAllClaims(token, Payload::getClaims);
         return switch (key.toLowerCase()) {
             case "sub" -> claims.get("sub").asString();
             case "name" -> claims.get("name").asString();
-            case "phone" -> claims.get("phone").asString();
             case "role" -> claims.get("role").asString();
+            case "dni" -> claims.get("dni").asString();
             default -> "No existe dicho claim";
         };
     }
@@ -129,7 +126,7 @@ public class JwtTokenProvider {
     /**
      * @param token           String
      * @param claimsTFunction Function
-     * @param <T> Generico
+     * @param <T>             Generico
      * @return Generic
      */
     private <T> T extractAllClaims(String token, Function<DecodedJWT, T> claimsTFunction) {

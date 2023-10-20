@@ -2,15 +2,18 @@ package com.nocountry.cashier.domain.service.email;
 
 import com.nocountry.cashier.domain.usecase.email.EmailService;
 import com.nocountry.cashier.domain.usecase.email.TemplateStrategy;
+import com.nocountry.cashier.enums.EnumsEmail;
+import com.resend.Resend;
+import com.resend.core.exception.ResendException;
+import com.resend.services.emails.model.SendEmailRequest;
+import com.resend.services.emails.model.SendEmailResponse;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.File;
 
@@ -25,44 +28,41 @@ import java.io.File;
 @RequiredArgsConstructor
 public class ReSendEmailService implements EmailService {
     private final JavaMailSender javaMailSender;
-    private TemplateStrategy templateStrategy;
-
-
     @Override
-    public Boolean sendEmail(String[] to, String subject, String textMessage) {
-        MimeMessage message = javaMailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message);
-        Boolean send = Boolean.FALSE;
-        try {
-            helper.setTo(to);
-            helper.setText(textMessage,true);
-            helper.setSubject(subject);
-            javaMailSender.send(message);
-            send= Boolean.TRUE;
-        } catch (MessagingException e){
-            log.error("Hubo un error al enviar el mail: {}", e.getCause().getMessage());
-        }
-
-        return send;
+    public EnumsEmail getProviderEmail() {
+        return EnumsEmail.RESEND;
     }
 
     @Override
-    public Boolean sendEmailFile(String[] to, String subject, String textMessage, File... attachment) {
+    public void sendEmail(String[] to, String subject, String textMessage) {
+        Resend resend = new Resend("re_token");
+        //Boolean send = Boolean.FALSE;
+        try {
+            SendEmailRequest sendEmailRequest = SendEmailRequest.builder()
+                    .from("jessepickman20@gmail.com")//necesita un domain
+                    .to("bosiocerati98@gmail.com")
+                    .subject("it works!")
+                    .html("<strong>hello world</strong>")
+                    .build();
+            log.info("Email enviado desde SPRING BOOT");
+            //send = Boolean.TRUE;
+
+            SendEmailResponse data = resend.emails().send(sendEmailRequest);
+            log.info("RESPUESTA DE RESEND {}",data.getId());
+        } catch (ResendException e) {
+            log.error(e.getMessage());
+        }
+
+        //return send;
+    }
+
+    @Override
+    public Boolean sendEmailFile(String[] to, String subject, String textMessage, Object attachment) {
         return null;
     }
 
     @Override
-    public void setTemplateStrategy(TemplateStrategy strategy) {
-        this.templateStrategy= strategy;
-    }
-
-    @Override
-    public String executeTemplate(String... values) {
-        String logoutUrl = UriComponentsBuilder
-                .fromHttpUrl("issuer" + "v2/logout?client_id={clientId}&returnTo={returnTo}")
-                .encode()
-                .buildAndExpand("clientId", "returnTo")
-                .toUriString();
-        return this.templateStrategy.replaceParameter(values);
+    public String generateEmailTemplate(TemplateStrategy templateStrategy, Object... values) {
+        return templateStrategy.formatEmailTemplate(values);
     }
 }

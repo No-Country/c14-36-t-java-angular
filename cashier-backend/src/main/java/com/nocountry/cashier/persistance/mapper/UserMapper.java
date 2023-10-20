@@ -3,17 +3,14 @@ package com.nocountry.cashier.persistance.mapper;
 import com.nocountry.cashier.controller.dto.request.UserRequestDTO;
 import com.nocountry.cashier.controller.dto.response.UserResponseDTO;
 import com.nocountry.cashier.persistance.entity.UserEntity;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingConstants;
-import org.mapstruct.Named;
+import org.mapstruct.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-@Mapper(componentModel = MappingConstants.ComponentModel.SPRING, uses = {ImageMapper.class})
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING, uses = {ImageMapper.class},injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface UserMapper {
 
     @Mapping(target = "token", ignore = true)

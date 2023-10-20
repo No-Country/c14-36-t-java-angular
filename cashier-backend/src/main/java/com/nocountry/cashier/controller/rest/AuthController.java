@@ -34,21 +34,20 @@ import static com.nocountry.cashier.util.Constant.RESOURCE_AUTH;
 public class AuthController {
     private final AuthService authService;
     @PostMapping("/")
-    public ResponseEntity<?> registerCustomer(@Valid @RequestBody UserRequestDTO authRequestDTO,HttpServletRequest request) {
-        AuthResponseDTO register = authService.register(authRequestDTO);
-        String uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/")
-                .path("{id}").buildAndExpand(register.getId()).toUriString();
-        String appUrl = "http://" + request.getServerName() +
-                        ":" + request.getServerPort() +
-                        request.getContextPath();
-        Locale locale = request.getLocale();
-        return ResponseEntity.ok().body(Map.of("data",register,"url",uri));
+    public ResponseEntity<?> registerCustomer(@Valid @RequestBody UserRequestDTO authRequestDTO) {
+        String url = ServletUriComponentsBuilder.fromCurrentRequest().path("{path}").buildAndExpand("confirm").toUriString()+"?token=";
+        AuthResponseDTO register = authService.register(authRequestDTO,url);
+        return ResponseEntity.ok().body(Map.of("data",register));
     }
 
     @GetMapping("/")
-    public ResponseEntity<?> authenticateCustomer(@Valid @RequestBody AuthRequestDTO authDto, HttpServletRequest request){
-        String token = request.getHeader("Authorization");
-        AuthResponseDTO authenticate = authService.authenticate(authDto, token);
+    public ResponseEntity<?> authenticateCustomer(@Valid @RequestBody AuthRequestDTO authDto){
+        AuthResponseDTO authenticate = authService.authenticate(authDto);
         return ResponseEntity.ok().body(authenticate);
+    }
+
+    @GetMapping(path = "/confirm")
+    public ResponseEntity<?> confirm(@RequestParam String token) {
+        return ResponseEntity.ok(authService.confirm(token));
     }
 }

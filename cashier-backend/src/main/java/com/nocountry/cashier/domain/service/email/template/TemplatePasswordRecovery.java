@@ -1,7 +1,8 @@
 package com.nocountry.cashier.domain.service.email.template;
 
 import com.nocountry.cashier.domain.usecase.email.TemplateStrategy;
-import org.springframework.stereotype.Service;
+import com.nocountry.cashier.enums.EnumsTemplate;
+import org.springframework.stereotype.Component;
 
 /**
  * @author ROMULO
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Service;
  * @license Lrpa, zephyr cygnus
  * @since 14/10/2023
  */
-@Service
+@Component
 public class TemplatePasswordRecovery extends TemplateStrategy {
     @Override
     public String header() {
@@ -27,7 +28,12 @@ public class TemplatePasswordRecovery extends TemplateStrategy {
     }
 
     @Override
-    public String replaceParameter(Object... values) {
+    public EnumsTemplate getTemplateEmail() {
+        return EnumsTemplate.RESTORE_PASSWORD;
+    }
+
+    @Override
+    public String formatEmailTemplate(Object... values) {
         return String.format(buildTemplate(), values);
     }
 }
