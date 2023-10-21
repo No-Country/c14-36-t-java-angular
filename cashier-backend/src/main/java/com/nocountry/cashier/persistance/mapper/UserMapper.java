@@ -13,6 +13,7 @@ import java.time.format.DateTimeFormatter;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING, uses = {ImageMapper.class},injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface UserMapper {
 
+    @Mapping(target = "qr", ignore = true)
     @Mapping(target = "token", ignore = true)
     @Mapping(target = "modifyUser", ignore = true)
     @Mapping(target = "openAccountDate", ignore = true)
@@ -25,26 +26,7 @@ public interface UserMapper {
     @Mapping(target = "password", source = "password", qualifiedByName = "encoderPass")
     UserEntity toUserEntity(UserRequestDTO userRequestDTO);
 
-    //@InheritInverseConfiguration
     UserResponseDTO toUserResponseDto(UserEntity userEntity);
-
-//    @Mapping(target = "phone", ignore = true)
-//    @Mapping(target = "name", ignore = true)
-//    @Mapping(target = "lastName", ignore = true)
-//    @Mapping(target = "dni", ignore = true)
-//    @Mapping(target = "birthDate", ignore = true)
-//    @Mapping(target = "address", ignore = true)
-//    @Mapping(target = "modifyUser", ignore = true)
-//    @Mapping(target = "openAccountDate", ignore = true)
-//    @Mapping(target = "lastModifiedDate", ignore = true)
-//    @Mapping(target = "image", ignore = true)
-//    @Mapping(target = "id", ignore = true)
-//    @Mapping(target = "enabled", ignore = true)
-//    @Mapping(target = "cvu", ignore = true)
-//    @Mapping(target = "createdDate", ignore = true)
-//    @Mapping(target = "email", source = "email")
-//    @Mapping(target = "password", source = "password")
-//    UserEntity toUserEntityAuth(AuthRequestDTO authRequestDTO);
 
     @Named("stringToLocalDate")
     default LocalDate stringToLocalDate(String birthDate) {

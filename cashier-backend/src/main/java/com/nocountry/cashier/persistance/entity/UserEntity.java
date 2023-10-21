@@ -52,6 +52,8 @@ public class UserEntity extends Auditable<LocalDateTime> {
 
     private String password;
 
+    private String qr;
+
     @OneToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "url_profile")
     private ImageEntity image;
