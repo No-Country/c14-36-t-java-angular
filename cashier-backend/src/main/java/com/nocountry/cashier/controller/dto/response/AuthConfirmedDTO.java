@@ -11,20 +11,25 @@ import java.time.LocalDateTime;
  * @author ROMULO
  * @package com.nocountry.cashier.controller.dto.response
  * @license Lrpa, zephyr cygnus
- * @since 13/10/2023
+ * @since 20/10/2023
  */
 @Getter
-public class AuthResponseDTO implements Serializable {
+public class AuthConfirmedDTO  implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    private final String id;
+    private final String token;
     private final String message;
     private final LocalDateTime timeStamp;
-
+    private final String qr;
 
     @Builder
-    public AuthResponseDTO(String message) {
+    public AuthConfirmedDTO(String id, String token, String message, String qr) {
+        this.id = id;
+        this.token = token;
         this.message = message;
         this.timeStamp = LocalDateTime.now();
+        this.qr = qr;
     }
 }
