@@ -1,37 +1,42 @@
 package com.nocountry.cashier.domain.service;
 
+import com.google.zxing.WriterException;
 import com.nocountry.cashier.controller.dto.request.AuthRequestDTO;
 import com.nocountry.cashier.controller.dto.request.UserRequestDTO;
+import com.nocountry.cashier.controller.dto.response.AuthConfirmedDTO;
 import com.nocountry.cashier.controller.dto.response.AuthResponseDTO;
+import com.nocountry.cashier.controller.dto.response.AuthenticatedUserDTO;
 import com.nocountry.cashier.domain.service.email.EmailFactoryService;
 import com.nocountry.cashier.domain.usecase.AuthService;
+import com.nocountry.cashier.domain.usecase.qr.QRGeneratorService;
 import com.nocountry.cashier.enums.EnumsEmail;
 import com.nocountry.cashier.enums.EnumsTemplate;
 import com.nocountry.cashier.exception.DuplicateEntityException;
 import com.nocountry.cashier.exception.GenericException;
-import com.nocountry.cashier.exception.JwtGenericException;
 import com.nocountry.cashier.exception.ResourceNotFoundException;
 import com.nocountry.cashier.persistance.entity.TokenEntity;
 import com.nocountry.cashier.persistance.entity.UserEntity;
 import com.nocountry.cashier.persistance.mapper.UserMapper;
 import com.nocountry.cashier.persistance.repository.UserRepository;
 import com.nocountry.cashier.security.jwt.JwtTokenProvider;
-import com.nocountry.cashier.util.Constant;
-import com.nocountry.cashier.util.Utility;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
+import java.time.Instant;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
-import static com.nocountry.cashier.util.Constant.*;
+import static com.nocountry.cashier.util.Constant.HEIGHT_QR;
+import static com.nocountry.cashier.util.Constant.WIDTH_QR;
 
 /**
  * @author ROMULO
@@ -48,6 +53,11 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final EmailFactoryService emailService;
+    private final QRGeneratorService qrGeneratorService;
+    @Value("${jwt.time.expiration}")
+    private String expirationToken;
+    @Value("${jwt.time.expiration.confirm.email}")
+    private String expirationEmail;
 
     @Override
     @Transactional
@@ -62,25 +72,26 @@ public class AuthServiceImpl implements AuthService {
         if (byDni.isPresent()) throw new DuplicateEntityException(message);
 
         UserEntity auth = mapper.toUserEntity(userRequestDTO);
-        String token = jwtTokenProvider.generateToken(auth);
+        String token = jwtTokenProvider.generateToken(auth,expirationEmail);
         auth.setToken(TokenEntity.builder().tokenGenerated(token).build());
+        auth.setEnabled(Boolean.TRUE);
+
         userRepository.save(auth);
 
         emailService.generateEmail(EnumsTemplate.CONFIRM_EMAIL,
                 EnumsEmail.GMAIL,
                 new String[]{auth.getEmail()},
                 subject,
-                jwtTokenProvider.getClaimForToken(token,"name"), url+token);
+                jwtTokenProvider.getClaimForToken(token, "name"), url + token);
 
         return AuthResponseDTO.builder()
                 .message("A confirmation email was sent to your registered email address.")
-                .token("Confirm your Email")
                 .build();
     }
 
     @Override
     @Transactional
-    public AuthResponseDTO authenticate(AuthRequestDTO authRequestDTO) {
+    public AuthenticatedUserDTO authenticate(AuthRequestDTO authRequestDTO) {
 
         Optional<UserEntity> user = userRepository.findByEmailIgnoreCase(authRequestDTO.email().strip());
         if (user.isEmpty()) throw new GenericException("El usuario no existe.", HttpStatus.NOT_FOUND);
@@ -100,27 +111,46 @@ public class AuthServiceImpl implements AuthService {
 
 
         return verify
-                ? AuthResponseDTO.builder()
+                ? AuthenticatedUserDTO.builder()
+                .id(user.get().getId())
                 .message("Autenticación correcta")
-                .token(jwtTokenProvider.generateToken(user.get()))
+                .token(jwtTokenProvider.generateToken(user.get(),expirationToken))
                 .build()
-                : AuthResponseDTO.builder()
-                .token("N/A")
+                : AuthenticatedUserDTO.builder()
                 .message("Password o email incorrectos").build();
     }
 
     @Override
     @Transactional
-    public Map<String, Object> confirm(String token) {
-
-        if (jwtTokenProvider.verifyToken(token)) log.error("El token ha sido modificado. No valido");
+    public AuthConfirmedDTO confirm(String token) {
+        final ResponseEntity<Resource> qrCodeImage;
+        // * AQUI OBTENEMOS EL TOKEN CON UN TIEMPO DE EXPIRACION BAJA SI PASA EL TIEMPO ES POR QUE EL USUARIO NO HA CONFIRMADO EL EMAIL
+        if (!jwtTokenProvider.verifyToken(token)) log.error("El token ha sido modificado. No valido");
         var emailUser = jwtTokenProvider.getClaimForToken(token, "sub");
-        var user=userRepository.findByEmailIgnoreCase(emailUser).orElseThrow(()-> new ResourceNotFoundException("El usuario no existe"));
+        var user = userRepository.findByEmailIgnoreCase(emailUser).orElseThrow(() -> new ResourceNotFoundException("El usuario no existe"));
         user.setEnabled(Boolean.TRUE);
-        userRepository.save(user);
+
+        var filename = user.getDni() + "_" + user.getLastName() + "_" + "QRCODE.png"; //nombre del archivo original con su extension
+
+        try {
+            qrCodeImage = qrGeneratorService.generateQrCodeImage(user.getName() + " " + user.getLastName(), WIDTH_QR, HEIGHT_QR,filename );
+            user.setQr(Objects.requireNonNull(qrCodeImage.getBody()).getFilename());
+        } catch (WriterException e) {
+            log.info("Hubo un problema al generar el Qr");
+            throw new GenericException("Failed to write QR code image to output stream.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        // ? GENERAMOS EL USUARIO , GENERAMOS NUEVO TOKEN CON NUEVO TIEMPO DE EXPIRACION
+        UserEntity userEntity = userRepository.save(user);
+        String newToken = jwtTokenProvider.generateToken(userEntity, expirationToken);
         log.info("SE CONFIRMÓ SU EMAIL, CUENTA ACTIVADA");
-        var nameUser =jwtTokenProvider.getClaimForToken(token,"name");
-        return Map.of("message","Perfil creado para el usuario "+nameUser);
+        var nameUser = jwtTokenProvider.getClaimForToken(token, "name");
+        return AuthConfirmedDTO.builder()
+                .message("Perfil creado correctamente para el usuario "+nameUser)
+                .id(userEntity.getId())
+                .token(newToken)
+                .qr(Objects.requireNonNull(qrCodeImage.getBody()).getFilename())
+                .build();
     }
 
 

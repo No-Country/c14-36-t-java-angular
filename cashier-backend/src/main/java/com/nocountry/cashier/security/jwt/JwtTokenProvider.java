@@ -33,8 +33,6 @@ public class JwtTokenProvider {
 
     @Value("${jwt.secret.key}")
     private String secretKey;
-    @Value("${jwt.time.expiration}")
-    private String expiration;
     @Value("${jwt.domain.auth}")
     private String domain;
     @Value("${jwt.client.id}")
@@ -57,15 +55,16 @@ public class JwtTokenProvider {
      * @param user UserEntity
      * @return String token
      */
-    public String generateToken(UserEntity user) {
+    public String generateToken(UserEntity user,String expiration) {
+
+        Instant expirationToken = Instant.now().plusMillis(Long.parseLong(expiration));
         try {
-            Instant expirationToken = Instant.now().plusMillis(Long.parseLong(expiration));
             return JWT.create()
                     .withHeader(Map.of("type", TOKEN_TYPE))
                     .withIssuedAt(Instant.now())
                     .withExpiresAt(expirationToken)
                     .withIssuer("cashier")
-                    .withClaim("dni",user.getDni())
+                    .withClaim("dni", user.getDni())
                     .withSubject(user.getEmail())
                     .withClaim("name", user.getName() + " " + user.getLastName())
                     .withClaim("role", "ROLE_USER")
@@ -85,14 +84,14 @@ public class JwtTokenProvider {
     public boolean verifyToken(String token) {
         try {
             if (Objects.isNull(token)) throw new GenericException("El token esta vació", HttpStatus.BAD_REQUEST);
-            if (isExpirationToken(token)) throw new JwtGenericException("El token ya expiró", HttpStatus.BAD_REQUEST);
+            if (isExpirationToken(token)) throw new JwtGenericException("Oops, el token ya expiró.", HttpStatus.BAD_REQUEST);
             JWT.require(getSignatureKey())
                     .withIssuer("cashier")
                     .build()
                     .verify(token);
             return true;
         } catch (Exception ex) {
-            throw new JwtGenericException("El token no es válido "+ex.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new JwtGenericException(ex.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

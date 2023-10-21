@@ -2,14 +2,20 @@ package com.nocountry.cashier.controller.rest;
 
 import com.nocountry.cashier.controller.dto.request.AuthRequestDTO;
 import com.nocountry.cashier.controller.dto.request.UserRequestDTO;
+import com.nocountry.cashier.controller.dto.response.AuthConfirmedDTO;
 import com.nocountry.cashier.controller.dto.response.AuthResponseDTO;
+import com.nocountry.cashier.controller.dto.response.AuthenticatedUserDTO;
 import com.nocountry.cashier.controller.dto.response.GenericResponseDTO;
 import com.nocountry.cashier.domain.usecase.AuthService;
+import com.nocountry.cashier.domain.usecase.UserService;
+import com.nocountry.cashier.domain.usecase.qr.QRGeneratorService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,23 +37,43 @@ import static com.nocountry.cashier.util.Constant.RESOURCE_AUTH;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = API_VERSION + RESOURCE_AUTH)
+@Slf4j
 public class AuthController {
     private final AuthService authService;
+    private final UserService userService;
+    private final QRGeneratorService qrService;
     @PostMapping("/")
     public ResponseEntity<?> registerCustomer(@Valid @RequestBody UserRequestDTO authRequestDTO) {
-        String url = ServletUriComponentsBuilder.fromCurrentRequest().path("{path}").buildAndExpand("confirm").toUriString()+"?token=";
-        AuthResponseDTO register = authService.register(authRequestDTO,url);
+        String urlConfirm = ServletUriComponentsBuilder.fromCurrentRequest().path("{path}").buildAndExpand("confirm").toUriString()+"?token=";
+        AuthResponseDTO register = authService.register(authRequestDTO,urlConfirm);
         return ResponseEntity.ok().body(Map.of("data",register));
     }
 
     @GetMapping("/")
     public ResponseEntity<?> authenticateCustomer(@Valid @RequestBody AuthRequestDTO authDto){
-        AuthResponseDTO authenticate = authService.authenticate(authDto);
-        return ResponseEntity.ok().body(authenticate);
+        AuthenticatedUserDTO authenticate = authService.authenticate(authDto);
+        String uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/")
+                .path("{id}").buildAndExpand(authenticate.getId()).toUriString();
+        return ResponseEntity.ok().body(Map.of("data",authenticate,"url",uri));
     }
 
+
     @GetMapping(path = "/confirm")
-    public ResponseEntity<?> confirm(@RequestParam String token) {
-        return ResponseEntity.ok(authService.confirm(token));
+    public ResponseEntity<?> confirmCustomer(@RequestParam String token) {
+        AuthConfirmedDTO confirmed = authService.confirm(token);
+        String uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/")
+                .path("{qr}").path("view").buildAndExpand(confirmed.getQr()).toUriString();
+        return ResponseEntity.ok().body(Map.of("user",confirmed,"urlQr",uri));
+    }
+
+    // ? OJO CON ESTO SE MOVE TODAS LAS FUNCIONES A USER CONTROLLER
+    @GetMapping("/{uuid}/view")
+    public ResponseEntity<?> findCustomerById(@PathVariable @NotBlank(message = "No puede ser vacío") String uuid){
+        return ResponseEntity.ok(new GenericResponseDTO<>(true,"Usuario Encontrado",userService.getById(uuid).get()));
+    }
+
+    @GetMapping("/confirm/{qr}")
+    public ResponseEntity<?> showQrCustomer(@PathVariable String qr){
+        return qrService.uploadLocalImage(qr);
     }
 }
