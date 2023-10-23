@@ -1,17 +1,18 @@
 package com.nocountry.cashier.domain.usecase;
 
 
+import com.nocountry.cashier.controller.dto.response.AccountResponseDTO;
 import com.nocountry.cashier.persistance.entity.AccountEntity;
 
 import java.util.List;
 
 public interface AccountService {
 
-    List<AccountEntity> getAllAccounts();
+    List<AccountResponseDTO> getAllAccounts();
 
-    AccountEntity getAccount(Long idAccount);
+    AccountResponseDTO getAccount(String idAccount);
 
-    AccountEntity createAccount(AccountEntity accountEntity);
+    AccountResponseDTO createAccount(String uuidUser);
 
-    void deleteAccount(AccountEntity accountEntity);
+    void deleteAccount(String uuidAccount);
 }

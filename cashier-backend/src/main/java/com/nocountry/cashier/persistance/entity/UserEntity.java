@@ -15,8 +15,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "customer")
-@SQLDelete(sql = "UPDATE customer SET enabled=FALSE where id=?")
-@Where(clause = "enabled=TRUE")
+@SQLDelete(sql = "UPDATE customer SET enabled=false where id=?")
+@Where(clause = "enabled=true")
 @NoArgsConstructor
 @Getter
 @Setter
@@ -50,6 +50,9 @@ public class UserEntity extends Auditable<LocalDateTime> {
 
     private Boolean enabled;
 
+    @Column(name = "verify")
+    private Boolean verify;
+
     private String password;
 
     private String qr;
@@ -62,10 +65,20 @@ public class UserEntity extends Auditable<LocalDateTime> {
     @JoinColumn(name= "id_token")
     private TokenEntity token;
 
-//    @PrePersist
-//    public void onCreate() {
-//        this.setEnabled(Boolean.TRUE);
-//    }
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name= "id_account")
+    private AccountEntity accountEntity;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name= "id_card")
+    private CreditCardEntity creditCardEntity;
+
+   @PrePersist
+   public void onCreate() {
+       this.setVerify(Boolean.FALSE);
+       this.setEnabled(Boolean.TRUE);
+  }
+
 
     public UserEntity modifyUser(UserRequestDTO requestDTO) {
         if (StringUtils.hasText(requestDTO.getName())) this.setName(requestDTO.getName().strip());

@@ -1,9 +1,6 @@
 package com.nocountry.cashier.exception.handler;
 
-import com.nocountry.cashier.exception.DuplicateEntityException;
-import com.nocountry.cashier.exception.GenericException;
-import com.nocountry.cashier.exception.InvalidEmailException;
-import com.nocountry.cashier.exception.JwtGenericException;
+import com.nocountry.cashier.exception.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
@@ -126,6 +123,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 HttpStatus.BAD_REQUEST, message
         );
         problemDetail.setProperty("timestamp", LocalDateTime.now());
+        return problemDetail;
+    }
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ProblemDetail handleResouceNotFoundE(ResourceNotFoundException ex, HttpServletRequest request){
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
+                HttpStatus.NOT_FOUND, ex.getLocalizedMessage()
+        );
+        problemDetail.setInstance(URI.create(request.getRequestURL().toString())); //getDescription(false).replace("uri=","")
+        problemDetail.setTitle(HttpStatus.NOT_FOUND.getReasonPhrase());
+        problemDetail.setProperty("date", LocalDateTime.now());
         return problemDetail;
     }
 

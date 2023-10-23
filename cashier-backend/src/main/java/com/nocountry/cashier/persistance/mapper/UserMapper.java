@@ -30,7 +30,7 @@ public interface UserMapper {
 
     @Named("stringToLocalDate")
     default LocalDate stringToLocalDate(String birthDate) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return LocalDate.parse(birthDate.strip(), formatter);
     }
 

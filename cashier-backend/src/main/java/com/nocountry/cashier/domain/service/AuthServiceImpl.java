@@ -30,8 +30,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -72,8 +70,14 @@ public class AuthServiceImpl implements AuthService {
         if (byDni.isPresent()) throw new DuplicateEntityException(message);
 
         UserEntity auth = mapper.toUserEntity(userRequestDTO);
-        String token = jwtTokenProvider.generateToken(auth,expirationEmail);
+
+        UserEntity userTokenInfo = new UserEntity();
+        userTokenInfo.setName(auth.getName());
+        userTokenInfo.setLastName(auth.getLastName());
+
+        String token = jwtTokenProvider.generateToken(userTokenInfo, expirationEmail);
         auth.setToken(TokenEntity.builder().tokenGenerated(token).build());
+
         auth.setEnabled(Boolean.TRUE);
 
         userRepository.save(auth);
@@ -92,7 +96,6 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional
     public AuthenticatedUserDTO authenticate(AuthRequestDTO authRequestDTO) {
-
         Optional<UserEntity> user = userRepository.findByEmailIgnoreCase(authRequestDTO.email().strip());
         if (user.isEmpty()) throw new GenericException("El usuario no existe.", HttpStatus.NOT_FOUND);
         boolean verify = passwordEncoder.matches(authRequestDTO.password(), user.get().getPassword());
@@ -101,6 +104,7 @@ public class AuthServiceImpl implements AuthService {
         //TokenEntity tokenBD = tokenRepository.findByTokenGenerated(user.get().getToken().getTokenGenerated());
 
         //? TOKEN QUE VIENE DEL HEADER
+
         /*if (Objects.isNull(token) || !token.startsWith("Bearer ")) throw new JwtGenericException("Token Not found",HttpStatus.BAD_REQUEST);
         String jwt=token.substring(7);*/
 
@@ -114,10 +118,12 @@ public class AuthServiceImpl implements AuthService {
                 ? AuthenticatedUserDTO.builder()
                 .id(user.get().getId())
                 .message("Autenticación correcta")
-                .token(jwtTokenProvider.generateToken(user.get(),expirationToken))
+                .token(jwtTokenProvider.generateToken(user.get(), expirationToken))
                 .build()
                 : AuthenticatedUserDTO.builder()
-                .message("Password o email incorrectos").build();
+                .message("Password o email incorrectos")
+                .build();
+
     }
 
     @Override
@@ -133,7 +139,7 @@ public class AuthServiceImpl implements AuthService {
         var filename = user.getDni() + "_" + user.getLastName() + "_" + "QRCODE.png"; //nombre del archivo original con su extension
 
         try {
-            qrCodeImage = qrGeneratorService.generateQrCodeImage(user.getName() + " " + user.getLastName(), WIDTH_QR, HEIGHT_QR,filename );
+            qrCodeImage = qrGeneratorService.generateQrCodeImage(user.getName() + " " + user.getLastName(), WIDTH_QR, HEIGHT_QR, filename);
             user.setQr(Objects.requireNonNull(qrCodeImage.getBody()).getFilename());
         } catch (WriterException e) {
             log.info("Hubo un problema al generar el Qr");
@@ -146,7 +152,7 @@ public class AuthServiceImpl implements AuthService {
         log.info("SE CONFIRMÓ SU EMAIL, CUENTA ACTIVADA");
         var nameUser = jwtTokenProvider.getClaimForToken(token, "name");
         return AuthConfirmedDTO.builder()
-                .message("Perfil creado correctamente para el usuario "+nameUser)
+                .message("Perfil creado correctamente para el usuario " + nameUser)
                 .id(userEntity.getId())
                 .token(newToken)
                 .qr(Objects.requireNonNull(qrCodeImage.getBody()).getFilename())

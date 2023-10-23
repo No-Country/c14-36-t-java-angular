@@ -12,6 +12,8 @@ import java.util.Optional;
  */
 public interface ApiCrudGeneric<T, E, A, ID> {
     E create(T data);
+
+
     Page<E> getAll(A pageable);
     Optional<E> getById(ID id);
     E update(ID id, T data);

@@ -29,7 +29,7 @@ import java.util.function.Function;
  */
 @Service
 @Slf4j
-public class JwtTokenProvider {
+public class JwtTokenProvider{
 
     @Value("${jwt.secret.key}")
     private String secretKey;

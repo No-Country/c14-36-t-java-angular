@@ -5,9 +5,6 @@ import com.nocountry.cashier.controller.dto.request.UserRequestDTO;
 import com.nocountry.cashier.controller.dto.response.AuthConfirmedDTO;
 import com.nocountry.cashier.controller.dto.response.AuthResponseDTO;
 import com.nocountry.cashier.controller.dto.response.AuthenticatedUserDTO;
-import jakarta.servlet.http.HttpServletRequest;
-
-import java.util.Map;
 
 /**
  * @author ROMULO
@@ -15,13 +12,10 @@ import java.util.Map;
  * @license Lrpa, zephyr cygnus
  * @since 12/10/2023
  */
-public interface AuthService{
+public interface AuthService {
     AuthResponseDTO register(UserRequestDTO userRequestDTO, String url);
+
     AuthenticatedUserDTO authenticate(AuthRequestDTO authRequestDTO);
 
-    /*default Map<String, Object> verifyAccount(String otp){
-        if (user.getOtp().equals(otp) && Duration.between(user.getOtpGeneratedTime(),
-                LocalDateTime.now()).getSeconds() < (1 * 60)) {
-    }*/
     AuthConfirmedDTO confirm(String token);
 }
