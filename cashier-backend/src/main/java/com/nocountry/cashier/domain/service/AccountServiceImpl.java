@@ -26,6 +26,7 @@ public class AccountServiceImpl implements AccountService {
 
     private final AccountRepository accountRepository;
     private final AccountMapper accountMapper;
+    private final UserRepository userRepository;
     @Override
     public List<AccountResponseDTO> getAllAccounts() {
 
