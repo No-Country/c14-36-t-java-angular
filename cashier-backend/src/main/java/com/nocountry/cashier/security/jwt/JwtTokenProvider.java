@@ -64,6 +64,7 @@ public class JwtTokenProvider{
                     .withIssuedAt(Instant.now())
                     .withExpiresAt(expirationToken)
                     .withIssuer("cashier")
+                    .withClaim("id",user.getId())
                     .withClaim("dni", user.getDni())
                     .withSubject(user.getEmail())
                     .withClaim("name", user.getName() + " " + user.getLastName())

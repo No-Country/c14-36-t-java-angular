@@ -30,14 +30,14 @@ import static com.nocountry.cashier.util.Constant.RESOURCE_REGISTER;
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = API_VERSION)
+@RequestMapping(value = API_VERSION+RESOURCE_REGISTER)
 public class AuthController {
     private final AuthService authService;
     private final UserService userService;
     private final QRGeneratorService qrService;
 
 
-    @PostMapping(RESOURCE_REGISTER + "/")
+    @PostMapping( "/")
     public ResponseEntity<Map<String, AuthResponseDTO>> registerCustomer(@Valid @RequestBody UserRequestDTO authRequestDTO) {
         String urlConfirm = ServletUriComponentsBuilder.fromCurrentRequest().path("{path}").buildAndExpand("confirm").toUriString() + "?token=";
         AuthResponseDTO register = authService.register(authRequestDTO, urlConfirm);
@@ -53,11 +53,11 @@ public class AuthController {
     }
 
 
-    @GetMapping(path = "/confirm")
+    @GetMapping(path =  "/confirm")
     public ResponseEntity<?> confirmCustomer(@RequestParam String token) {
         AuthConfirmedDTO confirmed = authService.confirm(token);
         String uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/")
-                .path("{qr}").path("view").buildAndExpand(confirmed.getQr()).toUriString();
+                .path("{qr}").path("/view").buildAndExpand(confirmed.getQr()).toUriString();
         return ResponseEntity.ok().body(Map.of("data", confirmed, "urlQr", uri));
     }
 
@@ -67,7 +67,7 @@ public class AuthController {
         return ResponseEntity.ok(new GenericResponseDTO<>(true, "Usuario Encontrado", userService.getById(uuid).get()));
     }
 
-    @GetMapping("/confirm/{qr}")
+    @GetMapping("/confirm/{qr}/view")
     public ResponseEntity<Resource> showQrCustomer(@PathVariable String qr) {
         return qrService.uploadLocalImage(qr);
     }

@@ -7,7 +7,9 @@ import com.nocountry.cashier.controller.dto.response.AuthConfirmedDTO;
 import com.nocountry.cashier.controller.dto.response.AuthResponseDTO;
 import com.nocountry.cashier.controller.dto.response.AuthenticatedUserDTO;
 import com.nocountry.cashier.domain.service.email.EmailFactoryService;
+import com.nocountry.cashier.domain.usecase.AccountService;
 import com.nocountry.cashier.domain.usecase.AuthService;
+import com.nocountry.cashier.domain.usecase.CreditCardService;
 import com.nocountry.cashier.domain.usecase.qr.QRGeneratorService;
 import com.nocountry.cashier.enums.EnumsEmail;
 import com.nocountry.cashier.enums.EnumsTemplate;
@@ -16,6 +18,8 @@ import com.nocountry.cashier.exception.GenericException;
 import com.nocountry.cashier.exception.ResourceNotFoundException;
 import com.nocountry.cashier.persistance.entity.TokenEntity;
 import com.nocountry.cashier.persistance.entity.UserEntity;
+import com.nocountry.cashier.persistance.mapper.AccountMapper;
+import com.nocountry.cashier.persistance.mapper.CreditCardMapper;
 import com.nocountry.cashier.persistance.mapper.UserMapper;
 import com.nocountry.cashier.persistance.repository.UserRepository;
 import com.nocountry.cashier.security.jwt.JwtTokenProvider;
@@ -52,6 +56,11 @@ public class AuthServiceImpl implements AuthService {
     private final JwtTokenProvider jwtTokenProvider;
     private final EmailFactoryService emailService;
     private final QRGeneratorService qrGeneratorService;
+    private final AccountService accountService;
+    private final AccountMapper accountMapper;
+    private final CreditCardMapper creditCardMapper;
+    private final CreditCardService creditCardService;
+
     @Value("${jwt.time.expiration}")
     private String expirationToken;
     @Value("${jwt.time.expiration.confirm.email}")
@@ -73,12 +82,13 @@ public class AuthServiceImpl implements AuthService {
 
         UserEntity userTokenInfo = new UserEntity();
         userTokenInfo.setName(auth.getName());
+        userTokenInfo.setEmail(auth.getEmail());
         userTokenInfo.setLastName(auth.getLastName());
 
         String token = jwtTokenProvider.generateToken(userTokenInfo, expirationEmail);
         auth.setToken(TokenEntity.builder().tokenGenerated(token).build());
 
-        auth.setEnabled(Boolean.TRUE);
+        //auth.setEnabled(Boolean.TRUE);
 
         userRepository.save(auth);
 
@@ -128,10 +138,13 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     @Transactional
+    @Modifying
     public AuthConfirmedDTO confirm(String token) {
         final ResponseEntity<Resource> qrCodeImage;
         // * AQUI OBTENEMOS EL TOKEN CON UN TIEMPO DE EXPIRACION BAJA SI PASA EL TIEMPO ES POR QUE EL USUARIO NO HA CONFIRMADO EL EMAIL
-        if (!jwtTokenProvider.verifyToken(token)) log.error("El token ha sido modificado. No valido");
+        if (!jwtTokenProvider.verifyToken(token)) {
+            log.error("No confirmado el email");
+        }
         var emailUser = jwtTokenProvider.getClaimForToken(token, "sub");
         var user = userRepository.findByEmailIgnoreCase(emailUser).orElseThrow(() -> new ResourceNotFoundException("El usuario no existe"));
         user.setEnabled(Boolean.TRUE);
@@ -145,6 +158,9 @@ public class AuthServiceImpl implements AuthService {
             log.info("Hubo un problema al generar el Qr");
             throw new GenericException("Failed to write QR code image to output stream.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
+        user.setAccountEntity(accountMapper.toGetAccountEntity(accountService.createAccount(user.getId())));
+        user.setCreditCardEntity(creditCardMapper.togetCardEntity(creditCardService.createCard(user.getId())));
 
         // ? GENERAMOS EL USUARIO , GENERAMOS NUEVO TOKEN CON NUEVO TIEMPO DE EXPIRACION
         UserEntity userEntity = userRepository.save(user);

@@ -10,6 +10,7 @@ import com.nocountry.cashier.persistance.mapper.AccountMapper;
 import com.nocountry.cashier.persistance.repository.AccountRepository;
 import com.nocountry.cashier.persistance.repository.UserRepository;
 import com.nocountry.cashier.util.GeneratorCVU;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,17 +21,11 @@ import java.util.Random;
 
 
 @Service
+@RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService {
 
-    @Autowired
-    private AccountRepository accountRepository;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private AccountMapper accountMapper;
-
+    private final AccountRepository accountRepository;
+    private final AccountMapper accountMapper;
     @Override
     public List<AccountResponseDTO> getAllAccounts() {
 

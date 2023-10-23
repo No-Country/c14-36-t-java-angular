@@ -1,17 +1,13 @@
 package com.nocountry.cashier.persistance.entity;
 
 import com.nocountry.cashier.persistance.entity.listener.audit.Auditable;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
-import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -37,4 +33,6 @@ public class CreditCardEntity extends Auditable<LocalDateTime> {
     private String securityCode;
 
     private Boolean enabled;
+
+
 }
