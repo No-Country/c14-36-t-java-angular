@@ -58,9 +58,9 @@ public class AccountServiceImpl implements AccountService {
         accountEntity.setCvu((GeneratorCVU.generate("452", 22)));
         accountEntity.setStatus(true);
         accountEntity.setEnabled(true);
+        accountRepository.save(accountEntity);
 
             userEntity.setAccountEntity(accountEntity);
-
             userRepository.save(userEntity);
 
             return accountMapper.toGetAccountDTO(accountEntity);

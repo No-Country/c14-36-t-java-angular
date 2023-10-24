@@ -48,9 +48,9 @@ public class TransactionController {
 
 
     //NewTransaction
-    //http://localhost:8080/v1/api/customers/transactions/new/b4c5d80d-1e38-4b63-bdb2-aa355973c07c
-    @PostMapping("/new/{idAccount}")
-    public ResponseEntity<?> createTransaction(@RequestBody TransactionRequestDTO requestDTO, @PathVariable String idAccount) {
+    //http://localhost:8080/v1/api/customers/transactions/new?idAccount=3de8f7f3-41a6-404c-ad4e-599bd9e74e98
+    @PostMapping("/new")
+    public ResponseEntity<?> createTransaction( @RequestParam String idAccount ,@RequestBody TransactionRequestDTO requestDTO) {
         TransactionResponseDTO transactionResponse = transactionService.createTransaction(requestDTO, idAccount);
 //        String uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("")
 //                .path("{id}").buildAndExpand(transactionResponse.id()).toUriString();
