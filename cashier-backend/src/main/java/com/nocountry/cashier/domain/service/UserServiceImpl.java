@@ -4,7 +4,7 @@ import com.nocountry.cashier.controller.dto.request.PageableDto;
 import com.nocountry.cashier.controller.dto.request.UserRequestDTO;
 import com.nocountry.cashier.controller.dto.response.ImageResponseDTO;
 import com.nocountry.cashier.controller.dto.response.UserResponseDTO;
-import com.nocountry.cashier.domain.usecase.FirebaseService;
+import com.nocountry.cashier.domain.usecase.firebase.FirebaseService;
 import com.nocountry.cashier.domain.usecase.UserService;
 import com.nocountry.cashier.exception.DuplicateEntityException;
 import com.nocountry.cashier.exception.GenericException;

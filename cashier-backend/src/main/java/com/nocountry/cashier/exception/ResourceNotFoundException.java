@@ -15,28 +15,20 @@ import java.io.Serial;
 public final class ResourceNotFoundException extends RuntimeException {
     @Serial
     private static final long serialVersionUID = 1L;
-    private String resourceName;
-    private String fieldName;
-    private Object fieldValue;
 
     public ResourceNotFoundException(String resourceName, String fieldName, Object fieldValue) {
         super(String.format("%s ;fieldName: %s - fieldValue: '%s'", resourceName, fieldName, fieldValue));
-        this.resourceName = resourceName;
-        this.fieldName = fieldName;
-        this.fieldValue = fieldValue;
     }
 
-    public ResourceNotFoundException(String message,String resourceName) {
-        super(String.format("%s %s",message,resourceName));
-        this.resourceName = resourceName;
+    public ResourceNotFoundException(String message, String resourceName) {
+        super(String.format("%s %s", message, resourceName));
     }
 
     public ResourceNotFoundException(Object fieldValue) {
         super(String.valueOf(fieldValue));
-        this.fieldValue = fieldValue;
     }
 
-    public ResourceNotFoundException(String message){
+    public ResourceNotFoundException(String message) {
         super(message);
     }
 }

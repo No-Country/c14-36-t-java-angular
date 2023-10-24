@@ -18,6 +18,8 @@ public interface TransactionService extends ApiCrudGeneric<TransactionRequestDTO
   TransactionResponseDTO createTransaction(TransactionRequestDTO data,String idAccount);
   @Override
   Optional<TransactionResponseDTO> getById(String s);
+TransactionResponseDTO findOneByIdAccount(String id,String idAccount) throws Exception;
+  Page<TransactionResponseDTO> findAllByIdAccount(String idAccount, PageableDto pageableDto)throws Exception;
   @Override
   Page<TransactionResponseDTO> getAll(PageableDto pageable);
   Page<TransactionResponseDTO> findByState(EnumsState state,String idAccount,PageableDto pageableDto) throws Exception;

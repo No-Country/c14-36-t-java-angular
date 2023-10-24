@@ -8,7 +8,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.*;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
@@ -42,7 +41,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         List<ApiError> errors = exception.getBindingResult().getFieldErrors()
                 .stream()
-                .map(e ->  ApiError.builder()
+                .map(e -> ApiError.builder()
                         .field(e.getField())
                         .message(e.getDefaultMessage())
                         .build())
@@ -114,14 +113,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .build();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiConstraintViolationException);
     }
+
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ProblemDetail handlePSQLException(DataIntegrityViolationException ex) {
-        String message=ex.getMostSpecificCause().getMessage();
-        if (message.contains("Detail:")) message= message.substring(message.lastIndexOf("Detail")).replace("Detail:","");
+        String message = ex.getMostSpecificCause().getMessage();
+        if (message.contains("Detail:"))
+            message = message.substring(message.lastIndexOf("Detail")).replace("Detail:", "");
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
                 HttpStatus.BAD_REQUEST, message
         );
-        problemDetail.setProperty("timestamp",LocalDateTime.now());
+        problemDetail.setProperty("timestamp", LocalDateTime.now());
         return problemDetail;
     }
     @ExceptionHandler(ResourceNotFoundException.class)

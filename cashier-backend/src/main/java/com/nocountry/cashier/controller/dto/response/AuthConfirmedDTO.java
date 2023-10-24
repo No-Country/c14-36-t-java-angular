@@ -1,5 +1,6 @@
 package com.nocountry.cashier.controller.dto.response;
 
+import lombok.Builder;
 import lombok.Getter;
 
 import java.io.Serial;
@@ -10,23 +11,25 @@ import java.time.LocalDateTime;
  * @author ROMULO
  * @package com.nocountry.cashier.controller.dto.response
  * @license Lrpa, zephyr cygnus
- * @since 12/10/2023
+ * @since 20/10/2023
  */
-
 @Getter
-public final class GenericResponseDTO<T> implements Serializable {
-
+public class AuthConfirmedDTO  implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
-    private final boolean success;
-    private final String message;
-    private final T data;
-    private final LocalDateTime timeStamp;
 
-    public GenericResponseDTO(boolean success, String message, T data) {
-        this.success = success;
+    private final String id;
+    private final String token;
+    private final String message;
+    private final LocalDateTime timeStamp;
+    private final String qr;
+
+    @Builder
+    public AuthConfirmedDTO(String id, String token, String message, String qr) {
+        this.id = id;
+        this.token = token;
         this.message = message;
-        this.data = data;
         this.timeStamp = LocalDateTime.now();
+        this.qr = qr;
     }
 }

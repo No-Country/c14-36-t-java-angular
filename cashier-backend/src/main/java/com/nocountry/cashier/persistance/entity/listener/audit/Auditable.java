@@ -1,8 +1,8 @@
 package com.nocountry.cashier.persistance.entity.listener.audit;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.nocountry.cashier.persistance.entity.UserEntity;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,14 +19,13 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @EntityListeners({AuditingEntityListener.class})
 @MappedSuperclass
-//@JsonIgnoreProperties(value = {"createdDate", "lastModifiedDate"}, allowGetters = true)
 @Getter
 @Setter
 @NoArgsConstructor
-public abstract class Auditable<T>{
+public abstract class Auditable<T> {
 
     @CreatedDate
-    @Column(columnDefinition = "TIMESTAMP", name = "created_date")
+    @Column(name = "created_date", columnDefinition = "TIMESTAMP")
     //@Temporal(value = TemporalType.TIMESTAMP)
     protected T createdDate;
 

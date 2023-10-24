@@ -20,8 +20,8 @@ import java.time.LocalDateTime;
 @Table(name = "log_token")
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
 @Builder
+@Getter
 @Setter
 public class TokenEntity extends Auditable<LocalDateTime> {
 

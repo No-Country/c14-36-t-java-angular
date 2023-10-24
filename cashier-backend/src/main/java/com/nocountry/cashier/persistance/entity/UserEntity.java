@@ -15,8 +15,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "customer")
-@SQLDelete(sql = "UPDATE customer SET enabled=false where id=?")
-@Where(clause = "enabled=true")
+@SQLDelete(sql = "UPDATE customer SET enabled=FALSE where id=?")
+@Where(clause = "enabled=TRUE")
 @NoArgsConstructor
 @Getter
 @Setter
@@ -50,7 +50,12 @@ public class UserEntity extends Auditable<LocalDateTime> {
 
     private Boolean enabled;
 
+    @Column(name = "verify")
+    private Boolean verify;
+
     private String password;
+
+    private String qr;
 
     @OneToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "url_profile")
@@ -70,6 +75,7 @@ public class UserEntity extends Auditable<LocalDateTime> {
 
    @PrePersist
    public void onCreate() {
+       this.setVerify(Boolean.FALSE);
        this.setEnabled(Boolean.TRUE);
   }
 

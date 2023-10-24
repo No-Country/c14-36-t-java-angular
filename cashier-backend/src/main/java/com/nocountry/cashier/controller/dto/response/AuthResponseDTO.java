@@ -17,13 +17,13 @@ import java.time.LocalDateTime;
 public class AuthResponseDTO implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
-    private final String token;
+
     private final String message;
     private final LocalDateTime timeStamp;
 
+
     @Builder
-    public AuthResponseDTO(String token, String message) {
-        this.token = token;
+    public AuthResponseDTO(String message) {
         this.message = message;
         this.timeStamp = LocalDateTime.now();
     }

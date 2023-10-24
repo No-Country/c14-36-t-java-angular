@@ -1,5 +1,7 @@
 package com.nocountry.cashier.controller.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.io.Serial;
@@ -10,23 +12,23 @@ import java.time.LocalDateTime;
  * @author ROMULO
  * @package com.nocountry.cashier.controller.dto.response
  * @license Lrpa, zephyr cygnus
- * @since 12/10/2023
+ * @since 20/10/2023
  */
-
 @Getter
-public final class GenericResponseDTO<T> implements Serializable {
-
+@JsonPropertyOrder({"id","message", "token", "timeStamp"})
+public class AuthenticatedUserDTO implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
-    private final boolean success;
+    private final String id;
+    private final String token;
     private final String message;
-    private final T data;
     private final LocalDateTime timeStamp;
 
-    public GenericResponseDTO(boolean success, String message, T data) {
-        this.success = success;
-        this.message = message;
-        this.data = data;
+    @Builder
+    public AuthenticatedUserDTO(String token,String message,String id) {
+        this.id=id;
+        this.token = token;
+        this.message=message;
         this.timeStamp = LocalDateTime.now();
     }
 }

@@ -18,8 +18,11 @@ public final class Constant {
     public static final String RESOURCE_IMAGE= "/images";
     public static final String RESOURECE_TRANSACTION= "/transactions";
 
+    // TODO tamaño del QR
+    public static final int WIDTH_QR = 1230;
+    public static final int HEIGHT_QR = 1230;
 
-    private Constant(){
+    private Constant() {
         throw new IllegalStateException("Utility Class should not be instantiated!");
     }
 }

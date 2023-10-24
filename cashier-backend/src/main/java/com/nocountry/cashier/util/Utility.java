@@ -7,6 +7,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
@@ -37,6 +38,25 @@ public final class Utility {
             pageable = PageRequest.of(pageNumber, perPage, Sort.by("id").descending());
         }
         return pageable;
+    }
+
+    public String generatorOTP(int length){
+         //final String ALLOWED_CHARACTERS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        SecureRandom random= new SecureRandom();
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < length; i++) {
+            if (i % 2 == 0){
+                int randomNumber = random.nextInt(10);
+                sb.append(randomNumber);
+            }else {
+                char randomChar = (char) (random.nextInt(26) + 'a');
+                 if (random.nextBoolean()) randomChar=Character.toUpperCase(randomChar);
+                 sb.append(randomChar);
+            }
+        }
+        return sb.toString();
+
     }
 
     /**
