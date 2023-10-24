@@ -1,9 +1,23 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './component/Pages/home/home.component';
-import { DashboardComponent } from './component/Pages/dashboard/dashboard.component';
 
 import { LoginComponent } from './component/Pages/login/login.component';
+import { RegisterComponent } from './component/Pages/register/register.component';
+import { HelpRequestComponent } from './component/Pages/helpPages/help-request/help-request.component';
+import { HelpResponseComponent } from './component/Pages/helpPages/help-response/help-response.component';
+import { CreditCardComponent } from './component/Pages/credit-card/credit-card.component';
+import { HelpQuestionResComponent } from './component/Pages/helpPages/help-question-res/help-question-res.component';
+import { UserDashboardComponent } from './component/Pages/user-dashboard/user-dashboard.component';
+import { InfoUserComponent } from './component/Pages/info-user/info-user.component';
+import { TransactionComponent } from './component/Pages/transaction/transaction.component';
+import { authGuard } from './guards/auth.guard';
+import { loginGuard } from './guards/login.guard';
+import { PromotionsComponent } from './component/Pages/promotions/promotions.component';
+import { Found404Component } from './component/Pages/found404/found404.component';
+import { MetricasComponent } from './component/Pages/dashboard/metricas/metricas.component';
+import { ServicePageComponent } from './component/Pages/service-page/service-page.component';
+import { DashboardComponent } from './component/Pages/dashboard/dashboard.component';
+
 import { HelpComponent } from './component/Pages/helpPages/help/help.component';
 
 const routes: Routes = [
