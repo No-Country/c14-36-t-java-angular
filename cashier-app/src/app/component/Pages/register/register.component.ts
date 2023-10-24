@@ -28,10 +28,15 @@ export class RegisterComponent implements OnInit {
   
 
   onSubmit(): void {
-    const userData: User = this.user.value;
+    const userData: any = this.user.value;
     this.userService.addNewUser(userData).subscribe(
-      (response) => {
-        console.log(response);
+      (response:any) => {
+        const message:string = response.data.message;
+        if (message == 'Se registró correctamente') {
+          this.router.navigate(['/login']);
+        }
+        console.log(message);
+        
         this.created = true;
       },
       (error) => {
