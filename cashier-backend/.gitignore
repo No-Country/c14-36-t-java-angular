@@ -20,6 +20,7 @@ target/
 *.ipr
 pom.xml
 /src/main/resources/static/key/
+/src/main/resources/static/qr/
 /*.properties
 
 /src/main/resources/*.env

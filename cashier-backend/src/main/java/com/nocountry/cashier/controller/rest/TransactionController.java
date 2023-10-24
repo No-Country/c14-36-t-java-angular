@@ -35,14 +35,19 @@ public class TransactionController {
     //GetALLTransactions
     //http://localhost:8080/v1/api/customers/transactions?page=0&size=4&order=1&field=id
     @GetMapping
-    public ResponseEntity<?> getAllTransactions(@RequestParam(value = "page", defaultValue = "0") Integer page,
+    public ResponseEntity<?> getAllTransactions(@RequestParam String idAccount,
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
                                                 @RequestParam(value = "size", defaultValue = "4") Integer size,
-                                                PageableDto pageableDto) {
+                                                PageableDto pageableDto) throws Exception{
+        try{
         pageableDto.setPage(page);
         pageableDto.setSize(size);
-        List<TransactionResponseDTO> content = transactionService.getAll(pageableDto).getContent();
+        List<TransactionResponseDTO> content = transactionService.findAllByIdAccount(idAccount,pageableDto).getContent();
         Map<String, Object> response = Map.of("message", "Listado de Transacciones", "data", content);
         return new ResponseEntity<>(response, OK);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(("{\"error\":\"" + e.getMessage() + "}"));
+        }
 
     }
 
@@ -59,9 +64,14 @@ public class TransactionController {
 
     //SearchById
     //http://localhost:8080/v1/api/customers/transactions/search/58c6f82a-57f0-4b74-ba56-2dfcd6665a54
-    @GetMapping("/search/{id}")
-    public ResponseEntity<?> getTransactionById(@PathVariable String id) {
-        return ResponseEntity.ok(new GenericResponseDTO<>(true, "Transaccion Encontrada", transactionService.getById(id).get()));
+    @GetMapping("/search")
+    public ResponseEntity<?> getTransactionById(@RequestParam  String id, @RequestParam String idAccount) throws Exception{
+        try {
+            return ResponseEntity.ok(new GenericResponseDTO<>(true, "Transaccion Encontrada", transactionService.findOneByIdAccount(id,idAccount)));
+
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(("{\"error\":\"" + e.getMessage() + "}"));
+        }
     }
 
     //SearchByState

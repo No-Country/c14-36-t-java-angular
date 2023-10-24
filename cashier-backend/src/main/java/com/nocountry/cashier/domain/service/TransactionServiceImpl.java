@@ -41,6 +41,7 @@ public class TransactionServiceImpl implements TransactionService {
     private final TransactionMapper mapper;
     private final AccountMapper accountMapper;
     private final Utility utility;
+
     @Autowired
     private AccountRepository accountRepository;
 
@@ -92,8 +93,42 @@ public class TransactionServiceImpl implements TransactionService {
         return Optional.of(mapper.toTransactionResponseDto(transactionEntity));
     }
 
-@Override
-public Page<TransactionResponseDTO> findByState(EnumsState state, String idAccount,PageableDto pageableDto) throws Exception {
+    @Override
+    @Transactional(readOnly = true)
+    public TransactionResponseDTO findOneByIdAccount(String id, String idAccount) throws Exception{
+
+        try{
+            TransactionEntity transactionEntity = transactionRepository.findOneByIdAccount(id,idAccount);
+            return mapper.toTransactionResponseDto(transactionEntity);
+        }catch(Exception e){
+            throw new Exception(e.getMessage());
+        }
+
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<TransactionResponseDTO> findAllByIdAccount(String idAccount, PageableDto pageableDto)throws Exception {
+        try{
+            Pageable pageable = utility.setPageable(pageableDto);
+            Page<TransactionEntity> transactionPage = transactionRepository.findAllByIdAccount(idAccount, pageable);
+
+            // Mapear la lista de entidades a DTOs
+            List<TransactionResponseDTO> responseDtoList = transactionPage.getContent().stream()
+                    .map(mapper::toTransactionResponseDto)
+                    .collect(Collectors.toList());
+
+            return new PageImpl<>(responseDtoList, pageable, transactionPage.getTotalElements());
+        }catch (Exception e){
+            throw new Exception(e.getMessage());
+        }
+    }
+
+
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<TransactionResponseDTO> findByState(EnumsState state, String idAccount,PageableDto pageableDto) throws Exception {
 
 
     try{

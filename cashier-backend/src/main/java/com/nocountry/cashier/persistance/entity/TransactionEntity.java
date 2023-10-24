@@ -32,6 +32,7 @@ public class TransactionEntity extends Auditable<LocalDateTime> {
     @Enumerated(EnumType.STRING)
     @Column(name = "type_trans")
     private EnumsTransactions type;
+
     @Column(name="amount")
     private BigDecimal amount;
     @Column(name = "origin")
