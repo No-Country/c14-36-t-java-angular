@@ -19,6 +19,11 @@ target/
 *.iml
 *.ipr
 pom.xml
+src/resources/aplication.properties
+src/main/resources/static/key/
+/*.properties
+hola.txt
+
 
 ### NetBeans ###
 /nbproject/private/
