@@ -10,7 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-@Mapper(componentModel = MappingConstants.ComponentModel.SPRING, uses = {ImageMapper.class},injectionStrategy = InjectionStrategy.CONSTRUCTOR)
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING, uses = {ImageMapper.class,AccountMapper.class,CreditCardMapper.class},injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface UserMapper {
 
     @Mapping(target = "qr", ignore = true)
@@ -25,6 +25,8 @@ public interface UserMapper {
     @Mapping(target = "birthDate", source = "birthDate", qualifiedByName = "stringToLocalDate")
     @Mapping(target = "password", source = "password", qualifiedByName = "encoderPass")
     UserEntity toUserEntity(UserRequestDTO userRequestDTO);
+    @Mapping(target = "idAccount", source = "accountEntity.idAccount")
+    @Mapping(target = "idCard", source = "creditCardEntity.idCard")
 
     UserResponseDTO toUserResponseDto(UserEntity userEntity);
 

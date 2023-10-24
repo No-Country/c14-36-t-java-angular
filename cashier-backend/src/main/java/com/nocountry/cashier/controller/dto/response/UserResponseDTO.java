@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
  * @license Lrpa, zephyr cygnus
  * @since 10/10/2023
  */
-@JsonPropertyOrder({"id","name", "lastName","image", "address", "dni", "phone", "email"})
+@JsonPropertyOrder({"id","name", "lastName","image", "address", "dni", "phone","idAccount","idCard", "email"})
 @JsonRootName(value = "data")
 public record UserResponseDTO(
         String id,
@@ -28,6 +28,8 @@ public record UserResponseDTO(
         String email,
         LocalDate birthDate,
         LocalDateTime openAccountDate,
+        String idAccount,
+        String idCard,
         LocalDateTime createdDate
 
 

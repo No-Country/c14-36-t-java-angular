@@ -55,7 +55,7 @@ public class TransactionEntity extends Auditable<LocalDateTime> {
 //    private AccountEntity accountEntity;
 
     @ManyToOne
-    @JoinColumn(name = "account_entity")
+    @JoinColumn(name = "idAccount")
     private AccountEntity accountEntity;
 
     @PrePersist
