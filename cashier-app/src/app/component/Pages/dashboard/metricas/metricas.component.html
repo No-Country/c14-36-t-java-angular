@@ -1,0 +1,43 @@
+<div class="container container-fluid">
+    <div class="row pt-5">
+        <div class="col-sm text-center">
+            <label>Tienes disponible</label>
+            <div>
+                <span class="saldo">${{saldo}}</span>
+            </div>
+        </div>
+
+        <div class="col-sm text-center my-auto mx-auto">
+            <button type="button" class="btn btn-success btnCvu">Ver CVU</button>
+        </div>
+    </div>
+
+    <div class="row container2">
+
+    </div>
+
+    <div class="row">
+            <div class="col-sm text-center">
+                <label>Métricas</label>
+            </div>
+    
+            <div class="col-sm text-center my-auto mx-auto">
+                <button type="button"  routerLink="/user/dashboard" class="btn btn-success btnCvu">Ver Movimientos</button>
+            </div>
+    </div>
+    
+    <div class="row d-flex mt-4 mb-4 custom-centered">
+                <div  class="col-sm text-center mx-auto my-auto" style="max-width: 80%">
+                    <canvas baseChart
+                    [labels]="doughnutChartLabels"
+                    [datasets]="doughnutChartDatasets"
+                    [options]="doughnutChartOptions"
+                    [legend]="true"
+                    [type]="'doughnut'">
+                    </canvas>
+                </div>
+    </div>
+
+
+    
+</div>

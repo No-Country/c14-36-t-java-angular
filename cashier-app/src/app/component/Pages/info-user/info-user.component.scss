@@ -1,0 +1,63 @@
+@import "../../../stylesConfig/config";
+
+.layout{
+    background-color: $colGreenDark;
+    background-image: url('/assets/wave1.png'), url('/assets/wave2.png');
+    background-repeat: no-repeat;
+    background-size: 100% 40%;
+    background-position: bottom;
+    max-width: 100%;
+    height: 100vh;
+}
+.container {
+    max-width: 70%;
+    height: auto;
+    color: white;
+    font-size: 14px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.container2{
+    height: 150px;
+}
+
+
+
+.profileImg{
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    margin-bottom: 20%;
+}
+
+.svgProfile{
+    margin-bottom: 15%;
+}
+
+input {
+    border: none;
+    border-bottom: 1px solid #ced4da;
+    padding: 10px;
+    background-color: transparent;
+    color: white;
+    text-align: right; 
+    
+    
+}
+
+label{
+    background-color: transparent !important;    
+    
+}
+
+input:focus{
+    background-color: transparent;
+    color: #ced4da;
+}
+
+input::placeholder {
+    margin-bottom: -20px;
+    color: #602626 !important;
+    
+}
+

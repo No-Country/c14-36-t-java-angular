@@ -1,0 +1,23 @@
+@import "../../../../stylesConfig/config";
+:host{
+  padding: 5%;
+  background: url('/assets/wave1.png'),
+  url('/assets/wave2.png');
+  background-repeat: no-repeat;
+  background-size: 100% 40%;
+  background-position: bottom;
+  width: 100%;
+}
+.resultList__item{
+  transition: all ease-in-out 0.3s;
+  a{
+    color: $colWhite;
+  }
+  &:hover{
+    transform: translateY(-5px);
+  }
+  &:hover>a{
+    color: $colGreenLight;
+  }
+
+}

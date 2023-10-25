@@ -1,0 +1,12 @@
+:host{
+  padding: 5%;
+  background: url('/assets/wave1.png'),
+  url('/assets/wave2.png');
+  background-repeat: no-repeat;
+  background-size: 100% 40%;
+  background-position: bottom;
+  width: 100%;
+}
+.responseBox{
+  width: min(100%,500px)
+}

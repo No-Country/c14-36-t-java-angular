@@ -1,0 +1,271 @@
+@import "../../../stylesConfig/config";
+:host {
+  height: 100%;
+}
+.transferBox {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  /* -------------------------------------------caja de la izquierda */
+  &__left {
+    background-color: $colGreenDark;
+    /* -----------------------------------------caja del saldo */
+    &__box {
+      gap: 1rem;
+      h3 {
+        color: $colWhite;
+      }
+      &__balance {
+        display: grid;
+        place-items: center;
+        aspect-ratio: 1/1;
+        min-width: 40%;
+        background-color: $colBlack;
+        background-image: url("../../../../assets/waves-balance.png");
+        background-repeat: no-repeat;
+        background-size: 100% 40%;
+        background-position: bottom;
+        background-blend-mode: screen;
+        border-radius: 0.5rem;
+        color: $colGreenLight;
+        font-size: 2rem;
+      }
+      button {
+        align-self: center !important;
+        @include btnStyle("empty", $colGreenLight);
+      }
+    }
+    /* -----------------------------------------------caja de filtros */
+    &__filter {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-inline: 1rem;
+      button {
+        @include btnStyle("fill", $colGreenLight);
+      }
+
+    }
+    /* ------------------------------------------caja de busqueda*/
+    &__searchBox {
+      &__field {
+        border-bottom: solid white 2px;
+        margin-bottom: 2rem;
+        label {
+          overflow-y: hidden;
+          order: -1;
+          img {
+            @include changeColorPng($colGray);
+            margin-right: 1rem;
+          }
+        }
+        input {
+          all: initial;
+          color: $colWhite;
+          font-size: 1rem;
+          &:focus + label > img {
+            @include changeColorPng($colGreenLight);
+          }
+        }
+      }
+      /* -----------------------.---------resultados */
+      &__resultList {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        &__item {
+          cursor: pointer;
+          border-bottom: $colGreenLight solid 2px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          overflow-y: hidden;
+          padding-right: 1rem;
+          @include transitionFast;
+          &:hover{
+            background-color: changeOpacity($colGreenLight,.3);
+          }
+          img {
+            @include changeColorPng($colGreenLight);
+          }
+          &__info {
+            display: flex;
+            flex-direction: column;
+            span {
+              color: $colGreenLight;
+            }
+          }
+        }
+      }
+    }
+  }
+  /* ---------------------------------------------caja derecha */
+  &__right {
+    background-color: changeOpacity($colGreenDark, 0.9);
+    display: grid;
+    place-items: center;
+    padding-block: 45%;
+    position: relative;
+    &__form {
+      background-color: $colBlack;
+      color: $colWhite;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border-radius: 0.5rem;
+      box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.5);
+      padding: 1rem;
+      position: relative;
+      &__imgBox {
+        overflow: hidden;
+        img {
+          width: 6rem;
+          @include changeColorPng($colGreenLight);
+        }
+      }
+      /*-----------------------------------------campos de datos  */
+      &__field {
+        display: flex;
+        justify-content: space-between;
+        width: 90%;
+        margin-bottom: 0.5rem;
+        &__address {
+          display: flex;
+          flex-direction: column;
+        }
+        select {
+          border-radius: 0.5rem;
+          outline: none;
+          background-color: transparent;
+          color: $colGreenLight;
+          option {
+            background-color: $colBlack;
+          }
+        }
+      }
+      /* ----------------------------input cantidad */
+      &__fieldAmount {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        label {
+          align-self: flex-start;
+        }
+        input {
+          all: initial;
+          color: $colGreenLight;
+          font-size: 1.5rem;
+          width: 75%;
+          &::placeholder {
+            color: changeOpacity($colGreenLight, 0.5);
+          }
+        }
+      }
+      & > button {
+        @include btnStyle("empty", $colGreenLight);
+      }
+      /* -----------------------botones de accion postTransferencia */
+      &__actions {
+        display: flex;
+        justify-content: space-evenly;
+        width: 100%;
+        position: absolute;
+        bottom: -20%;
+        &__btnBox {
+          all: initial;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+          font-size: 0.8rem;
+          @include transitionFast;
+          border-radius: 0.5rem;
+          padding: 0.2rem;
+          &:hover{
+            background-color: changeOpacity($colWhite, 0.2);
+          }
+          cursor: pointer;
+          & > div {
+            overflow-y: hidden;
+            background-color: $colGreenDark;
+            border-radius: 0.5rem;
+            padding: 2px;
+            img {
+              @include changeColorPng($colGreenLight);
+              width: 2rem;
+            }
+          }
+        }
+      }
+    }
+    &__alert {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: absolute;
+      padding-top: 0.5rem;
+      top: 0;
+      h5{
+        margin-bottom: 0;
+      }
+      &__imgBox {
+        overflow: hidden;
+        background-color: $colGreenDark;
+        border-radius: 0.5rem;
+        img {
+          @include changeColorPng($colGreenLight);
+          width: 2rem;
+        }
+      }
+      p {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+@media screen and (min-width: 480px) {
+  .transferBox__left__filter {
+    flex-direction: row;
+    justify-content: space-evenly;
+  }
+  .transferBox__right {
+    padding-block: 30%;
+  }
+}
+@media screen and (min-width: 650px) {
+  .transferBox__right {
+    padding-block: 20%;
+  }
+}
+@media screen and (min-width: 850px) {
+  .transferBox {
+    flex-direction: row;
+    & > * {
+      width: 50%;
+    }
+    &__right {
+      padding-block: 0%;
+      &__alert {
+        padding-inline: 3rem;
+        flex-direction: row;
+        justify-content: center;
+        flex-wrap: wrap;
+        column-gap: 1rem;
+      }
+    }
+  }
+}
+@media screen and (min-width: 1200px) {
+  .transferBox {
+    &__left__searchBox {
+      width: 8 0%;
+      &__field > input {
+        font-size: 1.5rem;
+      }
+    }
+    &__right__alert {
+      flex-direction: column;
+    }
+  }
+}

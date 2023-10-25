@@ -1,0 +1,117 @@
+@import "../../stylesConfig/config";
+:host{
+  background-color: $colBlack;
+}
+.sidebar {
+  padding: 5%;
+  min-height: 100vh;
+  &__logo > img {
+    width: 80%;
+  }
+  &__menuBtn {
+    display: none;
+  }
+  &__list {
+    gap: 1rem;
+    li {
+      transition: all ease-in-out 0.2s;
+      a {
+        display: block;
+        overflow-y: hidden;
+        color: $colWhite;
+        img {
+          width: 2rem;
+          margin-right: 1rem;
+          @include changeColorPng($colGreenLight);
+        }
+      }
+      &:hover {
+        background-color: changeOpacity($colWhite, 0.1);
+      }
+    }
+  }
+  /* ---------------------info tipo footer */
+  &__info {
+    margin-top: auto;
+    &__title {
+      color: $colGreenLight;
+    }
+    &__card {
+      display: flex;
+      background-color: $colWhite;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+      border-radius: 0.5rem;
+      img {
+        height: 2.5rem;
+        object-fit: cover;
+        aspect-ratio: 1/1;
+      }
+      &__box {
+        text-align: center;
+        margin-left: 0.5rem;
+        p {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+}
+/* responsive design -----------------------------------*/
+@media screen and (max-width: 1300px) {
+  .sidebar__info__card__box {
+    margin-left: 0;
+    font-size: 0.7rem;
+  }
+}
+@media screen and (max-width: 992px) {
+  .sidebar {
+    &__list > li > a > img {
+      margin-right: 0;
+    }
+    &__info {
+      &__title {
+        font-size: 1rem;
+      }
+      &__card {
+        align-items: center;
+        img {
+          height: 2rem;
+        }
+      }
+    }
+  }
+}
+@media screen and (max-width: 768px) {
+  .sidebar {
+    &__menuBtn {
+      display: grid;
+      place-items: center;
+      button {
+        background-color: inherit;
+        overflow: hidden;
+        img {
+          width: 1.5rem;
+          filter: drop-shadow(0 100px 0 $colGreenLight);
+          transform: translateY(-100px);
+        }
+      }
+    }
+    &__logo {
+      display: none;
+    }
+    &__list > li > a > span {
+      display: none;
+    }
+    &__info {
+      display: none !important;
+    }
+  }
+}
+.active{
+  display: flex !important;
+}
+.activeList{
+  display: inline !important;
+  margin-left: 1rem;
+}

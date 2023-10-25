@@ -1,0 +1,95 @@
+@import "../../../stylesConfig/config";
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.loginBox {
+  background-color: yellow;
+  flex-grow: 2;
+  &__left {
+    display: grid;
+    place-items: center;
+    background-color: $colBlack;
+    &__container {
+      width: min(500px, 100%);
+      &__form {
+        margin-bottom: 1rem;
+        &__field {
+          border-bottom: solid 2px changeOpacity($colWhite, 0.7);
+          margin-bottom: 1rem;
+          display: flex;
+          flex-direction: column;
+          label {
+            color: $colGreenLight;
+          }
+          &__box {
+            display: flex;
+            justify-content: space-between;
+            padding-bottom: 0.5rem;
+            overflow-y: hidden;
+            img {
+              order: -1;
+              margin-right: 1rem;
+              width: 2rem;
+              @include changeColorPng(gray);
+            }
+            input {
+              flex-grow: 2;
+              background-color: inherit;
+              border: none;
+              outline: none;
+              color: $colWhite;
+              &:focus + img{
+                @include changeColorPng($colGreenLight);
+
+              }
+            }
+            button {
+              all: initial;
+              cursor: pointer;
+              img {
+                @include changeColorPng($colGreenLight);
+              }
+            }
+          }
+        }
+        &__actions {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          .btnLogin {
+            @include btnStyle("fill", $colGreenLight);
+          }
+          .btnRegist {
+            @include btnStyle("empty", $colGreenLight);
+          }
+        }
+      }
+      &__terms>a{
+        text-decoration: none;
+        color:$colGreenLight;
+        &:hover{
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+
+  &__right {
+    background-color: $colGreenLight;
+    flex-basis: 50%;
+    display: grid;
+    place-items: center;
+  }
+}
+/* --------------------------------------------------------- */
+@media screen and (max-width:768px){
+  .loginBox__right{
+    display: none;
+  }
+  .loginBox__left{
+    width: 100% !important;
+  }
+}

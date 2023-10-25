@@ -1,0 +1,57 @@
+@import "../../../../stylesConfig/config";
+:host {
+  flex-grow: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5%;
+  background: url('/assets/wave1.png'),
+  url('/assets/wave2.png');
+  background-repeat: no-repeat;
+  background-size: 100% 40%;
+  background-position: bottom;
+}
+.form {
+  background-color: $colWhite;
+  min-width: min(100%,600px);
+  &__btn {
+    background-color: $colGreenLight;
+    border:none;
+    overflow: hidden;
+    @include transitionFast;
+    cursor: pointer;
+    img{
+      @include changeColorPng($colWhite);
+      transition: all ease-in-out 0.5s;
+
+    }
+    &:hover{
+      background-color: changeOpacity($colGreenLight,0.7);
+      &>img{
+        transform: translateY(-140px) scale(1.4);
+      }
+    }
+  }
+  &__field {
+    border: none;
+    color:$colBlack;
+    font-size: 1.2rem;
+    &:focus {
+      outline: none;
+    }
+  }
+}
+.questionContainer__list>li{
+  cursor: pointer;
+  transition: all ease-in-out 0.3s;
+  &:hover{
+    transform: translateY(-5px);
+  }
+  &:hover>a{
+    color: $colGreenLight !important;
+  }
+}
+.invalid{
+  background-color: changeOpacity($colGreenLight, 0.5);
+}
