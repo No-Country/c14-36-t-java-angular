@@ -1,11 +1,8 @@
-<div class="loginBox d-flex">
-  <div class="loginBox__left w-50">
-    <div class="loginBox__left__container">
-      <!-- -----------------------------------------contenedor del logo -->
-      <div
-        class="loginBox__left__container__imgContainer d-flex justify-content-center mb-5"
-      >
-        <img src="assets/cashier1.png" alt="logo_icon" />
+<div class="d-flex">
+  <div class="float-start izq">
+    <div class="container justify-content-center align-items-center">
+      <div class="container-fluid text-center mt-5">
+        <img src="../../../../assets/cashier 1.png" alt="" />
       </div>
       <!-- ------------------------------formulario de login -------------->
       <form class="loginBox__left__container__form" [formGroup]="user">
@@ -28,22 +25,25 @@
               <img class="eye" [src]="eyeStatus ? 'assets/eyeOpen.png' : 'assets/eyeClose.png'" alt="eye_icon" />
             </button>
           </div>
+          <div class="mb-4">
+            <button class="btn btn-outline-green">Registrarse</button>
+          </div>
         </div>
-
-        <div class="loginBox__left__container__form__actions">
-          <button (click)="login()" type="submit" class="btnLogin">Iniciar Sesión</button>
-          <button (click)="toRegist()" type="submit" class="btnRegist">Desea Registrarse?</button>
-        </div>
+        <a class="text-green-special float-end ps-2" href="">Condiciones</a>
+        <a class="text-green-special float-end" href="">Privacidad</a>
       </form>
-      <!---------------------- terminos y condiciones ----------------------->
-      <div class="loginBox__left__container__terms d-flex justify-content-end">
-        <a class="ms-2" href="#">Privacidad</a>
-        <a class="ms-2" href="#">Condiciones</a>
-      </div>
     </div>
   </div>
-  <div class="loginBox__right w-50">
-    <img src="assets/imgLogin.png" alt="img-login" />
+  <div class="float-end der">
+    <div class="container-fluid text-center align-items-center mt-5">
+      <img
+        class="mt-5"
+        src="../../../../assets/image 4login.png"
+        alt=""
+        sizes=""
+        srcset=""
+      />
+    </div>
   </div>
 </div>
 <app-footer></app-footer>

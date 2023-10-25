@@ -1,15 +1,10 @@
 import { NgModule } from '@angular/core';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
-import { ReactiveFormsModule } from '@angular/forms';
+
 import { AppRoutingModule } from './app-routing.module';
 
 
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
-import { DashboardComponent } from './component/Pages/dashboard/dashboard.component';
 import { FooterComponent } from './shared/footer/footer.component';
 import { HeaderComponent } from './shared/header/header.component';
 import { HomeComponent } from './component/Pages/home/home.component';
@@ -44,7 +39,6 @@ import { SideBarAltComponent } from './shared/side-bar-alt/side-bar-alt.componen
     RegisterComponent,
     TransactionComponent,
     CreditCardComponent,
-    CreditCardChildComponent,
     FooterComponent,
     HeaderComponent,
     DashboardComponent,
@@ -67,10 +61,7 @@ import { SideBarAltComponent } from './shared/side-bar-alt/side-bar-alt.componen
     FormsModule,
     RouterModule,
     HttpClientModule,
-    ReactiveFormsModule,
-    NgChartsModule,
-    
-    
+    ReactiveFormsModule
   ],
   providers: [
     CookieService

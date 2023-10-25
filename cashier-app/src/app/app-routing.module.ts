@@ -17,6 +17,7 @@ import { Found404Component } from './component/Pages/found404/found404.component
 import { MetricasComponent } from './component/Pages/dashboard/metricas/metricas.component';
 import { ServicePageComponent } from './component/Pages/service-page/service-page.component';
 import { DashboardComponent } from './component/Pages/dashboard/dashboard.component';
+
 import { HelpComponent } from './component/Pages/helpPages/help/help.component';
 
 const routes: Routes = [
@@ -49,6 +50,6 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
+  exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
