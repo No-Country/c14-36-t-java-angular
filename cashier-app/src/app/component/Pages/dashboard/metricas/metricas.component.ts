@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ChartConfiguration } from 'chart.js';
+import { DashboardService } from 'src/app/services/dashboard.service';
 
 
 @Component({
@@ -14,8 +15,9 @@ export class MetricasComponent {
   transporte: number = 250;
   servicios: number = 100;
   otros: number = 350;
+  cvu: number = 123345;
 
-  constructor() {}
+  constructor(private dashboardService:DashboardService) {}
 
   // Doughnut
   public doughnutChartLabels: string[] = [ 'Hogar', 'Transporte', 'Servicios', 'Otros' ];
@@ -39,5 +41,9 @@ export class MetricasComponent {
 
   parsearData(): void {
     console.log('Data parser');
+  }
+
+  showCvu():void{
+    this.dashboardService.showCvu();
   }
 }

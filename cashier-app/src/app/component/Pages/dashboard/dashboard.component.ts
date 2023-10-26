@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { DashboardService } from 'src/app/services/dashboard.service';
+import Swal from 'sweetalert2'
 
 @Component({
   selector: 'app-dashboard',
@@ -12,9 +14,17 @@ export class DashboardComponent {
   fecha: String = "15/02/2027"
   clientes:  String[] = [];
   saldo: String = "00.00";
-  constructor(private formBuilder: FormBuilder){
+  cvu: Number = 123456;
+  constructor(private formBuilder: FormBuilder, private dashboardService: DashboardService){
     this.generalInfo = this.formBuilder.group({
       
     });
   }
+  
+  showCvu():void{
+    this.dashboardService.showCvu();
+  }
+
+
+
 }
