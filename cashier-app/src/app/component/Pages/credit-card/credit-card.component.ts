@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { UserData } from 'src/app/interfaces/userData.inteface';
 
 @Component({
   selector: 'app-credit-card',
@@ -7,7 +8,7 @@ import { Component } from '@angular/core';
 })
 export class CreditCardComponent {
   childStatus = false;
-
+  @Input() userDaTa!:UserData;
   showData(){
     this.childStatus = true;
   }

@@ -1,7 +1,7 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-// import { AuthTimerService } from 'src/app/services/auth-timer.service';
-// import { TokenService } from 'src/app/services/token.service';
+import { UserData } from 'src/app/interfaces/userData.inteface';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-user-dashboard',
@@ -9,10 +9,18 @@ import { Router } from '@angular/router';
   styleUrls: ['./user-dashboard.component.scss']
 })
 export class UserDashboardComponent {
-  constructor (
-    // private tokenService : TokenService, 
-    private router:Router){}
+
+  UserData!: UserData;
   sidebarStatus!:boolean;
+
+  constructor(private router: Router,
+    private tokenService: TokenService
+  ) { }
+
+  ngOnInit(): void {
+    this.UserData = this.tokenService.getTokenDecoded();
+    this.validateTimeToken(this.UserData);
+  }
   @ViewChild('sideBar', { read: ElementRef }) sideBar!: ElementRef;
 
   updateSidebarState(newStatus:boolean){
@@ -20,12 +28,12 @@ export class UserDashboardComponent {
       this.sideBar.nativeElement.classList.toggle("sidebarCollapse")
 
   }
-  ngOnInit(){
-    // this.tokenService.watchToken().subscribe(res=>{
-    //   if(!res){
-    //     this.router.navigate(['login'])
-    //   }
-    // })
+  validateTimeToken({exp}:UserData){
+    const currentDate = new Date();
+    const expirationDate =  new Date(exp*1000);
+    if(currentDate > expirationDate){
+      localStorage.removeItem('tokenCashier');
+    }
   }
 
 }

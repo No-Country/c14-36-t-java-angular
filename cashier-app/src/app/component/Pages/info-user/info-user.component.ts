@@ -24,7 +24,7 @@ export class InfoUserComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    console.log(typeof(this.profileImg), " &" , this.profileImg);
+    // console.log(typeof(this.profileImg), " &" , this.profileImg);
     this.profileImg = "../../../../assets/user.jpg";
     /*setTimeout(() => {
       // Después de 3 segundos, asigna la ruta de la imagen a profileImg

@@ -1,6 +1,6 @@
 <app-side-bar-alt #sideBar (toUserComp)="updateSidebarState($event)"></app-side-bar-alt>
 <div class="user-container" #userDashboard>
-  <app-header ></app-header>
+  <app-header [userData]="UserData"></app-header>
   <div class="user-dashboard">
     <router-outlet></router-outlet>
   </div>

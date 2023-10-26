@@ -43,6 +43,6 @@ export class UserService {
       password: user.password,
     };
 
-    return this.http.post<ILoginRes>(this.APIRegister+"prueba", body);
+    return this.http.post<ILoginRes>(this.APIRegister+"auth", body);
   }
 }
