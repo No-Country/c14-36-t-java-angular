@@ -22,10 +22,3 @@ export interface IGetUserRes {
   timeStamp: string;
 }
 
-export interface IGetCardRes {
-  idCard: string;
-  cardNumber: string;
-  cardName: string;
-  expirationDate: string;
-  securityCode: string
-}

@@ -1,0 +1,48 @@
+<div  [@fadeEffect] class="filter">
+  <button (click)="updateFilterStatus(true)">Usar datos</button>
+  <button (click)="updateFilterStatus(false)">Usar cbu/cvu</button>
+</div>
+<div [@fadeEffect] class="searchBox">
+  <form class="searchBox__field d-flex">
+    <input
+    [@lateralEffect]
+      *ngIf="viewStatus.filterData"
+      type="text"
+      id="searchData"
+      placeholder="Buscar alias"
+    />
+    <input
+    [@lateralEffect]
+      *ngIf="viewStatus.filterCVU"
+      type="number"
+      id="searchCVU"
+      min="0"
+      placeholder="CVU/CBU">
+    <button>
+      <img src="assets/search.png" alt="search_icon" />
+    </button>
+  </form>
+  <ul class="searchBox__resultList list-unstyled">
+    <li (click)="updateContactStatus()" class="searchBox__resultList__item">
+      <img src="assets/DNI.png" alt="dni_icon" />
+      <div class="searchBox__resultList__item__info">
+        <span>Juan Carlos Velazco ALvarado</span>
+        <span class="text-white">Cashier App</span>
+      </div>
+    </li>
+    <li class="searchBox__resultList__item">
+      <img src="assets/DNI.png" alt="dni_icon" />
+      <div class="searchBox__resultList__item__info">
+        <span>Juan Carlos Velazco ALvarado</span>
+        <span class="text-white">Cashier App</span>
+      </div>
+    </li>
+    <li class="searchBox__resultList__item">
+      <img src="assets/DNI.png" alt="dni_icon" />
+      <div class="searchBox__resultList__item__info">
+        <span>Juan Carlos Velazco ALvarado</span>
+        <span class="text-white">Cashier App</span>
+      </div>
+    </li>
+  </ul>
+</div>

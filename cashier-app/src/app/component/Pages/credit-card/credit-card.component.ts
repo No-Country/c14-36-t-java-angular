@@ -1,5 +1,5 @@
 import { Component} from '@angular/core';
-import { IGetCardRes } from 'src/app/interfaces/response.interface';
+import { ICard } from 'src/app/interfaces/account.interface';
 import { AccountService } from 'src/app/services/account.service';
 import { TokenService } from 'src/app/services/token.service';
 import { UserService } from 'src/app/services/user.service';
@@ -11,7 +11,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class CreditCardComponent {
   childStatus = false;
-  cardData!:IGetCardRes;
+  cardData!:ICard;
   constructor(
     private userServ:UserService,
     private tokenServ:TokenService,

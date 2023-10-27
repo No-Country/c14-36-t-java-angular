@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { IGetCardRes } from 'src/app/interfaces/response.interface';
+import { ICard } from 'src/app/interfaces/account.interface';
 
 @Component({
   selector: 'app-credit-card-child',
@@ -9,9 +9,12 @@ import { IGetCardRes } from 'src/app/interfaces/response.interface';
 export class CreditCardChildComponent {
   @Output() emitShowStatus = new EventEmitter<boolean>();
   @Input() show!:boolean;
-  @Input() cardData!:IGetCardRes;
+  @Input() cardData!:ICard;
 
   windowClose(){
     this.emitShowStatus.emit(false);
+  }
+  copyToClipboard(){
+    navigator.clipboard.writeText(this.cardData.cardNumber)
   }
 }

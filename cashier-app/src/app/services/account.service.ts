@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { IGetCardRes } from '../interfaces/response.interface';
+import { ICard } from '../interfaces/account.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +16,6 @@ export class AccountService {
     return this.http.get<any>(this.APIACCOUNT+accountId)
   }
   getCard(cardId:string){
-    return this.http.get<IGetCardRes>(this.APICARD+cardId)
+    return this.http.get<ICard>(this.APICARD+cardId)
   }
 }

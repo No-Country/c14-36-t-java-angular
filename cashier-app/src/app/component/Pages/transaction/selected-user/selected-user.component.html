@@ -1,0 +1,60 @@
+<form class="form" [@fadeEffect] *ngIf="viewStatus.contact">
+  <div class="form__imgBox">
+    <img src="assets/DNI.png" alt="dni_icon" />
+  </div>
+  <div class="form__field">
+    <span>Para:</span>
+    <div class="form__field__address">
+      <span>Juanito Alimaña</span>
+      <span>Cashier App</span>
+    </div>
+  </div>
+  <div class="form__field">
+    <span>CVU/CBU:</span>
+    <span>123</span>
+  </div>
+  <div class="form__field">
+    <label for="issue">Motivo:</label>
+    <select id="issue">
+      <option value="seguro">Seguros</option>
+      <option value="alquiler">Alquileres</option>
+      <option value="honorario">Honorarios</option>
+      <option value="compra">Compras</option>
+      <option selected value="varios">varios</option>
+    </select>
+  </div>
+  <div class="form__fieldAmount">
+    <label for="amount">Cuanto desea transferir</label>
+    <input type="number" id="amount" placeholder="Ej. $100.00" min="0"/>
+  </div>
+  <p>Saldo: $100.50</p>
+  <button (click)="updateAlertStatus()" type="submit">Transferir</button>
+  <div [@lateralEffect] *ngIf="viewStatus.alerts" class="form__actions">
+    <button class="form__actions__btnBox">
+      <div>
+        <img src="assets/share.png" alt="share_icon">
+      </div>
+      <span>Comprobante</span>
+    </button>
+    <button class="form__actions__btnBox">
+      <div>
+        <img src="assets/transfer.png" alt="transfer_icon">
+      </div>
+      <span>Nueva <br>  Transferencia</span>
+    </button>
+    <button class="form__actions__btnBox">
+      <div>
+        <img src="assets/shop.png" alt="shop_icon">
+      </div>
+      <span>Pagar <br> Servicio</span>
+    </button>
+  </div>
+</form>
+<div class="alert" [@fadeEffect] *ngIf="viewStatus.alerts">
+  <div class="alert__imgBox">
+    <img src="assets/check-circle.png" alt="check-circle_icon">
+  </div>
+  <h5>!Transferencia exitosa¡</h5>
+  <p class="alert__ref">Referencia 12345-1</p>
+  <p class="alert__time">06/06/2000 16:30hrs</p>
+</div>

@@ -6,6 +6,7 @@ import { UserData } from '../interfaces/userData.inteface';
   providedIn: 'root',
 })
 export class TokenService {
+  dataUser!:UserData;
   constructor() {
     window.addEventListener('storage', () => {
       this.tokenStatus.next(this.hasToken());
@@ -35,6 +36,7 @@ export class TokenService {
       }
 
       if(this.isValidToken(userData)){
+        this.dataUser = userData;
         return userData;
       }
       return null;
