@@ -3,6 +3,7 @@ package com.nocountry.cashier.controller.rest;
 import com.nocountry.cashier.controller.dto.request.PageableDto;
 import com.nocountry.cashier.controller.dto.request.UserRequestDTO;
 import com.nocountry.cashier.controller.dto.response.GenericResponseDTO;
+import com.nocountry.cashier.controller.dto.response.TransactionResponseDTO;
 import com.nocountry.cashier.controller.dto.response.UserResponseDTO;
 import com.nocountry.cashier.domain.usecase.UserService;
 import jakarta.validation.Valid;
@@ -41,7 +42,22 @@ public class UserController {
         Map<String, Object> response = Map.of("message", "Listado de Usuarios", "data", content);
         return new ResponseEntity<>(response, OK);
     }
+    @GetMapping("search/ramdom")
+    public ResponseEntity<?> getByShortString(@RequestParam String ramdom,@RequestParam(value = "page", defaultValue = "0") Integer page,
+                                              @RequestParam(value = "size", defaultValue = "10") Integer size,
+                                              PageableDto pageableDto){
+        pageableDto.setPage(page);
+        pageableDto.setSize(size);
 
+        try {
+            List<UserResponseDTO> content = userService.findByShortString(ramdom,pageableDto).getContent();
+            Map<String, Object> response = Map.of("message", "Listado Por Estado De Transaccion", "data", content);
+            return new ResponseEntity<>(response, OK);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(("{\"error\":\"" + e.getMessage() + "}"));
+        }
+
+    }
     @PostMapping("/")
     public ResponseEntity<?> createCustomer(@Valid @RequestBody UserRequestDTO requestDTO) {
         UserResponseDTO userResponse = userService.create(requestDTO);
