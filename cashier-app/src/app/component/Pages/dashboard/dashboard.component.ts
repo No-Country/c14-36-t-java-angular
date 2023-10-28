@@ -46,7 +46,7 @@ export class DashboardComponent implements OnInit {
     // Mostrar el indicador de carga.
     this.isLoading = false;
 
-    this.compartirSaldo_TransaccionesPorServicio(); 
+    //this.compartirSaldo_TransaccionesPorServicio(); 
   }
 
   obtenerDatosPorUUID(uuid: string) {
@@ -102,15 +102,6 @@ export class DashboardComponent implements OnInit {
       console.error('Error al obtener los datos de la cuenta', error);
       this.isLoading = false; 
     }
-  }
-
-  compartirSaldo_TransaccionesPorServicio(): void {
-    setTimeout(() => {
-      this.dashboardService.actualizarSaldo(this.saldo);
-      this.dashboardService.actualizarTransacciones(this.transacciones);
-      this.dashboardService.actualizarCvu(this.cvu);
-      
-    }, 2000);
   }
 
   /*

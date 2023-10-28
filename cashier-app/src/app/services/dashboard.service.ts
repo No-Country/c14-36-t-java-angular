@@ -6,31 +6,7 @@ import Swal from 'sweetalert2';
 @Injectable({
   providedIn: 'root'
 })
-export class DashboardService{
-  private saldoSource = new BehaviorSubject<number>(0);
-  saldo$ = this.saldoSource.asObservable();
-
-  private cvuSource = new BehaviorSubject<number>(0);
-  cvu$ = this.cvuSource.asObservable();
- 
-  private transaccionesSource = new BehaviorSubject<any[]>([]);
-  transacciones$ = this.transaccionesSource.asObservable();
-
-  actualizarSaldo(nuevoSaldo: number) {
-    console.log('Actualizar saldo en el servicio:');
-    this.saldoSource.next(nuevoSaldo);
-  }
-
-  actualizarCvu(nuevoCvu: number) {
-    console.log('Actualizar saldo en el servicio:');
-    this.cvuSource.next(nuevoCvu);
-  }
-
-  actualizarTransacciones(nuevasTransacciones: any[]) {
-    console.log('Actualizar transacciones en el servicio:', nuevasTransacciones);
-    this.transaccionesSource.next(nuevasTransacciones);
-  }
-  
+export class DashboardService{ 
   myAppUrl: string;
   myApiCustomers: string;
   myApiTransactions: string;
