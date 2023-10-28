@@ -1,4 +1,6 @@
-<div class="container container-fluid">
+
+
+<div *ngIf="saldo != 0" class="container container-fluid">
     <div class="row pt-5">
         <div class="col-sm text-center">
             <label>Tienes disponible</label>
@@ -30,8 +32,7 @@
             <div class="col-sm text-center my-auto mx-auto">
                 <button type="button"  routerLink="/user/dashboard" class="btn btn-success btnCvu">Ver Movimientos</button>
             </div>
-    </div>
-    
+    </div>    
     <div class="row d-flex mt-4 mb-4 custom-centered" >
                 <div  class="col-sm text-center mx-auto my-auto" >
                     <canvas baseChart

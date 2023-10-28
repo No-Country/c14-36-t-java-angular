@@ -156,6 +156,12 @@
     border: none;
 }
 
+.noResult{
+    background-color: #CFF4FC;
+    color: black;
+    font-size: auto;
+}
+
 @media (min-width: 576px) {
     .container, .container-sm {
         max-width: none; 

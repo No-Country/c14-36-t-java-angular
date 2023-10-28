@@ -19,6 +19,7 @@ import { ServicePageComponent } from './component/Pages/service-page/service-pag
 import { DashboardComponent } from './component/Pages/dashboard/dashboard.component';
 import { HelpComponent } from './component/Pages/helpPages/help/help.component';
 
+
 const routes: Routes = [
   { path: '', redirectTo: 'user', pathMatch: 'full' },
   { path: 'user', component: UserDashboardComponent, canActivate: [authGuard],

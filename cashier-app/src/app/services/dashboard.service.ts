@@ -1,13 +1,52 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 import Swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root'
 })
-export class DashboardService{
+export class DashboardService{ 
+  myAppUrl: string;
+  myApiCustomers: string;
+  myApiTransactions: string;
+  myApiAccounts: string;
 
-  constructor() { }
+  constructor(private http: HttpClient) {
+    this.myAppUrl = 'http://localhost:8080/v1/api';
+    this.myApiCustomers = '/customers';
+    this.myApiTransactions = '/transactions'
+    this.myApiAccounts = '/accounts'
+  }
 
+  //PETICIONES
+  getUserDataById(id: any): Observable<any> {
+    return this.http.get<any>(`${this.myAppUrl}${this.myApiCustomers}/${id}`);
+  }
+
+  //COMO PROMESAS
+  getTransactionsByAccountId(idAccount: string, page: number = 0, size: number = 4, order: number = 1, field: string = 'id'): Promise<any> {
+    const params = `?idAccount=${idAccount}&page=${page}&size=${size}&order=${order}&field=${field}`;
+    return this.http.get<any>(`${this.myAppUrl}${this.myApiCustomers}${this.myApiTransactions}${params}`).toPromise();
+  }
+  getAccountDataById(idAccount: string): Promise<any> {
+    return this.http.get<any>(`${this.myAppUrl}${this.myApiAccounts}/${idAccount}`).toPromise();
+  }
+  
+
+  //COMO OBSERVABLES
+/*getTransactionsByAccountId(idAccount: string, page: number = 0, size: number = 4, order: number = 1, field: string = 'id'): Observable<any> {
+    const params = `?idAccount=${idAccount}&page=${page}&size=${size}&order=${order}&field=${field}`;
+    return this.http.get<any>(`${this.myAppUrl}${this.myApiCustomers}${this.myApiTransactions}${params}`);
+  }*/
+
+  /*
+  getAccountDataById(idAccount: string): Observable<any> {
+    return this.http.get<any>(`${this.myAppUrl}${this.myApiAccounts}/${idAccount}`);
+  }*/
+
+  
+  //MÉTODOS
   showCvu() {
     const cvuData = document.getElementById("cvuData");
     const copyButton = document.getElementById("copyButton");
@@ -50,4 +89,5 @@ export class DashboardService{
         }, 10000); // 10000 milisegundos = 10 segundos
     }
 }
+
 }
