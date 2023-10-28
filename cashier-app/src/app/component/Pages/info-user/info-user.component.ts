@@ -8,11 +8,13 @@ import { Router } from '@angular/router';
   styleUrls: ['./info-user.component.scss']
 })
 export class InfoUserComponent implements OnInit{
+  isEditing: boolean = false;
   infoUser: FormGroup;
-  username: String = "Juanito Alimaña Navaja";
+  username: String = "Juanito";
+  lastname: String = "Alimaña Navaja";
   cardNumber: Number = 12341234123412341234;
   email: String = "juanitoalimaña@gmail.com";
-  postalCode: Number = 201020;
+  dni: Number = 13151088;
   profileImg: File | any;
 
   constructor(private formBuilder: FormBuilder, private router: Router) {
@@ -29,11 +31,12 @@ export class InfoUserComponent implements OnInit{
       this.profileImg = "../../../../assets/tokito.jpg";
     }, 3000); // 3000 milisegundos (3 segundos)*/
   }
-  
-  
-  infoUserSave():void{
-    console.log("hello");
+
+  editButtom(): void {
+    this.isEditing = !this.isEditing;
+    
   }
+
 }
 
 
