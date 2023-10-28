@@ -6,6 +6,7 @@ import { AccountService } from 'src/app/services/account.service';
 import { UserService } from 'src/app/services/user.service';
 import { IAccount } from 'src/app/interfaces/account.interface';
 import { transactionView } from 'src/app/interfaces/transactionView.interface';
+import { IUserTarget } from 'src/app/interfaces/User.interface';
 
 @Component({
   selector: 'app-transaction',
@@ -18,9 +19,11 @@ export class TransactionComponent {
     form:false,
     filterData:true,
     filterCVU:false,
+    formResult:false,
     contact:false,
     alerts:false
   }
+  userTarget!:IUserTarget;
 
   userData!:UserData;
   accountData!:IAccount;
@@ -48,5 +51,8 @@ export class TransactionComponent {
   }
   updateViewStatus($event:transactionView){
     this.showComponents = $event;
+  }
+  updateIdTarget($event:IUserTarget){
+    this.userTarget = $event;
   }
 }

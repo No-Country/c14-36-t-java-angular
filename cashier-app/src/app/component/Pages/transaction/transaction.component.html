@@ -10,6 +10,7 @@
     *ngIf="showComponents.form"
     [viewStatus]="showComponents"
     (updateViews)="updateViewStatus($event)"
+    (idUserTarget)="updateIdTarget($event)"
     >
     </app-transfer-form>
   </div>
@@ -19,7 +20,9 @@
   <!-- ------------------------------------------------caja derecha -->
   <div class="transferBox__right">
     <app-selected-user
+    [accountData]="accountData"
     [viewStatus]="showComponents"
+    [userTarget]="userTarget"
     (updateViews)="updateViewStatus($event)"
     ></app-selected-user>
   </div>

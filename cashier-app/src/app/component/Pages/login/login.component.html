@@ -53,7 +53,7 @@
             [ngClass]="
             user.get('password')?.errors && user.get('password')?.touched
               ? 'fieldInvalid' : ''"/>
-            <button (click)="eyeStatus = !eyeStatus">
+            <button type="button" (click)="eyeStatus = !eyeStatus">
               <img
                 class="eye"
                 [src]="eyeStatus ? 'assets/eyeOpen.png' : 'assets/eyeClose.png'"
@@ -79,8 +79,13 @@
       </form>
       <div class="loginBox__left__container__message">
         <p *ngIf="isShowMessage" [@lateralEffect]>
-          <span class="text-danger">{{message || 'esperando...'}}</span>
+          <span *ngIf="message, else fallback" class="text-danger">{{message}}</span>
         </p>
+        <ng-template #fallback>
+          <div class="spinner-border text-success" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </ng-template>
       </div>
       <!---------------------- terminos y condiciones ----------------------->
       <div class="loginBox__left__container__terms d-flex justify-content-end">

@@ -1,4 +1,4 @@
-import { IUserProfile } from './User.interface';
+import { IUserProfile, User } from './User.interface';
 
 export interface ILoginRes {
   data: {
@@ -20,5 +20,9 @@ export interface IGetUserRes {
   message: string;
   data: IUserProfile;
   timeStamp: string;
+}
+export interface IGetAllUser{
+  data:IUserProfile[],
+  message:string
 }
 

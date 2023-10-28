@@ -1,21 +1,25 @@
-<form class="form" [@fadeEffect] *ngIf="viewStatus.contact">
+<form class="form" [@fadeEffect]
+ *ngIf="viewStatus.contact"
+ [formGroup]="transferForm"
+ >
   <div class="form__imgBox">
     <img src="assets/DNI.png" alt="dni_icon" />
   </div>
   <div class="form__field">
     <span>Para:</span>
     <div class="form__field__address">
-      <span>Juanito Alimaña</span>
+      <span>{{userTarget.name + " "+ userTarget.lastName | titlecase}}</span>
+      <!-- <span>asdasdasdasdasd asdas dasdasdasdasdasd asdasdasdasda asadasdadasdas</span> -->
       <span>Cashier App</span>
     </div>
   </div>
   <div class="form__field">
-    <span>CVU/CBU:</span>
-    <span>123</span>
+    <span>CVU:</span>
+    <span>12312312312313213</span>
   </div>
   <div class="form__field">
     <label for="issue">Motivo:</label>
-    <select id="issue">
+    <select id="issue" formControlName="issue" required>
       <option value="seguro">Seguros</option>
       <option value="alquiler">Alquileres</option>
       <option value="honorario">Honorarios</option>
@@ -25,10 +29,19 @@
   </div>
   <div class="form__fieldAmount">
     <label for="amount">Cuanto desea transferir</label>
-    <input type="number" id="amount" placeholder="Ej. $100.00" min="0"/>
+    <input type="number"
+    id="amount"
+    formControlName="amount"
+    placeholder="Ej. $100.00"
+    min="0"
+    [max]="accountData.totalAccount"/>
   </div>
-  <p>Saldo: $100.50</p>
-  <button (click)="updateAlertStatus()" type="submit">Transferir</button>
+  <p>Saldo disponible: {{accountData.totalAccount| currency: 'USD':'symbol':'1.2-2'}}</p>
+  <button (click)="updateAlertStatus()"
+   type="submit"
+   [disabled]="transferForm.invalid"
+   >Transferir</button>
+  <!----------------------------------------------------- operaciones -->
   <div [@lateralEffect] *ngIf="viewStatus.alerts" class="form__actions">
     <button class="form__actions__btnBox">
       <div>

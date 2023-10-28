@@ -1,4 +1,7 @@
-@import '../../../../stylesConfig/config';
+@import "../../../../stylesConfig/config";
+:host{
+  width: min(100%, 500px);
+}
 .filter {
   width: 100%;
   display: flex;
@@ -8,15 +11,13 @@
   button {
     @include btnStyle("fill", $colGreenLight);
   }
-
 }
 /* ------------------------------------------caja de busqueda*/
 .searchBox {
   &__field {
     border-bottom: solid white 2px;
-    margin-bottom: 2rem;
     button {
-      all:initial;
+      all: initial;
       cursor: pointer;
       border-radius: 0.5rem;
       overflow-y: hidden;
@@ -25,7 +26,7 @@
       img {
         @include changeColorPng($colGray);
       }
-      &:focus{
+      &:focus {
         transform: scale(0.8);
         box-shadow: 0 0 10px -2px $colGreenLight;
       }
@@ -36,6 +37,14 @@
       font-size: 1rem;
       &:focus + button > img {
         @include changeColorPng($colGreenLight);
+      }
+      &:-webkit-autofill,
+      &:-webkit-autofill:hover,
+      &:-webkit-autofill:focus,
+      &:-webkit-autofill:active {
+        -webkit-box-shadow: 0 0 0 30px $colGreenDark inset !important; /* Ajusta el color de fondo según tus necesidades */
+        -webkit-text-fill-color: $colWhite !important;
+        caret-color: $colWhite;
       }
     }
   }
@@ -53,8 +62,8 @@
       overflow-y: hidden;
       padding-right: 1rem;
       @include transitionFast;
-      &:hover{
-        background-color: changeOpacity($colGreenLight,.3);
+      &:hover {
+        background-color: changeOpacity($colGreenLight, 0.3);
       }
       img {
         @include changeColorPng($colGreenLight);
@@ -62,6 +71,7 @@
       &__info {
         display: flex;
         flex-direction: column;
+        align-items: flex-end;
         span {
           color: $colGreenLight;
         }

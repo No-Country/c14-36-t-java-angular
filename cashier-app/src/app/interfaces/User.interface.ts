@@ -12,18 +12,18 @@
 // }
 
 export interface User {
-    id?: string;
-    name: string;
-    lastName: string;
-    email: string;
-    dni: string;
-    phone: string;
-    password: string;
-    address: string;
-    birthDate: Date;
+  id?: string;
+  name: string;
+  lastName: string;
+  email: string;
+  dni: string;
+  phone: string;
+  password: string;
+  address: string;
+  birthDate: Date;
 }
 
-export interface IUserProfile extends Omit<User, 'password'| 'birthDate'> {
+export interface IUserProfile extends Omit<User, 'password' | 'birthDate'> {
   image: string;
   address: string;
   idAccount: string;
@@ -32,3 +32,5 @@ export interface IUserProfile extends Omit<User, 'password'| 'birthDate'> {
   openAccountDate: string;
   createdDate: string;
 }
+export interface IUserTarget extends Pick<
+IUserProfile, 'idAccount' | 'name' | 'lastName'> {}

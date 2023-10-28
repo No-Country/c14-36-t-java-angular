@@ -9,13 +9,12 @@
   /* -------------------------------------------caja de la izquierda */
   &__left {
     background-color: $colGreenDark;
-    /* -----------------------------------------caja del saldo */
-
-    /* -----------------------------------------------caja de filtros */
+    flex-grow: 1;
   }
   /* ---------------------------------------------caja derecha */
   &__right {
     background-color: changeOpacity($colGreenDark, 0.9);
+    flex-grow: 1;
     display: grid;
     place-items: center;
     padding-block: 45%;
@@ -41,20 +40,6 @@
     }
     &__right {
       padding-block: 0%;
-      &__alert {
-        padding-inline: 3rem;
-        flex-direction: row;
-        justify-content: center;
-        flex-wrap: wrap;
-        column-gap: 1rem;
-      }
-    }
-  }
-}
-@media screen and (min-width: 1200px) {
-  .transferBox {
-    &__right__alert {
-      flex-direction: column;
     }
   }
 }

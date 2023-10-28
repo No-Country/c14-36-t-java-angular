@@ -13,10 +13,10 @@ export class BalanceComponent {
 @Output() updateViews = new EventEmitter<transactionView>();
 
 updateViewsStatus(){
-  const {form} = this.viewStatus;
   const newStatus:transactionView = {
     ...this.viewStatus,
-    form:!form,
+    form:true,
+    formResult:false,
     alerts:false,
     contact:false,
   };
