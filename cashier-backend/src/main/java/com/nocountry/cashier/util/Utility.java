@@ -39,6 +39,12 @@ public final class Utility {
         }
         return pageable;
     }
+    /*
+    * public Pageable setPageable(PageableDto pageableDto) {
+    Sort sort = Sort.by(pageableDto.getSortDirection(), pageableDto.getSortBy()); // Configura la ordenación
+    return PageRequest.of(pageableDto.getPage(), pageableDto.getSize(), sort); // Configura el objeto Pageable
+}
+*/
 
     public String generatorOTP(int length){
          //final String ALLOWED_CHARACTERS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
