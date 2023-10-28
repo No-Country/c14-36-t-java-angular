@@ -1,5 +1,12 @@
 import { Component } from '@angular/core';
 import { enterLateral, fadeAnimation } from '../../../animations/animation';
+import { UserData } from 'src/app/interfaces/userData.inteface';
+import { TokenService } from 'src/app/services/token.service';
+import { AccountService } from 'src/app/services/account.service';
+import { UserService } from 'src/app/services/user.service';
+import { IAccount } from 'src/app/interfaces/account.interface';
+import { transactionView } from 'src/app/interfaces/transactionView.interface';
+import { IUserTarget } from 'src/app/interfaces/User.interface';
 
 @Component({
   selector: 'app-transaction',
@@ -8,40 +15,44 @@ import { enterLateral, fadeAnimation } from '../../../animations/animation';
   animations: [fadeAnimation, enterLateral ],
 })
 export class TransactionComponent {
-  isShowFilter = false;
-  isShowResult = false;
-  isShowContact = false;
-  showSearchCVU = false;
-  showSearchData = true;
-  isShowAlert = false;
-  isShowActions = false;
-  showFilters() {
-    this.isShowFilter = !this.isShowFilter;
-    this.isShowResult = false;
-    this.isShowContact = false;
+  showComponents={
+    form:false,
+    filterData:true,
+    filterCVU:false,
+    formResult:false,
+    contact:false,
+    alerts:false
   }
+  userTarget!:IUserTarget;
 
-  showResults(idBox:string) {
-    this.isShowResult = true;
-    this.isShowContact = false;
+  userData!:UserData;
+  accountData!:IAccount;
 
-    if(idBox==='data'){
-      this.showSearchData = !(this.showSearchCVU = false);
-    }
-    else{
-      this.showSearchCVU = !(this.showSearchData = false);
-    }
+  constructor(
+    private tokenServ:TokenService,
+    private accountServ:AccountService,
+    private userServ:UserService,
+  ){}
+
+
+
+  ngOnInit(){
+    this.userData = this.tokenServ.dataUser;
+    const {id} = this.userData;
+    this.userServ.getUser(id).subscribe({
+      next:({data})=>{
+        this.accountServ.getAccount(data.idAccount).subscribe({
+          next:(res)=>(this.accountData = res),
+          error(err){console.log(err)}
+        })
+      },
+      error(err){console.log(err)}
+    })
   }
-
-  showContact() {
-    this.isShowContact = !this.isShowContact;
+  updateViewStatus($event:transactionView){
+    this.showComponents = $event;
   }
-
-  showAlert(){
-    this.isShowAlert = !this.isShowAlert;
-    this.showActions();
-  }
-  showActions(){
-    this.isShowActions = !this.isShowActions;
+  updateIdTarget($event:IUserTarget){
+    this.userTarget = $event;
   }
 }

@@ -1,4 +1,4 @@
-import { IUserProfile } from './User.interface';
+import { IUserProfile, User } from './User.interface';
 
 export interface ILoginRes {
   data: {
@@ -21,11 +21,8 @@ export interface IGetUserRes {
   data: IUserProfile;
   timeStamp: string;
 }
-
-export interface IGetCardRes {
-  idCard: string;
-  cardNumber: string;
-  cardName: string;
-  expirationDate: string;
-  securityCode: string
+export interface IGetAllUser{
+  data:IUserProfile[],
+  message:string
 }
+

@@ -33,6 +33,9 @@ import { CreditCardChildComponent } from './component/Pages/credit-card/credit-c
 import { HelpComponent } from './component/Pages/helpPages/help/help.component';
 import { InfoUserComponent } from './component/Pages/info-user/info-user.component';
 import { SideBarAltComponent } from './shared/side-bar-alt/side-bar-alt.component';
+import { BalanceComponent } from './component/Pages/transaction/balance/balance.component';
+import { TransferFormComponent } from './component/Pages/transaction/transfer-form/transfer-form.component';
+import { SelectedUserComponent } from './component/Pages/transaction/selected-user/selected-user.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +62,9 @@ import { SideBarAltComponent } from './shared/side-bar-alt/side-bar-alt.componen
     PromotionsComponent,
     Found404Component,
     ServicePageComponent,
+    BalanceComponent,
+    TransferFormComponent,
+    SelectedUserComponent,
   ],
   imports: [
     BrowserModule,
