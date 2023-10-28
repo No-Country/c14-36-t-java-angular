@@ -30,7 +30,7 @@ export class MetricasComponent implements OnInit{
   ngOnInit(): void {
      this.isLoading = true;
      const userDataDecoded = this.tokenService.getTokenDecoded();
-     let idUser = userDataDecoded.id;
+     let idUser:any = userDataDecoded?.id;
      this.obtenerDatosPorUUID(idUser);
      setTimeout(() => {
        this.obtenerTransaccionesPorAccountId();

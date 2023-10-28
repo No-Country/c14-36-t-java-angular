@@ -30,7 +30,7 @@ export class DashboardComponent implements OnInit {
     // Mostrar el indicador de carga.
     this.isLoading = true;
     const userDataDecoded = this.tokenService.getTokenDecoded();
-    let idUser = userDataDecoded.id;
+    const idUser = userDataDecoded.id;
     console.log('idUser: ', idUser);
     console.log('token Decoded: ', userDataDecoded);
     this.obtenerDatosPorUUID(idUser);
@@ -95,6 +95,7 @@ export class DashboardComponent implements OnInit {
       );
       console.log('Data de la cuenta:', response);
       this.saldo = response.totalAccount;
+      console.log('Data de la cuenta:', this.saldo);
       this.cvu = response.cvu;
       this.showcvu = true;
       this.isLoading = false; 
