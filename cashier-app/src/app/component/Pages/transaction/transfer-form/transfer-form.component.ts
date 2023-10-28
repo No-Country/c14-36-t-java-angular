@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { textValidator } from 'src/app/CustomValidator/customValidator';
 import { enterLateral, fadeAnimation, scaling } from 'src/app/animations/animation';
-import { IUserTarget, User } from 'src/app/interfaces/User.interface';
+import { IUserProfile, IUserTarget, User } from 'src/app/interfaces/User.interface';
 import { transactionView } from 'src/app/interfaces/transactionView.interface';
 import { UserService } from 'src/app/services/user.service';
 
@@ -18,7 +18,7 @@ export class TransferFormComponent {
   @Output() idUserTarget = new EventEmitter<IUserTarget>();
   searchDataForm!: FormGroup;
   searchCvuForm!: FormGroup;
-  userResults: User[] = [];
+  userResults: IUserProfile[] = [];
   loading = false;
 
   constructor(private fb: FormBuilder, private userServ: UserService) {
@@ -90,7 +90,7 @@ export class TransferFormComponent {
     });
   }
 
-  matchName(data: User, searchName: string) {
+  matchName(data: IUserProfile, searchName: string) {
     const nameLastname = (data.name + ' ' + data.lastName).toLowerCase();
     return nameLastname.includes(searchName.toLowerCase().trim());
   }
