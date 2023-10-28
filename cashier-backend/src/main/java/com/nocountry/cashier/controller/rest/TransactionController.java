@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,7 @@ import static com.nocountry.cashier.util.Constant.*;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping(value = API_VERSION + RESOURCE_USER + RESOURECE_TRANSACTION)
 @RequiredArgsConstructor
@@ -42,7 +44,7 @@ public class TransactionController {
         try{
         pageableDto.setPage(page);
         pageableDto.setSize(size);
-        List<TransactionResponseDTO> content = transactionService.findAllByIdAccount(idAccount,pageableDto).getContent();
+        Page<TransactionResponseDTO> content = transactionService.findAllByIdAccount(idAccount,pageableDto);
         Map<String, Object> response = Map.of("message", "Listado de Transacciones", "data", content);
         return new ResponseEntity<>(response, OK);
         }catch (Exception e){

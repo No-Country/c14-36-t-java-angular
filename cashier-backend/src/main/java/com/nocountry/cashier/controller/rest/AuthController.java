@@ -44,7 +44,7 @@ public class AuthController {
         return ResponseEntity.ok().body(Map.of("data", register));
     }
 
-    @GetMapping("/")
+    @PostMapping("/auth/")
     public ResponseEntity<?> authenticateCustomer(@Valid @RequestBody AuthRequestDTO authDto) {
         AuthenticatedUserDTO authenticate = authService.authenticate(authDto);
         String uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/")

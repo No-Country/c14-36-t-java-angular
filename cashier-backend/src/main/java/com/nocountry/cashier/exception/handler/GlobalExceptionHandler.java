@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.net.URI;
@@ -132,6 +133,17 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         );
         problemDetail.setInstance(URI.create(request.getRequestURL().toString())); //getDescription(false).replace("uri=","")
         problemDetail.setTitle(HttpStatus.NOT_FOUND.getReasonPhrase());
+        problemDetail.setProperty("date", LocalDateTime.now());
+        return problemDetail;
+    }
+
+    @ExceptionHandler(InputNotValidException.class)
+    public ProblemDetail handleResouceNotFoundE(InputNotValidException ex, HttpServletRequest request){
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
+                ex.getStatusCode(), ex.getLocalizedMessage()
+        );
+        problemDetail.setInstance(URI.create(request.getRequestURL().toString()));
+        problemDetail.setTitle(ex.getStatusCode().toString());
         problemDetail.setProperty("date", LocalDateTime.now());
         return problemDetail;
     }

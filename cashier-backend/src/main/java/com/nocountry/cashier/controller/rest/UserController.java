@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,7 @@ import static com.nocountry.cashier.util.Constant.RESOURCE_USER;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping(value = API_VERSION + RESOURCE_USER)
 @RequiredArgsConstructor
@@ -37,7 +39,7 @@ public class UserController {
                                              PageableDto pageableDto) {
         pageableDto.setPage(page);
         pageableDto.setSize(size);
-        List<UserResponseDTO> content = userService.getAll(pageableDto).getContent();
+        Page<UserResponseDTO> content = userService.getAll(pageableDto);
         Map<String, Object> response = Map.of("message", "Listado de Usuarios", "data", content);
         return new ResponseEntity<>(response, OK);
     }

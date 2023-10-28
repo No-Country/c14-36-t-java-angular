@@ -35,8 +35,10 @@ public class TransactionEntity extends Auditable<LocalDateTime> {
 
     @Column(name="amount")
     private BigDecimal amount;
+
     @Column(name = "origin")
     private String origin; // String cvu
+
     @Column(name = "destination")
     private String destination;
     //STATE WITH enums OR boolean?
@@ -46,13 +48,6 @@ public class TransactionEntity extends Auditable<LocalDateTime> {
     private EnumsState state;
 
     private Boolean enabled;
-
-//    @ManyToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "account_entity")
-//    private AccountEntity accountEntity;
-//    @ManyToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "account_entity")
-//    private AccountEntity accountEntity;
 
     @ManyToOne
     @JoinColumn(name = "idAccount")

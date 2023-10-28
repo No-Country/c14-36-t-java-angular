@@ -10,10 +10,12 @@ import com.nocountry.cashier.exception.GenericException;
 import com.nocountry.cashier.exception.ResourceNotFoundException;
 import com.nocountry.cashier.persistance.entity.AccountEntity;
 import com.nocountry.cashier.persistance.entity.TransactionEntity;
+import com.nocountry.cashier.persistance.entity.UserEntity;
 import com.nocountry.cashier.persistance.mapper.AccountMapper;
 import com.nocountry.cashier.persistance.mapper.TransactionMapper;
 import com.nocountry.cashier.persistance.repository.AccountRepository;
 import com.nocountry.cashier.persistance.repository.TransactionRepository;
+import com.nocountry.cashier.persistance.repository.UserRepository;
 import com.nocountry.cashier.util.Utility;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +39,8 @@ import java.util.stream.Collectors;
 @Slf4j
 public class TransactionServiceImpl implements TransactionService {
 
+    private final UserRepository userRepository;
+
     private final TransactionRepository transactionRepository;
     private final TransactionMapper mapper;
     private final AccountMapper accountMapper;
@@ -50,11 +54,39 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public TransactionResponseDTO createTransaction(TransactionRequestDTO data, String data2) {
         TransactionEntity transaction = new TransactionEntity();
+
+        Optional<UserEntity> byId = userRepository.findById(data.getOrigin());
+
+        AccountEntity accountEntity = byId.get().getAccountEntity();
+
+        accountRepository.findById(data.getDestination());
+
         Optional<AccountEntity> entity = accountRepository.findById(data2);
 
         data.setOrigin(entity.get().getCvu().toString());
         data.setDestination((GeneratorCVU.generate("202",22)));
         data.setDateEmit(LocalDateTime.now().toString());
+
+        BigDecimal total = entity.get().getTotalAccount();
+
+        BigDecimal montoEjecutado = data.getAmount();
+
+        if(data.getType().equalsIgnoreCase("TRANSFER")||
+                data.getType().equalsIgnoreCase("PAYMENT_QR")){
+
+            total = total.subtract(montoEjecutado);
+
+
+        }else{
+            total = total.add(montoEjecutado);
+
+        }
+
+        entity.get().setTotalAccount(total);
+        System.out.println("Ahora la cuenta tiene $ " +entity.get().getTotalAccount());
+
+
+
         if (entity.isPresent()) {
             transaction = Optional.of(data)
                     .map(mapper::toTransactionEntity)

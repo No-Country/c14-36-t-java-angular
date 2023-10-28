@@ -159,17 +159,16 @@ public class AuthServiceImpl implements AuthService {
             throw new GenericException("Failed to write QR code image to output stream.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        user.setAccountEntity(accountMapper.toGetAccountEntity(accountService.createAccount(user.getId())));
-        user.setCreditCardEntity(creditCardMapper.togetCardEntity(creditCardService.createCard(user.getId())));
+        accountService.createAccount(user.getId());
+        creditCardService.createCard(user.getId());
 
         // ? GENERAMOS EL USUARIO , GENERAMOS NUEVO TOKEN CON NUEVO TIEMPO DE EXPIRACION
-        UserEntity userEntity = userRepository.save(user);
-        String newToken = jwtTokenProvider.generateToken(userEntity, expirationToken);
+        String newToken = jwtTokenProvider.generateToken(user, expirationToken);
         log.info("SE CONFIRMÓ SU EMAIL, CUENTA ACTIVADA");
         var nameUser = jwtTokenProvider.getClaimForToken(token, "name");
         return AuthConfirmedDTO.builder()
                 .message("Perfil creado correctamente para el usuario " + nameUser)
-                .id(userEntity.getId())
+                .id(user.getId())
                 .token(newToken)
                 .qr(Objects.requireNonNull(qrCodeImage.getBody()).getFilename())
                 .build();

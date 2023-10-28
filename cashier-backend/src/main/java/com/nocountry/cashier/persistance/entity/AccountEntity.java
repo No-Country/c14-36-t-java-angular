@@ -50,8 +50,6 @@ public class AccountEntity extends Auditable<LocalDateTime> {
 
     private Boolean enabled;
 
-//    @OneToMany(mappedBy = "account_entity")
-//    private List<TransactionEntity> transaccionEntityList;
 
     @OneToMany(mappedBy = "accountEntity")
     private List<TransactionEntity> transactionEntityList;
