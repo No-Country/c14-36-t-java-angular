@@ -2,7 +2,6 @@ package com.nocountry.cashier.domain.service;
 
 import com.nocountry.cashier.controller.dto.response.AccountResponseDTO;
 import com.nocountry.cashier.domain.usecase.AccountService;
-
 import com.nocountry.cashier.exception.DuplicateEntityException;
 import com.nocountry.cashier.persistance.entity.AccountEntity;
 import com.nocountry.cashier.persistance.entity.UserEntity;
@@ -11,13 +10,11 @@ import com.nocountry.cashier.persistance.repository.AccountRepository;
 import com.nocountry.cashier.persistance.repository.UserRepository;
 import com.nocountry.cashier.util.GeneratorCVU;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Random;
 
 
 @Service
@@ -58,6 +55,7 @@ public class AccountServiceImpl implements AccountService {
         accountEntity.setCvu((GeneratorCVU.generate("452", 22)));
         accountEntity.setStatus(true);
         accountEntity.setEnabled(true);
+        accountEntity.setUserEntity(userEntity);
         //accountRepository.save(accountEntity);
 
             userEntity.setAccountEntity(accountEntity);

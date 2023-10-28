@@ -16,6 +16,7 @@ public record AuthRequestDTO(
         @NotEmpty(message = "es requerido.")
         @NotBlank(message = "no debe consistir solo en espacios en blanco")
         //@Pattern(regexp = "^[a-z0-9ñÑ]+(?!.*(?:\\+{2,}|\\-{2,}|\\.{2,}))(?:[\\.+\\-_]{0,1}[a-z0-9Ññ])*@gmail\\.com$", message = "Debe ser un correo tipo gmail.")
+        // ([a-zA-Z0-9]+(?:[._+-][a-zA-Z0-9]+)*)@([a-zA-Z0-9]+(?:[.-][a-zA-Z0-9]+)*[.][a-zA-Z]{2,})
         @Email(message = "Debe ser un correo electronico.")
         String email,
 

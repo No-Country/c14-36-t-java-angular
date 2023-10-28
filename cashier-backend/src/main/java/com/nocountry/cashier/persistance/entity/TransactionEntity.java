@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 @Table(name = "transaction")
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Getter
 @Setter
 @ToString
@@ -41,13 +42,14 @@ public class TransactionEntity extends Auditable<LocalDateTime> {
 
     @Column(name = "destination")
     private String destination;
-    //STATE WITH enums OR boolean?
-    //private Boolean state;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "state")
     private EnumsState state;
 
     private Boolean enabled;
+
+    private String reason;
 
     @ManyToOne
     @JoinColumn(name = "idAccount")
@@ -56,6 +58,7 @@ public class TransactionEntity extends Auditable<LocalDateTime> {
     @PrePersist
     public void onCreate() {
         this.setEnabled(Boolean.TRUE);
+        this.dateEmit = LocalDateTime.now();
     }
 
 }

@@ -1,8 +1,10 @@
-package com.nocountry.cashier.strategy.transaction;
+package com.nocountry.cashier.domain.strategy.transaction;
 
-import com.nocountry.cashier.controller.dto.request.TransactionRequestDTO;
 import com.nocountry.cashier.enums.EnumsTransactions;
 import com.nocountry.cashier.persistance.entity.AccountEntity;
+import com.nocountry.cashier.persistance.entity.TransactionEntity;
+
+import java.math.BigDecimal;
 
 /**
  * @author ROMULO
@@ -13,6 +15,5 @@ import com.nocountry.cashier.persistance.entity.AccountEntity;
 public abstract class Transaction {
 
     public abstract EnumsTransactions getType();
-
-    public abstract AccountEntity updateBalance(AccountEntity entity, TransactionRequestDTO data);
+    public abstract TransactionEntity updateBalance(AccountEntity origin, AccountEntity destination, BigDecimal amount);
 }

@@ -66,8 +66,7 @@ public class UserEntity extends Auditable<LocalDateTime> {
     @JoinColumn(name= "id_token")
     private TokenEntity token;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name= "id_account")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "userEntity", fetch = FetchType.EAGER)
     private AccountEntity accountEntity;
 
     @OneToOne(cascade = CascadeType.ALL)

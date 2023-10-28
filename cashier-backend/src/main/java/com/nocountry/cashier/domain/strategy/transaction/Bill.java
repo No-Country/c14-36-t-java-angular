@@ -1,4 +1,4 @@
-package com.nocountry.cashier.strategy.transaction;
+package com.nocountry.cashier.domain.strategy.transaction;
 
 import com.nocountry.cashier.controller.dto.request.TransactionRequestDTO;
 import com.nocountry.cashier.enums.EnumsTransactions;
@@ -16,13 +16,12 @@ import java.math.BigDecimal;
  */
 @Component
 @Slf4j
-public class Deposit extends Transaction {
-    @Override
+public class Bill {
+
     public EnumsTransactions getType() {
-        return EnumsTransactions.DEPOSIT;
+        return EnumsTransactions.PAYMENT;
     }
 
-    @Override
     public AccountEntity updateBalance(AccountEntity entity, TransactionRequestDTO data) {
         BigDecimal total = entity.getTotalAccount();
         BigDecimal montoEjecutado = data.getAmount();

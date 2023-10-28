@@ -57,11 +57,9 @@ public class TransactionController {
     //NewTransaction
     //http://localhost:8080/v1/api/customers/transactions/new?idAccount=3de8f7f3-41a6-404c-ad4e-599bd9e74e98
     @PostMapping("/new")
-    public ResponseEntity<?> createTransaction( @RequestParam String idAccount ,@RequestBody TransactionRequestDTO requestDTO) {
-        TransactionResponseDTO transactionResponse = transactionService.createTransaction(requestDTO, idAccount);
-//        String uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("")
-//                .path("{id}").buildAndExpand(transactionResponse.id()).toUriString();
-        return ResponseEntity.status(CREATED).body(transactionResponse.toString());
+    public ResponseEntity<?> createTransaction(@RequestBody TransactionRequestDTO requestDTO) {
+        TransactionResponseDTO transactionResponse = transactionService.createTransaction(requestDTO);
+        return ResponseEntity.status(OK).body(transactionResponse);
     }
 
     //SearchById
