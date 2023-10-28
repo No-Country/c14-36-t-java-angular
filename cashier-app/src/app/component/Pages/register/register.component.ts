@@ -54,7 +54,14 @@ export class RegisterComponent implements OnInit {
   onSubmit(): void {
     this.isShowMessage = true;
     setTimeout(()=>(this.isShowMessage = false),5000)
-    const userData = this.user.value;
+    let userData = this.user.value as User;
+    userData = {
+      ...userData,
+      name:userData.name.trim().toLowerCase(),
+      lastName:userData.lastName.trim().toLowerCase(),
+      address:userData.address.trim().toLowerCase(),
+      email:userData.email.trim()
+    }
     this.userService.addNewUser(userData).subscribe({
       next:()=>{
         this.messageStatus = true;

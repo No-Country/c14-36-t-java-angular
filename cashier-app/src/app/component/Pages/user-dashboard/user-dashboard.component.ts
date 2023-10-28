@@ -9,25 +9,34 @@ import { TokenService } from 'src/app/services/token.service';
   styleUrls: ['./user-dashboard.component.scss']
 })
 export class UserDashboardComponent {
+  @ViewChild('sideBar', { read: ElementRef }) sideBar!: ElementRef;
 
   UserData!: UserData;
   sidebarStatus!:boolean;
 
-  constructor(private router: Router,
+  constructor(
+    private router:Router,
     private tokenService: TokenService
   ) { }
 
   ngOnInit(): void {
-    this.UserData = this.tokenService.getTokenDecoded();
+    const data = this.tokenService.getTokenDecoded();
+    if(data){
+      this.UserData = data;
+    }
+    else{
+      localStorage.removeItem('tokenCashier')
+      this.router.navigate(['login'])
+    }
     this.validateTimeToken(this.UserData);
   }
-  @ViewChild('sideBar', { read: ElementRef }) sideBar!: ElementRef;
 
   updateSidebarState(newStatus:boolean){
     this.sidebarStatus = newStatus;
       this.sideBar.nativeElement.classList.toggle("sidebarCollapse")
 
   }
+  /* valida si el token expiro */
   validateTimeToken({exp}:UserData){
     const currentDate = new Date();
     const expirationDate =  new Date(exp*1000);

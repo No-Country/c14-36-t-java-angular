@@ -3,7 +3,7 @@
     <div class="header__user__circle">
       <span>{{pipeNameData(userData.name)}}</span>
     </div>
-    <span class="header__user__name">{{userData.name}}</span>
+    <span class="header__user__name">{{userData.name | titlecase}}</span>
   </a>
   <div class="header__logout">
     <button (click)="logOutUser()" class="btn bg-transparent btn-outline-none" >cerrar sesi&oacute;n</button>

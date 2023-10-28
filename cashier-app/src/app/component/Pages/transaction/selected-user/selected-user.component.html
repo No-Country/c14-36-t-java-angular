@@ -1,0 +1,73 @@
+<form class="form" [@fadeEffect]
+ *ngIf="viewStatus.contact"
+ [formGroup]="transferForm"
+ >
+  <div class="form__imgBox">
+    <img src="assets/DNI.png" alt="dni_icon" />
+  </div>
+  <div class="form__field">
+    <span>Para:</span>
+    <div class="form__field__address">
+      <span>{{userTarget.name + " "+ userTarget.lastName | titlecase}}</span>
+      <!-- <span>asdasdasdasdasd asdas dasdasdasdasdasd asdasdasdasda asadasdadasdas</span> -->
+      <span>Cashier App</span>
+    </div>
+  </div>
+  <div class="form__field">
+    <span>CVU:</span>
+    <span>12312312312313213</span>
+  </div>
+  <div class="form__field">
+    <label for="issue">Motivo:</label>
+    <select id="issue" formControlName="issue" required>
+      <option value="seguro">Seguros</option>
+      <option value="alquiler">Alquileres</option>
+      <option value="honorario">Honorarios</option>
+      <option value="compra">Compras</option>
+      <option selected value="varios">varios</option>
+    </select>
+  </div>
+  <div class="form__fieldAmount">
+    <label for="amount">Cuanto desea transferir</label>
+    <input type="number"
+    id="amount"
+    formControlName="amount"
+    placeholder="Ej. $100.00"
+    min="0"
+    [max]="accountData.totalAccount"/>
+  </div>
+  <p>Saldo disponible: {{accountData.totalAccount| currency: 'USD':'symbol':'1.2-2'}}</p>
+  <button (click)="updateAlertStatus()"
+   type="submit"
+   [disabled]="transferForm.invalid"
+   >Transferir</button>
+  <!----------------------------------------------------- operaciones -->
+  <div [@lateralEffect] *ngIf="viewStatus.alerts" class="form__actions">
+    <button class="form__actions__btnBox">
+      <div>
+        <img src="assets/share.png" alt="share_icon">
+      </div>
+      <span>Comprobante</span>
+    </button>
+    <button class="form__actions__btnBox">
+      <div>
+        <img src="assets/transfer.png" alt="transfer_icon">
+      </div>
+      <span>Nueva <br>  Transferencia</span>
+    </button>
+    <button class="form__actions__btnBox">
+      <div>
+        <img src="assets/shop.png" alt="shop_icon">
+      </div>
+      <span>Pagar <br> Servicio</span>
+    </button>
+  </div>
+</form>
+<div class="alert" [@fadeEffect] *ngIf="viewStatus.alerts">
+  <div class="alert__imgBox">
+    <img src="assets/check-circle.png" alt="check-circle_icon">
+  </div>
+  <h5>!Transferencia exitosa¡</h5>
+  <p class="alert__ref">Referencia 12345-1</p>
+  <p class="alert__time">06/06/2000 16:30hrs</p>
+</div>
