@@ -33,6 +33,8 @@ import { CreditCardChildComponent } from './component/Pages/credit-card/credit-c
 import { HelpComponent } from './component/Pages/helpPages/help/help.component';
 import { InfoUserComponent } from './component/Pages/info-user/info-user.component';
 import { SideBarAltComponent } from './shared/side-bar-alt/side-bar-alt.component';
+import { PipeTransformPipe } from './pipes/pipe-transform.pipe';
+
 
 @NgModule({
   declarations: [
@@ -59,6 +61,8 @@ import { SideBarAltComponent } from './shared/side-bar-alt/side-bar-alt.componen
     PromotionsComponent,
     Found404Component,
     ServicePageComponent,
+    PipeTransformPipe,
+    
   ],
   imports: [
     BrowserModule,
