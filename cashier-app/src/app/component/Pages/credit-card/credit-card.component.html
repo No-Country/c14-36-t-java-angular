@@ -1,28 +1,39 @@
 <div class="cardInfo">
- <div class="cardInfo__boxLeft d-flex flex-column align-items-center">
-  <div class="cardInfo__boxLeft__creditCard">
-    <img src="assets/cardImg.png" alt="cardImg_icon">
-    <h3 class="cardInfo__boxLeft__creditCard__title">Tarjeta Virtual</h3>
-    <p class="cardInfo__boxLeft__creditCard__subtitle">Terminado en 1943</p>
-    <button (click)="showData()">Ver datos de la tarjeta</button>
-  </div>
-  <div class="cardInfo__boxLeft__info">
-    <h5>Con tu tarjeta virtual podes</h5>
-    <div class="cardInfo__boxLeft__info__promo">
-      <div class="imgContainer">
-        <img src="assets/shop.png" alt="shop_icon">
-      </div>
-      <a class="text-decoration-none">Pagar servicios</a>
+  <div class="cardInfo__boxLeft d-flex flex-column align-items-center">
+    <div class="cardInfo__boxLeft__creditCard">
+      <img src="assets/cardImg.png" alt="cardImg_icon" />
+      <h3 class="cardInfo__boxLeft__creditCard__title">Tarjeta Virtual</h3>
+      <p *ngIf="cardData; else fallback"
+        class="cardInfo__boxLeft__creditCard__subtitle">
+        Terminado en <span>{{ showLastDigit(cardData.cardNumber) }}</span>
+      </p>
+      <ng-template #fallback>
+        <span class="text-white">esperando...</span><hr>
+      </ng-template>
+      <button (click)="showData()">Ver datos de la tarjeta</button>
     </div>
-    <div class="cardInfo__boxLeft__info__promo">
-      <div class="imgContainer">
-        <img src="assets/ticket.png" alt="ticket_icon">
+    <div class="cardInfo__boxLeft__info">
+      <h5>Con tu tarjeta virtual podes</h5>
+      <div class="cardInfo__boxLeft__info__promo">
+        <div class="imgContainer">
+          <img src="assets/shop.png" alt="shop_icon" />
+        </div>
+        <a routerLink="../service" class="text-decoration-none">Pagar servicios</a>
       </div>
-      <a routerLink="../transfer" class="text-decoration-none">Transferir dinero</a>
+      <div class="cardInfo__boxLeft__info__promo">
+        <div class="imgContainer">
+          <img src="assets/ticket.png" alt="ticket_icon" />
+        </div>
+        <a routerLink="../transfer" class="text-decoration-none"
+          >Transferir dinero</a
+        >
+      </div>
     </div>
   </div>
- </div>
-  <app-credit-card-child [show]="childStatus"
-  (emitShowStatus)="receiveChildStatus($event)"
-  [ngClass]="childStatus?'active':''"></app-credit-card-child>
+  <app-credit-card-child
+    [show]="childStatus"
+    [cardData]="cardData"
+    (emitShowStatus)="receiveChildStatus($event)"
+    [ngClass]="childStatus ? 'active' : ''"
+  ></app-credit-card-child>
 </div>

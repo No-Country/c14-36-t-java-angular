@@ -19,8 +19,8 @@ export function textValidator(controller:AbstractControl){
   if(spaces.test(value)){
     return {hasSpaces:true, message: 'Espacios excesivos'}
   }
-  if(value.length > 20){
-    return {maxLength:true, message:'Máximo 20 carácteres.'}
+  if(value.length > 85){
+    return {maxLength:true, message:'Máximo 85 carácteres.'}
   }
   return null
 };
@@ -32,7 +32,7 @@ export function dniValidator(controller:AbstractControl){
     return {minLength:true, message:'Mínimo 8 carácteres.'}
   }
   if(/[^\d]/.test(value)){
-    return {invalidChar:true, message:'No se permite letras.'}
+    return {invalidChar:true, message:'No se permite letras ni caracteres.'}
   }
   if(value.length > 8){
     return {maxLength:true, message:'Máximo 8 carácteres.'}

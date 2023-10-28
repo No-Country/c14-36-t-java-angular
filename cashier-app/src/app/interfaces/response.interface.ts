@@ -1,3 +1,5 @@
+import { IUserProfile, User } from './User.interface';
+
 export interface ILoginRes {
   data: {
     id: string;
@@ -13,3 +15,14 @@ export interface IRegistRes {
     timeStamp: string;
   };
 }
+export interface IGetUserRes {
+  success: boolean;
+  message: string;
+  data: IUserProfile;
+  timeStamp: string;
+}
+export interface IGetAllUser{
+  data:IUserProfile[],
+  message:string
+}
+

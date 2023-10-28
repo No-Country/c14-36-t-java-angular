@@ -7,6 +7,7 @@
   background-color: $colGreenDark;
   transition: ease-in-out all 0.5s;
   padding-inline: 1rem;
+  max-width: 380px;
 }
 .cardDetailBox{
   position: relative;
@@ -36,17 +37,27 @@
     &__field{
       display: flex;
       justify-content: space-between;
-      align-items: center;
       border-bottom: solid gray 2px;
       color: $colWhite;
       padding-bottom: 0.5rem;
+      &__data{
+        text-align: end;
+      }
     }
-    .copy{
+    .copyBtn{
+      all:initial;
+      cursor: pointer;
       overflow-y: hidden;
+      @include transitionFast;
       img{
         @include changeColorPng($colGreenLight);
         width: 2rem;
         margin-left: 0.5rem;
+      }
+      &:active{
+        transform: scale(0.9);
+        box-shadow: 0 0 10px -1px $colGreenLight;
+        outline: 1px solid $colGreenLight;
       }
     }
   }
@@ -61,6 +72,14 @@
     transition: all ease-in-out 0.5s;
     &:hover{
       background-color: changeOpacity($colWhite,0.7);
+    }
+  }
+}
+@media screen and (max-width:420px){
+  .cardDetailBox__details__field{
+    flex-direction: column;
+    &__data{
+      text-align: start;
     }
   }
 }
