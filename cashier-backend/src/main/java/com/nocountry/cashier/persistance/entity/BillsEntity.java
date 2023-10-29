@@ -1,10 +1,11 @@
 package com.nocountry.cashier.persistance.entity;
 
 import com.nocountry.cashier.enums.EnumsState;
-import com.nocountry.cashier.enums.EnumsTransactions;
 import com.nocountry.cashier.persistance.entity.listener.audit.Auditable;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -13,45 +14,32 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "transaction")
+@Table(name = "bill")
+@SQLDelete(sql = "UPDATE bill SET enabled=false where id=?")
+@Where(clause = "enabled=true")
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
-@ToString
-@SQLDelete(sql = "UPDATE transaction SET enabled=false where id=?")
-@Where(clause = "enabled=true")
-public class TransactionEntity extends Auditable<LocalDateTime> {
+public class BillsEntity extends Auditable<LocalDateTime> {
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     @Id
     private String id;
     @Column(name = "date_emit")
     private LocalDateTime dateEmit;
-    //INCOME,EGRESS,TRANSFER,DEPOSIT,PAYMENT_QR
-    @Enumerated(EnumType.STRING)
-    @Column(name = "type_trans")
-    private EnumsTransactions type;
+    @Column(name="bills_type")
+    private String bill;
+    @Column(name="bills_num")
+    private String billNum;
     @Column(name="amount")
     private BigDecimal amount;
-    @Column(name = "origin")
-    private String origin; // String cvu
-    @Column(name = "destination")
-    private String destination;
-    //STATE WITH enums OR boolean?
-    //private Boolean state;
+    @Column(name="voucher_num")
+    private String voucherNum;//para el numero utility generatorDTP
     @Enumerated(EnumType.STRING)
     @Column(name = "state")
     private EnumsState state;
-
+    @Column(name = "enabled")
     private Boolean enabled;
-
-//    @ManyToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "account_entity")
-//    private AccountEntity accountEntity;
-//    @ManyToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "account_entity")
-//    private AccountEntity accountEntity;
 
     @ManyToOne
     @JoinColumn(name = "idAccount")
@@ -61,5 +49,4 @@ public class TransactionEntity extends Auditable<LocalDateTime> {
     public void onCreate() {
         this.setEnabled(Boolean.TRUE);
     }
-
 }

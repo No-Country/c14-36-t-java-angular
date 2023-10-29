@@ -59,7 +59,8 @@ public class TransactionController {
         TransactionResponseDTO transactionResponse = transactionService.createTransaction(requestDTO, idAccount);
 //        String uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("")
 //                .path("{id}").buildAndExpand(transactionResponse.id()).toUriString();
-        return ResponseEntity.status(CREATED).body(transactionResponse.toString());
+        //return ResponseEntity.status(CREATED).body(transactionResponse.toString());
+        return new ResponseEntity<>(transactionResponse,OK);
     }
 
     //SearchById

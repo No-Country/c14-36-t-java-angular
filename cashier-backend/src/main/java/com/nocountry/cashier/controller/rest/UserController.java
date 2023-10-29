@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -65,7 +66,7 @@ public class UserController {
 //            pageableDto.setOrder(order);
             System.out.println(ramdom);
 
-            List<UserResponseDTO> content = userService.findByShortString(ramdom,pageableDto).getContent();
+            Page<UserResponseDTO> content = userService.findByShortString(ramdom,pageableDto);
             Map<String, Object> response = Map.of("message", "Listado de Personas Segun letras ingresadas ", "data", content);
             return new ResponseEntity<>(response, OK);
         } catch (Exception e) {
