@@ -1,6 +1,7 @@
 package com.nocountry.cashier.persistance.entity;
 
 import com.nocountry.cashier.enums.EnumsState;
+import com.nocountry.cashier.enums.EnumsTransactions;
 import com.nocountry.cashier.persistance.entity.listener.audit.Auditable;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -20,21 +21,25 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Setter
-public class BillsEntity extends Auditable<LocalDateTime> {
+public class BillEntity extends Auditable<LocalDateTime> {
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     @Id
     private String id;
     @Column(name = "date_emit")
     private LocalDateTime dateEmit;
-    @Column(name="bills_type")
-    private String bill;
-    @Column(name="bills_num")
-    private String billNum;
+    //TRANSFER,PAYMENT
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type_trans")
+    private EnumsTransactions type;
+    @Column(name="type_bill")
+    private String bill_type;
+    @Column(name="bill_num")
+    private String bill_num;
     @Column(name="amount")
     private BigDecimal amount;
     @Column(name="voucher_num")
-    private String voucherNum;//para el numero utility generatorDTP
+    private String voucher_num;//para el numero utility generatorDTP
     @Enumerated(EnumType.STRING)
     @Column(name = "state")
     private EnumsState state;

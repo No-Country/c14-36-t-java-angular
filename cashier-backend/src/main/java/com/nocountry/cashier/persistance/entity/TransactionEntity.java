@@ -29,7 +29,7 @@ public class TransactionEntity extends Auditable<LocalDateTime> {
     private String id;
     @Column(name = "date_emit")
     private LocalDateTime dateEmit;
-    //INCOME,EGRESS,TRANSFER,DEPOSIT,PAYMENT_QR
+    //TRANSFER,PAYMENT
     @Enumerated(EnumType.STRING)
     @Column(name = "type_trans")
     private EnumsTransactions type;

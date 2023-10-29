@@ -3,6 +3,7 @@ package com.nocountry.cashier.domain.strategy.transaction;
 import com.nocountry.cashier.enums.EnumsTransactions;
 import com.nocountry.cashier.exception.InputNotValidException;
 import com.nocountry.cashier.persistance.entity.AccountEntity;
+import com.nocountry.cashier.persistance.entity.BillEntity;
 import com.nocountry.cashier.persistance.entity.TransactionEntity;
 import com.nocountry.cashier.persistance.repository.AccountRepository;
 import lombok.NoArgsConstructor;
@@ -56,4 +57,6 @@ public class Transfer extends Transaction {
                 .amount(amount)
                 .build();
     }
+
+
 }

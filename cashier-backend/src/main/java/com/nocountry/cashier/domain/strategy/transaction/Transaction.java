@@ -2,6 +2,7 @@ package com.nocountry.cashier.domain.strategy.transaction;
 
 import com.nocountry.cashier.enums.EnumsTransactions;
 import com.nocountry.cashier.persistance.entity.AccountEntity;
+import com.nocountry.cashier.persistance.entity.BillEntity;
 import com.nocountry.cashier.persistance.entity.TransactionEntity;
 
 import java.math.BigDecimal;
@@ -16,4 +17,6 @@ public abstract class Transaction {
 
     public abstract EnumsTransactions getType();
     public abstract TransactionEntity updateBalance(AccountEntity origin, AccountEntity destination, BigDecimal amount);
+
+
 }
