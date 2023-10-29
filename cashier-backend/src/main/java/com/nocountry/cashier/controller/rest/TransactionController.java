@@ -7,6 +7,7 @@ import com.nocountry.cashier.controller.dto.response.TransactionResponseDTO;
 import com.nocountry.cashier.domain.usecase.TransactionService;
 import com.nocountry.cashier.enums.EnumsState;
 import com.nocountry.cashier.enums.EnumsTransactions;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -22,13 +23,13 @@ import java.util.List;
 import java.util.Map;
 
 import static com.nocountry.cashier.util.Constant.*;
-import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"http://localhost:4200","*"}, methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT,RequestMethod.PATCH, RequestMethod.DELETE})
 @RestController
 @RequestMapping(value = API_VERSION + RESOURCE_USER + RESOURECE_TRANSACTION)
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearerAuth")
 public class TransactionController {
 
     private static final Logger logger = LoggerFactory.getLogger(TransactionController.class);
@@ -39,16 +40,16 @@ public class TransactionController {
     //http://localhost:8080/v1/api/customers/transactions?page=0&size=4&order=1&field=id
     @GetMapping
     public ResponseEntity<?> getAllTransactions(@RequestParam String idAccount,
-            @RequestParam(value = "page", defaultValue = "0") Integer page,
+                                                @RequestParam(value = "page", defaultValue = "0") Integer page,
                                                 @RequestParam(value = "size", defaultValue = "4") Integer size,
-                                                PageableDto pageableDto) throws Exception{
-        try{
-        pageableDto.setPage(page);
-        pageableDto.setSize(size);
-        Page<TransactionResponseDTO> content = transactionService.findAllByIdAccount(idAccount,pageableDto);
-        Map<String, Object> response = Map.of("message", "Listado de Transacciones", "data", content);
-        return new ResponseEntity<>(response, OK);
-        }catch (Exception e){
+                                                PageableDto pageableDto) throws Exception {
+        try {
+            pageableDto.setPage(page);
+            pageableDto.setSize(size);
+            Page<TransactionResponseDTO> content = transactionService.findAllByIdAccount(idAccount, pageableDto);
+            Map<String, Object> response = Map.of("message", "Listado de Transacciones", "data", content);
+            return new ResponseEntity<>(response, OK);
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(("{\"error\":\"" + e.getMessage() + "}"));
         }
 
@@ -66,11 +67,11 @@ public class TransactionController {
     //SearchById
     //http://localhost:8080/v1/api/customers/transactions/search/58c6f82a-57f0-4b74-ba56-2dfcd6665a54
     @GetMapping("/search")
-    public ResponseEntity<?> getTransactionById(@RequestParam  String id, @RequestParam String idAccount) throws Exception{
+    public ResponseEntity<?> getTransactionById(@RequestParam String id, @RequestParam String idAccount) throws Exception {
         try {
-            return ResponseEntity.ok(new GenericResponseDTO<>(true, "Transaccion Encontrada", transactionService.findOneByIdAccount(id,idAccount)));
+            return ResponseEntity.ok(new GenericResponseDTO<>(true, "Transaccion Encontrada", transactionService.findOneByIdAccount(id, idAccount)));
 
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(("{\"error\":\"" + e.getMessage() + "}"));
         }
     }

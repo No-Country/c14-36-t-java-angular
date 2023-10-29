@@ -38,6 +38,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      * @return
      */
     @Override
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException exception, HttpHeaders headers, HttpStatusCode status, WebRequest webRequest) {
 
         List<ApiError> errors = exception.getBindingResult().getFieldErrors()
@@ -57,6 +58,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(value = {DuplicateEntityException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ProblemDetail handleDuplicateEntityException(DuplicateEntityException ex, HttpServletRequest request) {
         ProblemDetail problemDetails = ProblemDetail
                 .forStatusAndDetail
@@ -66,6 +68,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return problemDetails;
     }
 
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     @ExceptionHandler(value = InvalidEmailException.class)
     public ProblemDetail handleNotFoundException(RuntimeException ex) {
         return ProblemDetail
@@ -116,6 +119,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ProblemDetail handlePSQLException(DataIntegrityViolationException ex) {
         String message = ex.getMostSpecificCause().getMessage();
         if (message.contains("Detail:"))
@@ -127,6 +131,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return problemDetail;
     }
     @ExceptionHandler(ResourceNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ProblemDetail handleResouceNotFoundE(ResourceNotFoundException ex, HttpServletRequest request){
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
                 HttpStatus.NOT_FOUND, ex.getLocalizedMessage()

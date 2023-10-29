@@ -34,9 +34,6 @@ import java.util.function.Function;
 @RequiredArgsConstructor
 @Slf4j
 public class TransactionServiceImpl implements TransactionService {
-
-    private final UserRepository userRepository;
-
     private final TransactionRepository transactionRepository;
     private final TransactionMapper mapper;
     private final TransactionStrategy strategy;
@@ -101,15 +98,13 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     @Transactional(readOnly = true)
-    public TransactionResponseDTO findOneByIdAccount(String id, String idAccount) throws Exception {
+    public TransactionResponseDTO findOneByIdAccount(String id, String idAccount) {
 
-        try {
-            TransactionEntity transactionEntity = transactionRepository.findOneByIdAccount(id, idAccount);
-            return mapper.toTransactionResponseDto(transactionEntity);
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
+        TransactionEntity transactionEntity = transactionRepository.findOneByIdAccount(id, idAccount);
+        if (transactionEntity == null) {
+            throw new ResourceNotFoundException("Transaccion no encontrada", "id", id);
         }
-
+        return mapper.toTransactionResponseDto(transactionEntity);
     }
 
     @Override

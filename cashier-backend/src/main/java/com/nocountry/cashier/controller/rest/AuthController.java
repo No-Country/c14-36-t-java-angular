@@ -30,7 +30,7 @@ import static com.nocountry.cashier.util.Constant.RESOURCE_REGISTER;
  */
 
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"http://localhost:4200","*"}, methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT,RequestMethod.PATCH, RequestMethod.DELETE})
 @RestController
 @RequiredArgsConstructor
 @Slf4j
