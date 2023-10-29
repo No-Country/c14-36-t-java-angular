@@ -14,13 +14,18 @@ export class HeaderComponent {
   ngOnInit(): void {
 
   }
+
   pipeNameData(name:string){
     const names = name.split(" ");
     const [firstName, lastname] = names;
     return (firstName.charAt(0)+lastname.charAt(0)).toUpperCase();
   }
+
+  userInfo():void{
+    this.route.navigate(["/user/info-user"], { state: { userData: this.userData } })
+  }
+
   logOutUser() {
-    /* logica del servicio */
     localStorage.clear();
     this.route.navigate(["login"])
   }

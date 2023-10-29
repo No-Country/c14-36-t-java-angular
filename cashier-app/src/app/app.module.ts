@@ -39,6 +39,7 @@ import { PipeTransformPipe } from './pipes/pipe-transform.pipe';
 import { BalanceComponent } from './component/Pages/transaction/balance/balance.component';
 import { TransferFormComponent } from './component/Pages/transaction/transfer-form/transfer-form.component';
 import { SelectedUserComponent } from './component/Pages/transaction/selected-user/selected-user.component';
+import { LoadingComponent } from './shared/loading/loading.component';
 
 
 @NgModule({
@@ -70,6 +71,7 @@ import { SelectedUserComponent } from './component/Pages/transaction/selected-us
     BalanceComponent,
     TransferFormComponent,
     SelectedUserComponent,
+    LoadingComponent,
 
   ],
   imports: [

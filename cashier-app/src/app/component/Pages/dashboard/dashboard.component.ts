@@ -17,8 +17,7 @@ export class DashboardComponent implements OnInit {
   cvu: number = 0;
   showcvu: boolean = false;
   idAccount: string = '';
-
-  isLoading: boolean = false;
+  isLoading: boolean = true;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -41,12 +40,12 @@ export class DashboardComponent implements OnInit {
 
     setTimeout(() => {
       this.obtenerDatosCuentaPorAccountId(this.idAccount);
-      this.showcvu = true;
     }, 1000);
     // Mostrar el indicador de carga.
-    this.isLoading = false;
-
-    //this.compartirSaldo_TransaccionesPorServicio(); 
+    
+    setTimeout(() => {
+      this.isLoading= false;
+    }, 1000);
   }
 
   obtenerDatosPorUUID(uuid: string) {

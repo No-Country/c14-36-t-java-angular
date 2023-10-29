@@ -1,5 +1,6 @@
+
 <header class="header d-flex justify-content-between align-items-center h-100 ps-4 pe-4">
-  <a class="header__user text-white text-decoration-none" routerLink="info-user" routerLinkActive="router-link-active" >
+  <a class="header__user text-white text-decoration-none" (click)="userInfo()" style="cursor: pointer;">
     <div class="header__user__circle">
       <span>{{pipeNameData(userData.name)}}</span>
     </div>

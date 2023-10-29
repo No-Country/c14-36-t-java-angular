@@ -14,7 +14,7 @@ export class MetricasComponent implements OnInit{
   cvu: number = 0;
   transacciones: any[] = [];
   datosTransaccionesSegmentados: any;
-  isLoading: boolean = false;
+  isLoading: boolean = true;
   idAccount: string = "";
   showcvu: boolean = false;
 
@@ -39,10 +39,11 @@ export class MetricasComponent implements OnInit{
        this.obtenerDatosCuentaPorAccountId(this.idAccount);
        this.showcvu = true;
      }, 1000);
-
-     // Mostrar el indicador de carga.
-     this.isLoading = false;
      this.parsearData()
+     setTimeout(() => {
+      this.isLoading= false;
+    }, 2000);
+     
   }
 
   obtenerDatosPorUUID(uuid: string) {
