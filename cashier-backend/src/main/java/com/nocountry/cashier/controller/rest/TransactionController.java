@@ -89,7 +89,7 @@ public class TransactionController {
         pageableDto.setSize(size);
 
         try {
-            List<TransactionResponseDTO> content = transactionService.findByState(state, idAccount, pageableDto).getContent();
+            Page<TransactionResponseDTO> content = transactionService.findByState(state, idAccount, pageableDto);
             Map<String, Object> response = Map.of("message", "Listado Por Estado De Transaccion", "data", content);
             return new ResponseEntity<>(response, OK);
         } catch (Exception e) {
@@ -113,7 +113,7 @@ public class TransactionController {
         pageableDto.setSize(size);
 
         try {
-            List<TransactionResponseDTO> content = transactionService.findByType(type, idAccount, pageableDto).getContent();
+            Page<TransactionResponseDTO> content = transactionService.findByType(type, idAccount, pageableDto);
             Map<String, Object> response = Map.of("message", "Listado Por Tipo De Transacccion", "data", content);
             return new ResponseEntity<>(response, OK);
         } catch (Exception e) {
@@ -132,7 +132,7 @@ public class TransactionController {
                                                      PageableDto pageableDto) {
 
         try {
-            List<TransactionResponseDTO> content = transactionService.findByAmount(amount, idAccount, pageableDto).getContent();
+            Page<TransactionResponseDTO> content = transactionService.findByAmount(amount, idAccount, pageableDto);
             Map<String, Object> response = Map.of("message", "Listado Por De Transacciones Por Monto", "data", content);
             return new ResponseEntity<>(response, OK);
         } catch (Exception e) {

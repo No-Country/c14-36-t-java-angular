@@ -29,13 +29,4 @@ public interface UserRepository extends JpaRepository<UserEntity, String> {
     @Query("UPDATE UserEntity u set u.verify=true where lower(u.email)= ?1")
     void setVerifiedUser(String email);
 
-
-
-
-    /*
-    *  @Query(value = "SELECT t FROM TransactionEntity t WHERE t.accountEntity.idAccount= :id_account",
-            countQuery = "SELECT COUNT(t) FROM TransactionEntity t WHERE t.accountEntity.idAccount = :id_account")
-    Page<TransactionEntity> findAllByIdAccount( @Param("id_account") String id_account,Pageable pageable);*/
-
-    //eL PUEDA BUSCAR EN LA BASE POR 3LETRAS QUE PUEDEN COINCIDIR CON NAME O LASTNAME
 }
