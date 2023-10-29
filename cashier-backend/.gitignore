@@ -19,10 +19,11 @@ target/
 *.iml
 *.ipr
 pom.xml
-src/resources/aplication.properties
-src/main/resources/static/key/
+/src/main/resources/static/key/
+/src/main/resources/static/qr/
 /*.properties
-hola.txt
+
+/src/main/resources/*.env
 
 
 ### NetBeans ###
@@ -37,3 +38,4 @@ build/
 
 ### VS Code ###
 .vscode/
+

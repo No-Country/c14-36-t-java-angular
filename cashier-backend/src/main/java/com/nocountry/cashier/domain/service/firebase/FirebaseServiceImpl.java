@@ -1,4 +1,4 @@
-package com.nocountry.cashier.domain.service;
+package com.nocountry.cashier.domain.service.firebase;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.*;
@@ -8,7 +8,7 @@ import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.StorageClient;
 import com.nocountry.cashier.configuration.FirebaseProperties;
 import com.nocountry.cashier.controller.dto.response.ImageResponseDTO;
-import com.nocountry.cashier.domain.usecase.FirebaseService;
+import com.nocountry.cashier.domain.usecase.firebase.FirebaseService;
 import com.nocountry.cashier.exception.GenericException;
 import com.nocountry.cashier.exception.handlefirebase.MultipleImageUploadException;
 import com.nocountry.cashier.exception.handlefirebase.ServiceAccountFirebase;

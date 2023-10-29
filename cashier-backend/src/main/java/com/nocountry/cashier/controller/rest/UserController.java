@@ -3,6 +3,7 @@ package com.nocountry.cashier.controller.rest;
 import com.nocountry.cashier.controller.dto.request.PageableDto;
 import com.nocountry.cashier.controller.dto.request.UserRequestDTO;
 import com.nocountry.cashier.controller.dto.response.GenericResponseDTO;
+import com.nocountry.cashier.controller.dto.response.TransactionResponseDTO;
 import com.nocountry.cashier.controller.dto.response.UserResponseDTO;
 import com.nocountry.cashier.domain.usecase.UserService;
 import jakarta.validation.Valid;
@@ -41,6 +42,38 @@ public class UserController {
         Map<String, Object> response = Map.of("message", "Listado de Usuarios", "data", content);
         return new ResponseEntity<>(response, OK);
     }
+
+    @GetMapping("search/{ramdom}")
+    public ResponseEntity<?> getByShortString(@PathVariable String ramdom,
+                                              @RequestParam(value = "page", defaultValue = "0") Integer page,
+                                              @RequestParam(value = "size", defaultValue = "10") Integer size,
+                                              PageableDto pageableDto){
+        //@RequestParam(value = "order", defaultValue = "1") Integer order,
+        // @RequestParam(value = "field", defaultValue = "id") String field)
+
+
+        try {
+            // Validar que el parámetro de búsqueda no esté vacío o nulo
+            if (ramdom == null || ramdom.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{'error':'El parámetro de búsqueda es requerido'}");
+
+            }
+//            PageableDto pageableDto= new PageableDto();
+            pageableDto.setPage(page);
+            pageableDto.setSize(size);
+//            pageableDto.setField(field);
+//            pageableDto.setOrder(order);
+            System.out.println(ramdom);
+
+            List<UserResponseDTO> content = userService.findByShortString(ramdom,pageableDto).getContent();
+            Map<String, Object> response = Map.of("message", "Listado de Personas Segun letras ingresadas ", "data", content);
+            return new ResponseEntity<>(response, OK);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(("{\"error\":\"" + e.getMessage() + "}"));
+        }
+
+    }
+
 
     @PostMapping("/")
     public ResponseEntity<?> createCustomer(@Valid @RequestBody UserRequestDTO requestDTO) {

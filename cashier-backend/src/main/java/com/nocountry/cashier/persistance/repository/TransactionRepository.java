@@ -20,8 +20,13 @@ import java.util.Optional;
 public interface TransactionRepository extends JpaRepository<TransactionEntity,String>{
 
 
-//    @Query(value = "SELECT t FROM TransactionEntity t WHERE t.state = :state AND t.accountEntity.idAccount= :id_account")
-//    List<TransactionEntity> findByState(@Param("state") EnumsState state, @Param("id_account") String id_account);
+    @Query(value = "SELECT t FROM TransactionEntity t WHERE t.id = :id AND t.accountEntity.idAccount= :id_account")
+    TransactionEntity findOneByIdAccount( @Param("id")String id,@Param("id_account") String id_account);
+    @Query(value = "SELECT t FROM TransactionEntity t WHERE t.accountEntity.idAccount= :id_account",
+            countQuery = "SELECT COUNT(t) FROM TransactionEntity t WHERE t.accountEntity.idAccount = :id_account")
+    Page<TransactionEntity> findAllByIdAccount( @Param("id_account") String id_account,Pageable pageable);
+
+
     @Query(value = "SELECT t FROM TransactionEntity t WHERE t.state = :state AND t.accountEntity.idAccount = :id_account",
             countQuery = "SELECT COUNT(t) FROM TransactionEntity t WHERE t.state = :state AND t.accountEntity.idAccount = :id_account")
     Page<TransactionEntity> findByState(@Param("state") EnumsState state, @Param("id_account") String id_account, Pageable pageable);

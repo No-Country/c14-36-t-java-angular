@@ -3,6 +3,8 @@ package com.nocountry.cashier.persistance.repository;
 import com.nocountry.cashier.persistance.entity.TokenEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 /**
  * @author ROMULO
  * @package com.nocountry.cashier.persistance.repository
@@ -11,5 +13,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 
 public interface TokenRepository extends JpaRepository<TokenEntity, Long> {
-    TokenEntity findByTokenGenerated(String token);
+    Optional<TokenEntity> findByTokenGenerated(String token);
+
 }

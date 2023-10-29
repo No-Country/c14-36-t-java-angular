@@ -18,7 +18,8 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Setter
 @Builder
-public class UserRequestDTO implements Serializable {
+public class
+UserRequestDTO implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -41,7 +42,6 @@ public class UserRequestDTO implements Serializable {
     private String dni;
 
     @Pattern(regexp = "^[0-9]{6,12}$", message = "El número de celular debe tener hasta 12 dígitos")
-
     @NotEmpty(message = "Debe ingresar un número de celular")
     private String phone;
 

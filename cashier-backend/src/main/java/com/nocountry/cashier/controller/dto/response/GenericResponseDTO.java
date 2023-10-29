@@ -1,14 +1,10 @@
 package com.nocountry.cashier.controller.dto.response;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Map;
-import java.util.Objects;
 
 /**
  * @author ROMULO
@@ -21,7 +17,7 @@ import java.util.Objects;
 public final class GenericResponseDTO<T> implements Serializable {
 
     @Serial
-    private  static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
     private final boolean success;
     private final String message;
     private final T data;
@@ -31,6 +27,6 @@ public final class GenericResponseDTO<T> implements Serializable {
         this.success = success;
         this.message = message;
         this.data = data;
-        this.timeStamp= LocalDateTime.now();
+        this.timeStamp = LocalDateTime.now();
     }
 }

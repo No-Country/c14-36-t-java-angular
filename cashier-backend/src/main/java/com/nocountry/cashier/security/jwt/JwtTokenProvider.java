@@ -7,6 +7,7 @@ import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.Payload;
 import com.nocountry.cashier.exception.GenericException;
+import com.nocountry.cashier.exception.JwtGenericException;
 import com.nocountry.cashier.persistance.entity.UserEntity;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.Base64;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
@@ -29,16 +29,16 @@ import java.util.function.Function;
  */
 @Service
 @Slf4j
-public class JwtTokenProvider {
+public class JwtTokenProvider{
 
     @Value("${jwt.secret.key}")
     private String secretKey;
-    @Value("${jwt.time.expiration}")
-    private String expiration;
     @Value("${jwt.domain.auth}")
     private String domain;
     @Value("${jwt.client.id}")
     private String clientId;
+
+    public static final String TOKEN_TYPE = "JWT";
 
     /**
      * Ciclo de vida del bean: se ejecuta ni bien se construya el bean , codifica nuestra clave para la firma de mi token
@@ -55,20 +55,20 @@ public class JwtTokenProvider {
      * @param user UserEntity
      * @return String token
      */
-    public String generateToken(UserEntity user) {
-        try {
-            Instant expirationToken = Instant.now().plusMillis(Long.parseLong(expiration));
-            Map<String, Object> claims = new HashMap<>();
-            claims.put("sub", user.getEmail());
-            claims.put("name", user.getName()+" "+user.getLastName());
-            claims.put("phone", user.getPhone());
-            claims.put("role", "ROLE_USER");
+    public String generateToken(UserEntity user,String expiration) {
 
+        Instant expirationToken = Instant.now().plusMillis(Long.parseLong(expiration));
+        try {
             return JWT.create()
+                    .withHeader(Map.of("type", TOKEN_TYPE))
                     .withIssuedAt(Instant.now())
                     .withExpiresAt(expirationToken)
                     .withIssuer("cashier")
-                    .withClaim("data", claims)
+                    .withClaim("id",user.getId())
+                    .withClaim("dni", user.getDni())
+                    .withSubject(user.getEmail())
+                    .withClaim("name", user.getName() + " " + user.getLastName())
+                    .withClaim("role", "ROLE_USER")
                     .sign(getSignatureKey());
         } catch (JWTCreationException exception) {
             log.warn("Invalid Creation Token");
@@ -85,14 +85,24 @@ public class JwtTokenProvider {
     public boolean verifyToken(String token) {
         try {
             if (Objects.isNull(token)) throw new GenericException("El token esta vació", HttpStatus.BAD_REQUEST);
+            if (isExpirationToken(token)) throw new JwtGenericException("Oops, el token ya expiró.", HttpStatus.BAD_REQUEST);
             JWT.require(getSignatureKey())
                     .withIssuer("cashier")
                     .build()
                     .verify(token);
             return true;
         } catch (Exception ex) {
-            throw new GenericException(ex.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new JwtGenericException(ex.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    public boolean isExpirationToken(String token) {
+        Instant extractExpiration = extractExpiration(token);
+        return extractExpiration.isBefore(Instant.now());
+    }
+
+    public Instant extractExpiration(String token) {
+        return extractAllClaims(token, Payload::getExpiresAtAsInstant);
     }
 
     /**
@@ -100,15 +110,15 @@ public class JwtTokenProvider {
      *
      * @param token String
      * @param key   sub|id|email|phone|role
-     * @return
+     * @return String
      */
     public String getClaimForToken(String token, String key) {
         Map<String, Claim> claims = extractAllClaims(token, Payload::getClaims);
         return switch (key.toLowerCase()) {
             case "sub" -> claims.get("sub").asString();
             case "name" -> claims.get("name").asString();
-            case "phone" -> claims.get("phone").asString();
             case "role" -> claims.get("role").asString();
+            case "dni" -> claims.get("dni").asString();
             default -> "No existe dicho claim";
         };
     }
@@ -116,7 +126,7 @@ public class JwtTokenProvider {
     /**
      * @param token           String
      * @param claimsTFunction Function
-     * @param <T>
+     * @param <T>             Generico
      * @return Generic
      */
     private <T> T extractAllClaims(String token, Function<DecodedJWT, T> claimsTFunction) {

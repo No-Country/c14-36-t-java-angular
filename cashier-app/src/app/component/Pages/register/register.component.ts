@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
-<<<<<<< HEAD
+
 export class RegisterComponent implements OnInit {
   created: boolean = false;
   user!: FormGroup<User|any>;
@@ -65,8 +65,4 @@ export class RegisterComponent implements OnInit {
     });
   }
 }
-=======
-export class RegisterComponent {
 
-}
->>>>>>> 5b3ae6751dfd707332e1e84cf7504619795df89e

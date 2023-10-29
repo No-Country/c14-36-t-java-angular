@@ -1,4 +1,6 @@
+
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -6,6 +8,7 @@ import { User } from '../interfaces/User.interface';
 
 
 @Injectable({
+
   providedIn: 'root',
 })
 export class UserService {
@@ -18,6 +21,7 @@ export class UserService {
 
   addNewUser(user: User): Observable<User> {
     return this.http.post<User>(this.APIRegister, user);
+
   }
 
   getUsers(): Observable<User[]> {
@@ -29,6 +33,7 @@ export class UserService {
   }
 
   updateUser(user: User): Observable<User> {
+
     return this.http.put<User>(`${this.API}/${user.id}`, user);
   }
 
@@ -43,5 +48,6 @@ export class UserService {
     };
 
     return this.http.post<any>(this.API, body);
+
   }
 }
