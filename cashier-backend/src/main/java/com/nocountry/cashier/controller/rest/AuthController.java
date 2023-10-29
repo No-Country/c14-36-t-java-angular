@@ -6,9 +6,12 @@ import com.nocountry.cashier.controller.dto.response.*;
 import com.nocountry.cashier.domain.usecase.AuthService;
 import com.nocountry.cashier.domain.usecase.UserService;
 import com.nocountry.cashier.domain.usecase.qr.QRGeneratorService;
+import com.nocountry.cashier.util.Utility;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,11 +33,13 @@ import static com.nocountry.cashier.util.Constant.RESOURCE_REGISTER;
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 @RequestMapping(value = API_VERSION+RESOURCE_REGISTER)
 public class AuthController {
     private final AuthService authService;
     private final UserService userService;
     private final QRGeneratorService qrService;
+    private final Utility utility;
 
 
     @PostMapping( "/")
@@ -44,8 +49,9 @@ public class AuthController {
         return ResponseEntity.ok().body(Map.of("data", register));
     }
 
-    @GetMapping("/")
-    public ResponseEntity<?> authenticateCustomer(@Valid @RequestBody AuthRequestDTO authDto) {
+    @PostMapping("/auth/")
+    public ResponseEntity<?> authenticateCustomer(@Valid @RequestBody AuthRequestDTO authDto, HttpServletRequest request) {
+        log.info(utility.urlServer(request,"/v1/api/customers/login?otp=a44a4"));
         AuthenticatedUserDTO authenticate = authService.authenticate(authDto);
         String uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/")
                 .path("{id}").buildAndExpand(authenticate.getId()).toUriString();
@@ -60,6 +66,7 @@ public class AuthController {
                 .path("{qr}").path("/view").buildAndExpand(confirmed.getQr()).toUriString();
         return ResponseEntity.ok().body(Map.of("data", confirmed, "urlQr", uri));
     }
+
 
     // ? OJO CON ESTO SE MOVE TODAS LAS FUNCIONES A USER CONTROLLER
     @GetMapping("/{uuid}/view")

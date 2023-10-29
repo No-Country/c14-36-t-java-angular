@@ -30,4 +30,5 @@ public class GenericException extends RuntimeException {
         this.timeStamp = LocalDateTime.now();
         this.status = httpStatus.value();
     }
+
 }

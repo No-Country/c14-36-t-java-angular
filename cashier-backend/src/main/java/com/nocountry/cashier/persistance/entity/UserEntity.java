@@ -12,6 +12,7 @@ import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "customer")
@@ -56,6 +57,7 @@ public class UserEntity extends Auditable<LocalDateTime> {
     private String password;
 
     private String qr;
+    private String codeOtp;
 
     @OneToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "url_profile")
@@ -65,19 +67,32 @@ public class UserEntity extends Auditable<LocalDateTime> {
     @JoinColumn(name= "id_token")
     private TokenEntity token;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name= "id_account")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "userEntity", fetch = FetchType.EAGER)
     private AccountEntity accountEntity;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name= "id_card")
     private CreditCardEntity creditCardEntity;
 
+    @ManyToMany
+    @JoinTable(
+            name = "contacts",
+            joinColumns = @JoinColumn(name = "customer_id"),
+            inverseJoinColumns = @JoinColumn(name = "contact_id")
+    )
+    private List<UserEntity> contacts;
+
    @PrePersist
    public void onCreate() {
        this.setVerify(Boolean.FALSE);
        this.setEnabled(Boolean.TRUE);
   }
+    public void addContact(UserEntity contact){
+        contacts.add(contact);
+    }
+    public void deleteContact(UserEntity contact){
+        contacts.remove(contact);
+    }
 
 
     public UserEntity modifyUser(UserRequestDTO requestDTO) {

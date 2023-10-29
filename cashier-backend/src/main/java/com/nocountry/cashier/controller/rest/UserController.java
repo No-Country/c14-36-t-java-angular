@@ -25,12 +25,19 @@ import static com.nocountry.cashier.util.Constant.RESOURCE_USER;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping(value = API_VERSION + RESOURCE_USER)
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
+
+    //http://localhost:8080/v1/api/customers/login?otp=%s
+    @GetMapping(path =  "/login")
+    public ResponseEntity<?> loginRegisteredUser(@RequestParam String otp){
+        return ResponseEntity.ok().body(Map.of("data", "login"));
+    }
 
     //? a la anotación -> ? se le llama wildcard
     @GetMapping
@@ -39,7 +46,7 @@ public class UserController {
                                              PageableDto pageableDto) {
         pageableDto.setPage(page);
         pageableDto.setSize(size);
-        List<UserResponseDTO> content = userService.getAll(pageableDto).getContent();
+        Page<UserResponseDTO> content = userService.getAll(pageableDto);
         Map<String, Object> response = Map.of("message", "Listado de Usuarios", "data", content);
         return new ResponseEntity<>(response, OK);
     }

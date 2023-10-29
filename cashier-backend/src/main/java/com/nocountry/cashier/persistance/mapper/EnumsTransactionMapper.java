@@ -1,19 +1,17 @@
 package com.nocountry.cashier.persistance.mapper;
 
 import com.nocountry.cashier.enums.EnumsTransactions;
-import org.mapstruct.*;
-import org.mapstruct.factory.Mappers;
+import org.mapstruct.Mapper;
+import org.mapstruct.ValueMapping;
+import org.mapstruct.ValueMappings;
 
 @Mapper()
 public interface EnumsTransactionMapper {
     //EnumsTransactionMapper INSTANCE = Mappers.getMapper(EnumsTransactionMapper.class);
     //@EnumMapping(nameTransformationStrategy = "suffix",configuration = "_TYPE")
     @ValueMappings({
-            @ValueMapping(target = "INCOME",source = "INCOME"),
-            @ValueMapping(target = "EGRESS",source = "EGRESS"),
-            @ValueMapping(target = "TRANSFER",source = "TRANSFER"),
-            @ValueMapping(target = "DEPOSIT",source = "DEPOSIT"),
-            @ValueMapping(target = "PAYMENT_QR",source = "PAYMENT_QR"),
+            @ValueMapping(target = "TRANSFER", source = "TRANSFER"),
+            @ValueMapping(target = "PAYMENT", source = "PAYMENT"),
 
     })
     EnumsTransactions toEnumsTransactionMapper(EnumsTransactions enumsTransactions);

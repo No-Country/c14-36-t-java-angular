@@ -7,10 +7,12 @@ import com.nocountry.cashier.controller.dto.response.TransactionResponseDTO;
 import com.nocountry.cashier.domain.usecase.TransactionService;
 import com.nocountry.cashier.enums.EnumsState;
 import com.nocountry.cashier.enums.EnumsTransactions;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +25,7 @@ import static com.nocountry.cashier.util.Constant.*;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping(value = API_VERSION + RESOURCE_USER + RESOURECE_TRANSACTION)
 @RequiredArgsConstructor
@@ -42,7 +45,7 @@ public class TransactionController {
         try{
         pageableDto.setPage(page);
         pageableDto.setSize(size);
-        List<TransactionResponseDTO> content = transactionService.findAllByIdAccount(idAccount,pageableDto).getContent();
+        Page<TransactionResponseDTO> content = transactionService.findAllByIdAccount(idAccount,pageableDto);
         Map<String, Object> response = Map.of("message", "Listado de Transacciones", "data", content);
         return new ResponseEntity<>(response, OK);
         }catch (Exception e){
@@ -55,12 +58,11 @@ public class TransactionController {
     //NewTransaction
     //http://localhost:8080/v1/api/customers/transactions/new?idAccount=3de8f7f3-41a6-404c-ad4e-599bd9e74e98
     @PostMapping("/new")
-    public ResponseEntity<?> createTransaction( @RequestParam String idAccount ,@RequestBody TransactionRequestDTO requestDTO) {
-        TransactionResponseDTO transactionResponse = transactionService.createTransaction(requestDTO, idAccount);
-//        String uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("")
-//                .path("{id}").buildAndExpand(transactionResponse.id()).toUriString();
-        //return ResponseEntity.status(CREATED).body(transactionResponse.toString());
-        return new ResponseEntity<>(transactionResponse,OK);
+
+    public ResponseEntity<?> createTransaction(@Valid @RequestBody TransactionRequestDTO requestDTO) {
+        TransactionResponseDTO transactionResponse = transactionService.createTransaction(requestDTO);
+        return ResponseEntity.status(OK).body(transactionResponse);
+
     }
 
     //SearchById

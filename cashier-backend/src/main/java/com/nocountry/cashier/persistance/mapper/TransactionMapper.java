@@ -3,40 +3,34 @@ package com.nocountry.cashier.persistance.mapper;
 import com.nocountry.cashier.controller.dto.request.TransactionRequestDTO;
 import com.nocountry.cashier.controller.dto.response.TransactionResponseDTO;
 import com.nocountry.cashier.persistance.entity.TransactionEntity;
-import org.mapstruct.*;
+import org.mapstruct.InheritInverseConfiguration;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingConstants;
 
 import java.util.List;
 
 
-@Mapper(componentModel = MappingConstants.ComponentModel.SPRING,uses ={
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING, uses = {
         EnumsTransactionMapper.class,
         EnumsStateMapper.class,
         AccountMapper.class
 })
 public interface TransactionMapper {
-//    @Mappings({
-//            @Mapping(target ="id" ,source ="id"),
-//            @Mapping(target = "dateEmit",source = "dateEmit"),
-//            @Mapping(target = "type",source = "type"),
-//            @Mapping(target = "amount",source = "amount"),
-//            @Mapping(target = "origin",source = "origin"),
-//            @Mapping(target = "destination",source = "destination"),
-//            @Mapping(target = "state",source = "state"),
-//            @Mapping(target = "AccounEntyti.id_account",source = "AccounEntyti.id_Account")
-//
-//    })
+    @Mapping(target = "state", ignore = true)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "enabled", ignore = true)
+    @Mapping(target = "dateEmit", ignore = true)
+    @Mapping(target = "accountEntity", ignore = true)
     TransactionEntity toTransactionEntity(TransactionRequestDTO transactionRequestDTO);
-    @InheritInverseConfiguration
+
+    @Mapping(target = "type", expression = "java(transactionEntity.getType().name())")
+    @Mapping(target = "state", expression = "java(transactionEntity.getState().name())")
+    @Mapping(target= "amount", source = "amount")
     TransactionResponseDTO toTransactionResponseDto(TransactionEntity transactionEntity);
 
-    List<TransactionRequestDTO> toTransactionRequestDtoList (List<TransactionEntity> transactionEntityList);
+    List<TransactionRequestDTO> toTransactionRequestDtoList(List<TransactionEntity> transactionEntityList);
+
     List<TransactionEntity> toTransactionEntityList(List<TransactionRequestDTO> transactiRequestDTOList);
 
-    /*
-    * GetProduct producToGetDTO(Product product);
-    @InheritInverseConfiguration
-    Product toEnity(GetProduct getProduct);
-    List<GetProduct> toGetProductList(List<Product> productList);
-    List<Product> toEntityList(List<GetProduct> getProductList);
-*/
 }

@@ -1,6 +1,7 @@
 package com.nocountry.cashier.util;
 
 import com.nocountry.cashier.controller.dto.request.PageableDto;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -23,7 +24,6 @@ import java.util.regex.Pattern;
 @Component
 public final class Utility {
 
-    // Region metodo que permite ordenar y paginar
     public Pageable setPageable(PageableDto pageableDTO) {
         Integer sortOrder = pageableDTO.getOrder();
         String sortField = pageableDTO.getField();
@@ -47,7 +47,6 @@ public final class Utility {
 */
 
     public String generatorOTP(int length){
-         //final String ALLOWED_CHARACTERS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
         SecureRandom random= new SecureRandom();
         StringBuilder sb = new StringBuilder();
 
@@ -64,6 +63,14 @@ public final class Utility {
         return sb.toString();
 
     }
+    public String urlServer(HttpServletRequest request, String apiEndpoint){
+        String protocol = request.getScheme(); // HTTP o HTTPS
+        String serverName = request.getServerName(); // Nombre del servidor
+        int serverPort = request.getServerPort(); // Puerto del servidor
+        String contextPath = request.getContextPath(); // Contexto de la aplicación web
+        // Construye la URL completa
+        return protocol + "://" + serverName + ":" + serverPort + contextPath + apiEndpoint;
+    }
 
     /**
      * Validación de correo solo gmail
@@ -73,8 +80,10 @@ public final class Utility {
      */
     public static boolean validateEmail(String email) {
         email = StringUtils.trimAllWhitespace(email);
-        Pattern emailRegex = Pattern.compile("^[a-z0-9ñÑ]+(?!.*(?:\\+{2,}|\\-{2,}|\\.{2,}))(?:[\\.+\\-_]{0,1}[a-z0-9Ññ])*@gmail\\.com$", Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
+        // * Expresión regular para validar un correo de gmail original ->^[a-z0-9ñÑ]+(?!.*(?:\+{2,}|\-{2,}|\.{2,}))(?:[\.+\-_]{0,1}[a-z0-9Ññ])*@gmail\.com$
+        Pattern emailRegex = Pattern.compile("([a-zA-Z0-9]+(?:[._+-][a-zA-Z0-9]+)*)@([a-zA-Z0-9]+(?:[.-][a-zA-Z0-9]+)*[.][a-zA-Z]{2,})", Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
         Matcher matcher = emailRegex.matcher(email);
+
         return matcher.find();
     }
 

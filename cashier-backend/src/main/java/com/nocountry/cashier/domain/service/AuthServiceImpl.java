@@ -15,6 +15,7 @@ import com.nocountry.cashier.enums.EnumsEmail;
 import com.nocountry.cashier.enums.EnumsTemplate;
 import com.nocountry.cashier.exception.DuplicateEntityException;
 import com.nocountry.cashier.exception.GenericException;
+import com.nocountry.cashier.exception.JwtGenericException;
 import com.nocountry.cashier.exception.ResourceNotFoundException;
 import com.nocountry.cashier.persistance.entity.TokenEntity;
 import com.nocountry.cashier.persistance.entity.UserEntity;
@@ -23,6 +24,8 @@ import com.nocountry.cashier.persistance.mapper.CreditCardMapper;
 import com.nocountry.cashier.persistance.mapper.UserMapper;
 import com.nocountry.cashier.persistance.repository.UserRepository;
 import com.nocountry.cashier.security.jwt.JwtTokenProvider;
+import com.nocountry.cashier.util.Utility;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -57,9 +60,8 @@ public class AuthServiceImpl implements AuthService {
     private final EmailFactoryService emailService;
     private final QRGeneratorService qrGeneratorService;
     private final AccountService accountService;
-    private final AccountMapper accountMapper;
-    private final CreditCardMapper creditCardMapper;
     private final CreditCardService creditCardService;
+    private final Utility utility;
 
     @Value("${jwt.time.expiration}")
     private String expirationToken;
@@ -88,8 +90,6 @@ public class AuthServiceImpl implements AuthService {
         String token = jwtTokenProvider.generateToken(userTokenInfo, expirationEmail);
         auth.setToken(TokenEntity.builder().tokenGenerated(token).build());
 
-        //auth.setEnabled(Boolean.TRUE);
-
         userRepository.save(auth);
 
         emailService.generateEmail(EnumsTemplate.CONFIRM_EMAIL,
@@ -107,33 +107,22 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     public AuthenticatedUserDTO authenticate(AuthRequestDTO authRequestDTO) {
         Optional<UserEntity> user = userRepository.findByEmailIgnoreCase(authRequestDTO.email().strip());
-        if (user.isEmpty()) throw new GenericException("El usuario no existe.", HttpStatus.NOT_FOUND);
+        if (user.isEmpty()) throw new GenericException("Error al autenticarse. Usuario no existe", HttpStatus.NOT_FOUND);
+        if (Boolean.FALSE.equals(user.get().getVerify())){
+            throw new GenericException("El usuario no ha confirmado su email.", HttpStatus.CONFLICT);
+        }
         boolean verify = passwordEncoder.matches(authRequestDTO.password(), user.get().getPassword());
-
-        // ? ME TRAE EL TOKEN DE BASE DE DATOS
-        //TokenEntity tokenBD = tokenRepository.findByTokenGenerated(user.get().getToken().getTokenGenerated());
-
-        //? TOKEN QUE VIENE DEL HEADER
-
-        /*if (Objects.isNull(token) || !token.startsWith("Bearer ")) throw new JwtGenericException("Token Not found",HttpStatus.BAD_REQUEST);
-        String jwt=token.substring(7);*/
-
-        //* comprueba que no venga vacío de la base de datos
-        //if (Objects.isNull(tokenBD)) throw new JwtGenericException("Oops no puede ingresar", HttpStatus.BAD_REQUEST);
-        /*if (!jwtTokenProvider.verifyToken(jwt)) //tokenBD.getTokenGenerated()
-            throw new JwtGenericException("Oops Token Invalido", HttpStatus.BAD_REQUEST);*/
-
-
         return verify
                 ? AuthenticatedUserDTO.builder()
                 .id(user.get().getId())
+                .success(true)
                 .message("Autenticación correcta")
                 .token(jwtTokenProvider.generateToken(user.get(), expirationToken))
                 .build()
                 : AuthenticatedUserDTO.builder()
+                .success(false)
                 .message("Password o email incorrectos")
                 .build();
-
     }
 
     @Override
@@ -143,36 +132,43 @@ public class AuthServiceImpl implements AuthService {
         final ResponseEntity<Resource> qrCodeImage;
         // * AQUI OBTENEMOS EL TOKEN CON UN TIEMPO DE EXPIRACION BAJA SI PASA EL TIEMPO ES POR QUE EL USUARIO NO HA CONFIRMADO EL EMAIL
         if (!jwtTokenProvider.verifyToken(token)) {
-            log.error("No confirmado el email");
+            log.error("No se ha confirmado el email");
+            throw new JwtGenericException("Oops, expiró el tiempo para confirmar su email", HttpStatus.CONFLICT);
         }
         var emailUser = jwtTokenProvider.getClaimForToken(token, "sub");
         var user = userRepository.findByEmailIgnoreCase(emailUser).orElseThrow(() -> new ResourceNotFoundException("El usuario no existe"));
-        user.setEnabled(Boolean.TRUE);
+        //user.setEnabled(Boolean.TRUE);
+        user.setVerify(Boolean.TRUE);
 
         var filename = user.getDni() + "_" + user.getLastName() + "_" + "QRCODE.png"; //nombre del archivo original con su extension
 
+        accountService.createAccount(user.getId());
+        creditCardService.createCard(user.getId());
         try {
-            qrCodeImage = qrGeneratorService.generateQrCodeImage(user.getName() + " " + user.getLastName(), WIDTH_QR, HEIGHT_QR, filename);
+            String qrContent = "\tNombre: " + user.getName() + " " + user.getLastName() + "\n" +
+                    "\tCuenta: " + user.getAccountEntity().getCvu() + "\n" +
+                    "\tNumero tarjeta: " + user.getCreditCardEntity().getCardNumber();
+            qrCodeImage = qrGeneratorService.generateQrCodeImage(qrContent, WIDTH_QR, HEIGHT_QR, filename);
             user.setQr(Objects.requireNonNull(qrCodeImage.getBody()).getFilename());
         } catch (WriterException e) {
             log.info("Hubo un problema al generar el Qr");
             throw new GenericException("Failed to write QR code image to output stream.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        user.setAccountEntity(accountMapper.toGetAccountEntity(accountService.createAccount(user.getId())));
-        user.setCreditCardEntity(creditCardMapper.togetCardEntity(creditCardService.createCard(user.getId())));
-
         // ? GENERAMOS EL USUARIO , GENERAMOS NUEVO TOKEN CON NUEVO TIEMPO DE EXPIRACION
-        UserEntity userEntity = userRepository.save(user);
-        String newToken = jwtTokenProvider.generateToken(userEntity, expirationToken);
+        String newToken = jwtTokenProvider.generateToken(user, expirationToken);
         log.info("SE CONFIRMÓ SU EMAIL, CUENTA ACTIVADA");
         var nameUser = jwtTokenProvider.getClaimForToken(token, "name");
         return AuthConfirmedDTO.builder()
                 .message("Perfil creado correctamente para el usuario " + nameUser)
-                .id(userEntity.getId())
-                .token(newToken)
+                .id(user.getId())
                 .qr(Objects.requireNonNull(qrCodeImage.getBody()).getFilename())
                 .build();
+    }
+
+    private boolean authenticateWithOtp(){
+        String otp = utility.generatorOTP(6);
+        return false;
     }
 
 
