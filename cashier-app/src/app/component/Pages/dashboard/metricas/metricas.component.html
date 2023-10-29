@@ -1,4 +1,6 @@
-<div class="container container-fluid">
+
+
+<div *ngIf="saldo != 0" class="container container-fluid">
     <div class="row pt-5">
         <div class="col-sm text-center">
             <label>Tienes disponible</label>
@@ -8,7 +10,13 @@
         </div>
 
         <div class="col-sm text-center my-auto mx-auto">
-            <button type="button" class="btn btn-success btnCvu">Ver CVU</button>
+            <button type="button" (click)="showCvu()" class="btn btn-success btnCvu">Ver CVU</button>
+            <div>
+                <span id="cvuData" style="display: none;">{{cvu}}</span>
+                <button class="ms-2" id="copyButton" style="display: none;">
+                    <i class="fas fa-copy exchangePending"></i>
+                </button>
+            </div>
         </div>
     </div>
 
@@ -24,10 +32,9 @@
             <div class="col-sm text-center my-auto mx-auto">
                 <button type="button"  routerLink="/user/dashboard" class="btn btn-success btnCvu">Ver Movimientos</button>
             </div>
-    </div>
-    
-    <div class="row d-flex mt-4 mb-4 custom-centered">
-                <div  class="col-sm text-center mx-auto my-auto" style="max-width: 80%">
+    </div>    
+    <div class="row d-flex mt-4 mb-4 custom-centered" >
+                <div  class="col-sm text-center mx-auto my-auto" >
                     <canvas baseChart
                     [labels]="doughnutChartLabels"
                     [datasets]="doughnutChartDatasets"
