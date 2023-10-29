@@ -5,8 +5,6 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
-
-
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { DashboardComponent } from './component/Pages/dashboard/dashboard.component';
@@ -33,13 +31,12 @@ import { CreditCardChildComponent } from './component/Pages/credit-card/credit-c
 import { HelpComponent } from './component/Pages/helpPages/help/help.component';
 import { InfoUserComponent } from './component/Pages/info-user/info-user.component';
 import { SideBarAltComponent } from './shared/side-bar-alt/side-bar-alt.component';
-
+import { BalanceComponent } from './shared/balance/balance.component';
+import { TransferFormComponent } from './shared/transfer-form/transfer-form.component';
+import { SelectedUserComponent } from './shared/selected-user/selected-user.component';
+import { BillComponent } from './shared/bill/bill.component';
+import { TargetServiceComponent } from './shared/target-service/target-service.component';
 import { PipeTransformPipe } from './pipes/pipe-transform.pipe';
-
-import { BalanceComponent } from './component/Pages/transaction/balance/balance.component';
-import { TransferFormComponent } from './component/Pages/transaction/transfer-form/transfer-form.component';
-import { SelectedUserComponent } from './component/Pages/transaction/selected-user/selected-user.component';
-
 
 @NgModule({
   declarations: [
@@ -70,6 +67,8 @@ import { SelectedUserComponent } from './component/Pages/transaction/selected-us
     BalanceComponent,
     TransferFormComponent,
     SelectedUserComponent,
+    BillComponent,
+    TargetServiceComponent,
 
   ],
   imports: [
@@ -81,8 +80,8 @@ import { SelectedUserComponent } from './component/Pages/transaction/selected-us
     HttpClientModule,
     ReactiveFormsModule,
     NgChartsModule,
-    
-    
+
+
   ],
   providers: [
     CookieService

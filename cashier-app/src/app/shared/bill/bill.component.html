@@ -1,0 +1,35 @@
+<div [@fadeEffect] class="filter">
+  <button (click)="updateFilterStatus(true)">Facturas</button>
+  <button (click)="updateFilterStatus(false)">Historial</button>
+</div>
+<!--  ----------------------------------------caja de busqueda por datos-->
+<div
+  [@fadeEffect]
+  class="searchBox">
+  <ul [@lateralEffect]
+  *ngIf="viewStatus.filterData, else history"
+  class="searchBox__resultList list-unstyled">
+    <li
+      (click)="updateContactStatus()"
+      class="searchBox__resultList__item">
+      <img src="assets/DNI.png" alt="dni_icon" />
+      <div class="searchBox__resultList__item__info">
+        <span>Banco Pichincha</span>
+        <span class="text-white">Vence el 06/06</span>
+      </div>
+    </li>
+  </ul>
+  <ng-template #history>
+    <ul [@lateralEffect] class="searchBox__resultList list-unstyled">
+      <li class="searchBox__resultList__item">
+        <div class="imgBox">
+          <img src="assets/business.svg" alt="dni_icon">
+        </div>
+        <div class="searchBox__resultList__item__info">
+          <span>Banco pichincha</span>
+          <span class="text-white">Pagado 06/09</span>
+        </div>
+      </li>
+    </ul>
+  </ng-template>
+</div>

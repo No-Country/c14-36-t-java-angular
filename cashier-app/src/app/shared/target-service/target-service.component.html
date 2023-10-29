@@ -1,0 +1,59 @@
+<form class="form" [@fadeEffect]>
+  <div class="form__imgBox">
+    <img src="assets/DNI.png" alt="dni_icon" />
+  </div>
+  <div class="form__field">
+    <span>Para:</span>
+    <span>Juanito Alimaña</span>
+  </div>
+  <div class="form__field">
+    <span>Vence:</span>
+    <span>06/06/66</span>
+  </div>
+  <div class="form__field">
+    <span>Nro. de Factura:</span>
+    <span>666999666-9</span>
+  </div>
+  <div class="form__fieldAmount">
+    <label for="amount">Monto</label>
+    <input type="number" id="amount" placeholder="Ej. $100.00" min="0" />
+  </div>
+  <p>Saldo: $100.50</p>
+  <button (click)="updateAlertStatus()"  type="submit">Pagar</button>
+  <div
+    [@lateralEffect]
+    *ngIf="viewStatus.alerts"
+    class="form__actions">
+    <button class="form__actions__btnBox">
+      <div>
+        <img src="assets/share.png" alt="share_icon" />
+      </div>
+      <span>Comprobante</span>
+    </button>
+    <button class="form__actions__btnBox">
+      <div>
+        <img src="assets/transfer.png" alt="transfer_icon" />
+      </div>
+      <span
+        >Realizar <br />
+        Transferencia</span
+      >
+    </button>
+    <button class="form__actions__btnBox">
+      <div>
+        <img src="assets/shop.png" alt="shop_icon" />
+      </div>
+      <span>Pagar <br />
+        Servicio</span
+      >
+    </button>
+  </div>
+</form>
+<div class="alert" [@fadeEffect] *ngIf="viewStatus.alerts ">
+  <div class="alert__imgBox">
+    <img src="assets/check-circle.png" alt="check-circle_icon" />
+  </div>
+  <h5>Servicio pagado</h5>
+  <p class="alert__ref">Referencia 12345-1</p>
+  <p class="alert__time">06/06/2000 16:30hrs</p>
+</div>

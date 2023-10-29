@@ -34,8 +34,6 @@ export class TransactionComponent {
     private userServ:UserService,
   ){}
 
-
-
   ngOnInit(){
     this.userData = this.tokenServ.dataUser;
     const {id} = this.userData;
