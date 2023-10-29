@@ -24,6 +24,7 @@ public class AccountServiceImpl implements AccountService {
     private final AccountRepository accountRepository;
     private final AccountMapper accountMapper;
     private final UserRepository userRepository;
+
     @Override
     public List<AccountResponseDTO> getAllAccounts() {
 
@@ -33,8 +34,8 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public AccountResponseDTO getAccount(String idAccount) {
 
-        AccountResponseDTO accountResponseDTO =  accountMapper.toGetAccountDTO(accountRepository.findById(idAccount)
-                                                .orElse(null));
+        AccountResponseDTO accountResponseDTO = accountMapper.toGetAccountDTO(accountRepository.findById(idAccount)
+                .orElse(null));
 
         return accountResponseDTO;
     }
@@ -44,7 +45,7 @@ public class AccountServiceImpl implements AccountService {
 
         UserEntity userEntity = userRepository.findById(uuidUser).orElse(null);
 
-        if(userEntity.getAccountEntity() != null) {
+        if (userEntity.getAccountEntity() != null) {
             throw new DuplicateEntityException("Error!! El usuario ya posee una Cuenta!!!");
         }
 
@@ -56,14 +57,11 @@ public class AccountServiceImpl implements AccountService {
         accountEntity.setStatus(true);
         accountEntity.setEnabled(true);
         accountEntity.setUserEntity(userEntity);
-        //accountRepository.save(accountEntity);
+        userEntity.setAccountEntity(accountEntity);
+        userRepository.save(userEntity);
 
-            userEntity.setAccountEntity(accountEntity);
-            userRepository.save(userEntity);
-
-            return accountMapper.toGetAccountDTO(accountEntity);
+        return accountMapper.toGetAccountDTO(accountEntity);
     }
-
 
 
     @Override

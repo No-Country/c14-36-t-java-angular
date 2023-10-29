@@ -13,15 +13,15 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, String> {
-    Optional<UserEntity> findByPhone(String phone);
+
     @Meta(comment = "Obtener todos los productos de una categoría específica")
     @Query("SELECT u from UserEntity u where lower(u.email) = lower(:mail)")
     Optional<UserEntity> findByEmailIgnoreCase(@Param(value = "mail") String mail);
     Optional<UserEntity> findByDni(String dni);
     @Modifying
     @Transactional
-    @Query("UPDATE UserEntity u set u.enabled=true where lower(u.email)= ?1")
-    int enabledUser(String email);
+    @Query("UPDATE UserEntity u set u.verify=true where lower(u.email)= ?1")
+    void setVerifiedUser(String email);
 
 
 }

@@ -32,6 +32,12 @@ public class UserController {
 
     private final UserService userService;
 
+    //http://localhost:8080/v1/api/customers/login?otp=%s
+    @GetMapping(path =  "/login")
+    public ResponseEntity<?> loginRegisteredUser(@RequestParam String otp){
+        return ResponseEntity.ok().body(Map.of("data", "login"));
+    }
+
     //? a la anotación -> ? se le llama wildcard
     @GetMapping
     public ResponseEntity<?> getAllCustomers(@RequestParam(value = "page", defaultValue = "0") Integer page,

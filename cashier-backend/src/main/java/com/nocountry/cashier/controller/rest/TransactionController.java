@@ -7,6 +7,7 @@ import com.nocountry.cashier.controller.dto.response.TransactionResponseDTO;
 import com.nocountry.cashier.domain.usecase.TransactionService;
 import com.nocountry.cashier.enums.EnumsState;
 import com.nocountry.cashier.enums.EnumsTransactions;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,7 +58,7 @@ public class TransactionController {
     //NewTransaction
     //http://localhost:8080/v1/api/customers/transactions/new?idAccount=3de8f7f3-41a6-404c-ad4e-599bd9e74e98
     @PostMapping("/new")
-    public ResponseEntity<?> createTransaction(@RequestBody TransactionRequestDTO requestDTO) {
+    public ResponseEntity<?> createTransaction(@Valid @RequestBody TransactionRequestDTO requestDTO) {
         TransactionResponseDTO transactionResponse = transactionService.createTransaction(requestDTO);
         return ResponseEntity.status(OK).body(transactionResponse);
     }
