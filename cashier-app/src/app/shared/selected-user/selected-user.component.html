@@ -1,6 +1,7 @@
 <form class="form" [@fadeEffect]
  *ngIf="viewStatus.contact"
  [formGroup]="transferForm"
+ (submit)="onTransferSubmit()"
  >
   <div class="form__imgBox">
     <img src="assets/DNI.png" alt="dni_icon" />
@@ -37,7 +38,7 @@
     [max]="accountData.totalAccount"/>
   </div>
   <p>Saldo disponible: {{accountData.totalAccount| currency: 'USD':'symbol':'1.2-2'}}</p>
-  <button (click)="updateAlertStatus()"
+  <button
    type="submit"
    [disabled]="transferForm.invalid"
    >Transferir</button>
