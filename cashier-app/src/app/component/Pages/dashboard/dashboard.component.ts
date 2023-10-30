@@ -26,7 +26,117 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Mostrar el indicador de carga.
+    this.isLoading = true;
+    const userDataDecoded = this.tokenService.getTokenDecoded();
+    const idUser = userDataDecoded.id;
+    console.log('idUser: ', idUser);
+    console.log('token Decoded: ', userDataDecoded);
+
+    const obtenerDatos = async () => {
+      try {
+        await this.obtenerDatosPorUUID(idUser);
+        await this.obtenerTransaccionesPorAccountId();
+        await this.obtenerDatosCuentaPorAccountId(this.idAccount);
+        this.isLoading = false;
+      } catch (error) {
+        console.error('Error:', error);
+        this.isLoading = false;
+      }
+    };
+
+    obtenerDatos();
+  }
+
+  /**
+   * The function `obtenerDatosPorUUID` is an asynchronous function that takes a UUID as a parameter
+   * and returns a Promise that resolves with void.
+   * @param {string} uuid - A string representing the unique identifier of a user.
+   * @returns The function `obtenerDatosPorUUID` returns a Promise of type `void`.
+   */
+  async obtenerDatosPorUUID(uuid: string): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.dashboardService.getUserDataById(uuid).subscribe(
+        (response) => {
+          if (response.success && response.message === 'Usuario Encontrado') {
+            console.log('Datos Usuario0 : ', response.data);
+            const userData = response.data;
+            this.idAccount = userData.idAccount;
+            resolve();
+          } else {
+            console.log('Error', 'No se encontró al usuario', 'error');
+            reject('No se encontró al usuario'); 
+          }
+        },
+        (error) => {
+          console.error('Error al obtener datos de usuario:', error);
+          reject(error); 
+        }
+      );
+    });
+  }
+
+  
+  /**
+   * The function obtains transactions by account ID and sorts them by date.
+   * @returns a Promise of type void.
+   */
+  async obtenerTransaccionesPorAccountId(): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        const response = await this.dashboardService.getTransactionsByAccountId(
+          this.idAccount
+        );
+        console.log('Transacciones: ', response);
+
+        if (response.data && response.data.length > 0) {
+          this.transacciones = Object.values(response.data);
+          this.transacciones = response.data.sort((a: any, b: any) => {
+            return (
+              new Date(b.dateEmit).getTime() - new Date(a.dateEmit).getTime()
+            );
+          });
+          resolve(); 
+        } else {
+          console.log('Información', 'No hay transacciones', 'info');
+          reject('No hay transacciones');
+        }
+      } catch (error) {
+        console.error('Error al obtener las transacciones', error);
+        reject(error);
+      }
+    });
+  }
+
+  
+  /**
+   * The function "obtenerDatosCuentaPorAccountId" retrieves account data by account ID and assigns the
+   * total account balance and CVU to class variables.
+   * @param {string} idAccount - The id of the account for which you want to obtain the data.
+   * @returns a Promise that resolves to void.
+   */
+  async obtenerDatosCuentaPorAccountId(idAccount: string): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        const response = await this.dashboardService.getAccountDataById(
+          idAccount
+        );
+        console.log('Data de la cuenta:', response);
+        this.saldo = response.totalAccount;
+        console.log('Data de la cuenta:', this.saldo);
+        this.cvu = response.cvu;
+        this.showcvu = true;
+        resolve(); 
+      } catch (error) {
+        console.error('Error al obtener los datos de la cuenta', error);
+        reject(error);
+      }
+    });
+  }
+
+  /*
+
+    ON INIT ANTIGUO
+    //Mostrar el indicador de carga.
     this.isLoading = true;
     const userDataDecoded = this.tokenService.getTokenDecoded();
     const idUser = userDataDecoded.id;
@@ -41,13 +151,13 @@ export class DashboardComponent implements OnInit {
     setTimeout(() => {
       this.obtenerDatosCuentaPorAccountId(this.idAccount);
     }, 1000);
-    // Mostrar el indicador de carga.
+    //Mostrar el indicador de carga.
     
     setTimeout(() => {
       this.isLoading= false;
     }, 1000);
-  }
 
+    FUNCIONALIDAD ANTIGUA
   obtenerDatosPorUUID(uuid: string) {
     this.dashboardService.getUserDataById(uuid).subscribe(
       (response) => {
@@ -104,48 +214,7 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  /*
-    obtenerTransaccionesPorAccountId() {
-    this.dashboardService.getTransactionsByAccountId(this.idAccount).subscribe(
-      (response) => {
-        console.log('soy la data de listado de transacciones: ', response);
-        if (response.data && response.data.length > 0) {
-          this.transacciones = Object.values(response.data);
-          this.transacciones = response.data.sort((a: any, b: any) => {
-            return (
-              new Date(b.dateEmit).getTime() - new Date(a.dateEmit).getTime()
-            );
-          });
-          console.log('Transacciones:', this.transacciones);
-        } else {
-          console.log('Información', 'No hay transacciones', 'info');
-        }
-      },
-      (error) => {
-        console.log(
-          'Error',
-          'No se pudieron obtener las transacciones',
-          'error'
-        );
-      }
-    );
-  }
 */
-
-  /*
-  obtenerDatosCuentaPorAccountId(idAccount: string) {
-    this.dashboardService.getAccountDataById(idAccount).subscribe(
-      (response) => {
-        console.log('Soy la data:', response);
-        this.saldo = response.totalAccount;
-        this.cvu = response.cvu;
-        console.log('Soy el saldo:', this.saldo, 'soy el cvu:', this.cvu);
-      },
-      (error) => {
-        console.error('Error al obtener los datos de la cuenta', error);
-      }
-    );
-  }*/
 
   showCvu(): void {
     this.dashboardService.showCvu();
