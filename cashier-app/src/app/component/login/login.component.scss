@@ -1,0 +1,130 @@
+@import "../../stylesConfig/config";
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.loginBox {
+  background-color: yellow;
+  flex-grow: 2;
+  &__left {
+    display: grid;
+    place-items: center;
+    background-color: $colBlack;
+    &__container {
+      width: min(300px, 100%);
+      &__form {
+        &__field {
+          margin-bottom: 1rem;
+          display: flex;
+          flex-direction: column;
+          label {
+            color: $colGreenLight;
+          }
+          &__box {
+            border-bottom: solid 2px changeOpacity($colWhite, 0.7);
+            display: flex;
+            justify-content: space-between;
+            padding-bottom: 0.5rem;
+            overflow-y: hidden;
+            img {
+              order: -1;
+              margin-right: 1rem;
+              width: 2rem;
+              @include changeColorPng(gray);
+            }
+            .fieldInvalid {
+              @include changeColorPng(red);
+            }
+            input {
+              flex-grow: 2;
+              background-color: inherit;
+              border: none;
+              outline: none;
+              color: $colWhite;
+              &:focus + img{
+                @include changeColorPng($colGreenLight);
+
+              }
+              /* ----------------------------estilo del icono del calendario */
+              &::-webkit-calendar-picker-indicator {
+                filter: invert(1);
+                cursor: pointer;
+              }
+              /*-------------------------borrando estilos del autocompletado */
+              &:-webkit-autofill,
+              &:-webkit-autofill:hover,
+              &:-webkit-autofill:focus,
+              &:-webkit-autofill:active {
+                -webkit-box-shadow: 0 0 0 30px $colBlack inset !important; /* Ajusta el color de fondo según tus necesidades */
+                -webkit-text-fill-color: $colWhite !important;
+                caret-color: $colWhite ;
+              }
+            }
+            button {
+              all: initial;
+              cursor: pointer;
+              img {
+                @include changeColorPng($colGreenLight);
+              }
+
+            }
+          }
+          &__message {
+            height: 1rem;
+            color: red;
+          }
+          .error {
+            border-bottom: solid 2px changeOpacity(red, 0.7);
+          }
+        }
+        &__actions {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          .btnLogin {
+            @include btnStyle("fill", $colGreenLight);
+            &:disabled {
+              opacity: 0.5;
+              cursor: auto;
+              &:hover {
+                transform: none;
+              }
+            }
+          }
+          .btnRegist {
+            @include btnStyle("empty", $colGreenLight);
+          }
+        }
+      }
+      &__message{
+        text-align: center;
+        height: 1.5rem;
+      }
+      &__terms>a{
+        text-decoration: none;
+        color:$colGreenLight;
+        &:hover{
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+
+  &__right {
+    background-color: $colGreenLight;
+    flex-basis: 50%;
+    display: grid;
+    place-items: center;
+  }
+}
+/* --------------------------------------------------------- */
+@media screen and (max-width:768px){
+  .loginBox__right{
+    display: none;
+  }
+  .loginBox__left{
+    width: 100% !important;
+  }
+}
