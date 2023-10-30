@@ -69,6 +69,7 @@ export class TransferFormComponent {
     const { data } = this.searchDataForm.value;
     this.userServ.getAllUsers().subscribe({
       next: (res) => {
+        console.log(res)
         this.userResults = res.data.filter((user) =>
           this.matchName(user, data)
         );

@@ -6,5 +6,6 @@ export const environment = {
     apiGetUser:"http://localhost:8080/v1/api/customers/",
     apiGetAllUser:"http://localhost:8080/v1/api/customers",
     apiGetAccount:"http://localhost:8080/v1/api/accounts/",
-    apiGetCard:"http://localhost:8080/v1/api/cards/"
+    apiGetCard:"http://localhost:8080/v1/api/cards/",
+    apiNewTransfer:"http://localhost:8080/v1/api/customers/transactions/new"
 }

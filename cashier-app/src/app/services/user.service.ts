@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -23,7 +23,8 @@ export class UserService {
   }
 
   getAllUsers() {
-    return this.http.get<IGetAllUser>(this.APIGETALLUSER);
+    const params = new HttpParams().set('size',10)
+    return this.http.get<IGetAllUser>(this.APIGETALLUSER, {params});
   }
 
   getUser(userId: string) {
