@@ -1,0 +1,8 @@
+<div class="responseBox m-auto text-white">
+  <h3 class="text-center mb-4">¿{{responseData.question | titlecase}}?</h3>
+  <p class=" text-justify">{{responseData.response}}</p>
+  <ul *ngIf="responseData.steps" class="list-unstyled" [@scalingEffect]>
+    <li *ngFor="let step of responseData.steps, let i = index">{{i+1}}- {{step | titlecase}}</li>
+  </ul>
+  <a class="btn btn-success" routerLink = '../../'>Back</a>
+</div>

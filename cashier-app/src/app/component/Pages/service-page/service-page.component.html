@@ -1,0 +1,110 @@
+<div class="transferBox">
+  <div class="transferBox__left d-flex flex-column align-items-center">
+    <!-- -------------------------------------------caja del saldo -->
+    <div class="transferBox__left__box d-flex flex-column">
+      <h3>Saldo Actual</h3>
+      <div class="transferBox__left__box__balance">
+        <span>$100.50</span>
+      </div>
+      <button (click)="showFilters()">Ver servicios</button>
+    </div>
+    <!-- -----------------------------------------------caja de filtros -->
+    <div *ngIf="isShowFilter" [@fadeEffect] class="transferBox__left__filter">
+      <button [ngClass]="isShowHistory?'isActive':''" (click)="showResults('pay')">Facturas</button>
+      <button [ngClass]="!isShowHistory?'isActive':''" (click)="showResults('history')">Historial</button>
+    </div>
+    <!--  ----------------------------------------caja de busqueda por datos-->
+    <div
+      *ngIf="isShowResult"
+      [@fadeEffect]
+      class="transferBox__left__searchBox">
+      <ul [@lateralEffect] *ngIf="isShowHistory; else history" class="transferBox__left__searchBox__resultList list-unstyled">
+        <li
+          (click)="showContact()"
+          class="transferBox__left__searchBox__resultList__item">
+          <img src="assets/DNI.png" alt="dni_icon" />
+          <div class="transferBox__left__searchBox__resultList__item__info">
+            <span>Banco Pichincha</span>
+            <span class="text-white">Vence el 06/06</span>
+          </div>
+        </li>
+      </ul>
+      <ng-template #history>
+        <ul [@lateralEffect] class="transferBox__left__searchBox__resultList list-unstyled">
+          <li class="transferBox__left__searchBox__resultList__item">
+            <div class="imgBox">
+              <img src="assets/business.svg" alt="dni_icon">
+            </div>
+            <div class="transferBox__left__searchBox__resultList__item__info">
+              <span>Banco pichincha</span>
+              <span class="text-white">Pagado 06/09</span>
+            </div>
+          </li>
+        </ul>
+      </ng-template>
+    </div>
+  </div>
+  <!-- ------------------------------------------------caja derecha -->
+  <div class="transferBox__right">
+    <form class="transferBox__right__form" [@fadeEffect] *ngIf="isShowContact">
+      <div class="transferBox__right__form__imgBox">
+        <img src="assets/DNI.png" alt="dni_icon" />
+      </div>
+      <div class="transferBox__right__form__field">
+        <span>Para:</span>
+        <span>Juanito Alimaña</span>
+      </div>
+      <div class="transferBox__right__form__field">
+        <span>Vence:</span>
+        <span>06/06/66</span>
+      </div>
+      <div class="transferBox__right__form__field">
+        <span>Nro. de Factura:</span>
+        <span>666999666-9</span>
+      </div>
+      <div class="transferBox__right__form__fieldAmount">
+        <label for="amount">Monto</label>
+        <input type="number" id="amount" placeholder="Ej. $100.00" min="0" />
+      </div>
+      <p>Saldo: $100.50</p>
+      <button (click)="showAlert()" type="submit">Pagar</button>
+      <div
+        [@lateralEffect]
+        *ngIf="isShowActions"
+        class="transferBox__right__form__actions"
+      >
+        <button class="transferBox__right__form__actions__btnBox">
+          <div>
+            <img src="assets/share.png" alt="share_icon" />
+          </div>
+          <span>Comprobante</span>
+        </button>
+        <button class="transferBox__right__form__actions__btnBox">
+          <div>
+            <img src="assets/transfer.png" alt="transfer_icon" />
+          </div>
+          <span
+            >Realizar <br />
+            Transferencia</span
+          >
+        </button>
+        <button class="transferBox__right__form__actions__btnBox">
+          <div>
+            <img src="assets/shop.png" alt="shop_icon" />
+          </div>
+          <span>Pagar <br />
+            Servicio</span
+          >
+        </button>
+      </div>
+    </form>
+    <div class="transferBox__right__alert" [@fadeEffect] *ngIf="isShowAlert">
+      <div class="transferBox__right__alert__imgBox">
+        <img src="assets/check-circle.png" alt="check-circle_icon" />
+      </div>
+      <h5>Servicio pagado</h5>
+      <p class="transferBox__right__alert__ref">Referencia 12345-1</p>
+      <p class="transferBox__right__alert__time">06/06/2000 16:30hrs</p>
+    </div>
+  </div>
+</div>
