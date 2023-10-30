@@ -1,0 +1,16 @@
+<div class="responseBox m-auto text-white">
+  <h3 class="text-center mb-4">Resultados</h3>
+  <ul *ngIf="results.length !== 0; else fallback" class="resultList list-unstyled" [@scalingEffect]>
+    <li class="resultList__item" *ngFor="let result of results; let i = index">
+      <a
+        class="text-decoration-none"
+        routerLink="{{ '../../helpRes/' + result.id }}"
+        >{{ i + 1 }} - ¿{{ result.question | titlecase }}?
+      </a>
+    </li>
+  </ul>
+  <ng-template #fallback>
+    <p>No existen coincidencias con "{{ keywordFormat }}".</p>
+  </ng-template>
+  <a class="btn btn-success" routerLink="../../">Back</a>
+</div>

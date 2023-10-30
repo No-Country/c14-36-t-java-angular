@@ -26,7 +26,47 @@ public class PageableDto implements Pageable, Serializable {
     private Integer order;
     private String field;
 
+   
     @JsonIgnore
+    public Sort getSort() {
+        if (field != null) {
+            Sort.Direction direction = order == 1 ? Sort.Direction.ASC : Sort.Direction.DESC;
+            return Sort.by(direction, field);
+        }
+        return Sort.unsorted();
+    }
+
+    @JsonIgnore
+    @Override
+    public Pageable next() {
+        return null;
+    }
+
+    @JsonIgnore
+    @Override
+    public Pageable previousOrFirst() {
+        return null;
+    }
+
+    @JsonIgnore
+    @Override
+    public Pageable first() {
+        return null;
+    }
+
+    @JsonIgnore
+    @Override
+    public Pageable withPage(int pageNumber) {
+        return null;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean hasPrevious() {
+        return false;
+    }
+
+     @JsonIgnore
     @Override
     public int getPageNumber() {
         return page;
@@ -38,64 +78,13 @@ public class PageableDto implements Pageable, Serializable {
         return size;
     }
 
-    @JsonIgnore
-    @Override
-    public boolean isPaged() {
-        return Pageable.super.isPaged();
-    }
-    @JsonIgnore
-    @Override
-    public boolean isUnpaged() {
-        return Pageable.super.isUnpaged();
-    }
-
-    @JsonIgnore
+     @JsonIgnore
     @Override
     public long getOffset() {
-        // TODO Auto-generated method stub
-        return 0;
+        return (long) page * (long) size;
     }
 
-    @JsonIgnore
-    @Override
-    public Sort getSort() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @JsonIgnore
-    @Override
-    public Pageable next() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @JsonIgnore
-    @Override
-    public Pageable previousOrFirst() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @JsonIgnore
-    @Override
-    public Pageable first() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @JsonIgnore
-    @Override
-    public Pageable withPage(int pageNumber) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @JsonIgnore
-    @Override
-    public boolean hasPrevious() {
-        // TODO Auto-generated method stub
-        return false;
-    }
 
 }
+
+

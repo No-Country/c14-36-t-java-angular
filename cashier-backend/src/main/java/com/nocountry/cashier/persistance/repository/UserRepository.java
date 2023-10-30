@@ -1,6 +1,8 @@
 package com.nocountry.cashier.persistance.repository;
 
 import com.nocountry.cashier.persistance.entity.UserEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Meta;
 import org.springframework.data.jpa.repository.Modifying;
@@ -23,5 +25,14 @@ public interface UserRepository extends JpaRepository<UserEntity, String> {
     @Query("UPDATE UserEntity u set u.verify=true where lower(u.email)= ?1")
     void setVerifiedUser(String email);
 
+    @Query("UPDATE UserEntity u set u.enabled=true where lower(u.email)= ?1")
+    int enabledUser(String email);
 
+    @Meta(comment = "Obtener todos los usuarios segun caracteres ingresados ej:Car....")
+    @Query("SELECT u FROM UserEntity u WHERE u.name LIKE %:ramdom% OR u.lastName LIKE %:ramdom%")
+    Page<UserEntity> findByShortString(@Param("ramdom") String ramdom, Pageable pageable);
+
+
+
+ 
 }

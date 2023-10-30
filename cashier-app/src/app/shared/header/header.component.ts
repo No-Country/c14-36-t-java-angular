@@ -7,4 +7,9 @@ import { Component } from '@angular/core';
 })
 export class HeaderComponent {
 
+  logOutUser(){
+    /* logica del servicio */
+    localStorage.clear();
+    this.route.navigate(["login"])
+  }
 }

@@ -1,1 +1,61 @@
-<p>transaction works!</p>
+<div class="transferBox">
+  <div class="transferBox__left d-flex flex-column align-items-center">
+    <!-- -------------------------------------------caja del saldo -->
+    <div class="transferBox__left__box d-flex flex-column">
+      <h3>Saldo Actual</h3>
+      <div class="transferBox__left__box__balance">
+        <span>$100.50</span>
+      </div>
+      <button (click)="showFilters()" >Transferir</button>
+    </div>
+    <!-- -----------------------------------------------caja de filtros -->
+    <div *ngIf="isShowFilter" [@fadeEffect] class="transferBox__left__filter">
+      <button (click)="showResults('data')">Usar datos</button>
+      <button (click)="showResults('cvu')">Usar cbu/cvu</button>
+    </div>
+    <!--  ----------------------------------------caja de busqueda por datos-->
+    <div *ngIf="isShowResult" [@fadeEffect] class="transferBox__left__searchBox">
+      <div class="transferBox__left__searchBox__field d-flex">
+        <input
+        [@lateralEffect]
+        *ngIf="showSearchData"
+          type="text"
+          id="searchData"
+          placeholder="Buscar alias"
+        />
+        <input
+        [@lateralEffect]
+        *ngIf="showSearchCVU"
+          type="number"
+          id="searchCVU"
+          min="0"
+          placeholder="CVU/CBU">
+        <label [for]="showSearchData?'searchData':'searchCVU'">
+          <img src="assets/search.png" alt="search_icon" />
+        </label>
+      </div>
+      <ul class="transferBox__left__searchBox__resultList list-unstyled">
+        <li (click)="showContact()" class="transferBox__left__searchBox__resultList__item">
+          <img src="assets/DNI.png" alt="dni_icon" />
+          <div class="transferBox__left__searchBox__resultList__item__info">
+            <span>Juan Carlos Velazco ALvarado</span>
+            <span class="text-white">Cashier App</span>
+          </div>
+        </li>
+        <li class="transferBox__left__searchBox__resultList__item">
+          <img src="assets/DNI.png" alt="dni_icon" />
+          <div class="transferBox__left__searchBox__resultList__item__info">
+            <span>Juan Carlos Velazco ALvarado</span>
+            <span class="text-white">Cashier App</span>
+          </div>
+        </li>
+        <li class="transferBox__left__searchBox__resultList__item">
+          <img src="assets/DNI.png" alt="dni_icon" />
+          <div class="transferBox__left__searchBox__resultList__item__info">
+            <span>Juan Carlos Velazco ALvarado</span>
+            <span class="text-white">Cashier App</span>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="transferBox__left__cvuSearchBox">
