@@ -22,7 +22,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @OpenAPIDefinition(
         servers = @Server(
-                url = "http://localhost:9698", //http://181.15.143.132:9698
+                url = "http://localhost:8080", //http://181.15.143.132:9698
                 description = "production server")
 )
 @SecurityScheme(
