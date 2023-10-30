@@ -44,7 +44,7 @@ const routes: Routes = [
       { path: 'info-user', component: InfoUserComponent },
     ],
   },
-  { path: 'loading', component: LoadingComponent },
+  //{ path: 'loading', component: LoadingComponent },
   { path: 'login', component: LoginComponent, canActivate: [loginGuard] },
   { path: 'register', component: RegisterComponent, canActivate: [loginGuard] },
   { path: '**', component: Found404Component, pathMatch: 'full' },
