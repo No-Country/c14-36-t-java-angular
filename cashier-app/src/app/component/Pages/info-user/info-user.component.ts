@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { UserData } from 'src/app/interfaces/userData.inteface';
 
 @Component({
   selector: 'app-info-user',
@@ -8,22 +9,32 @@ import { Router } from '@angular/router';
   styleUrls: ['./info-user.component.scss']
 })
 export class InfoUserComponent implements OnInit{
+  userData: any;
   isEditing: boolean = false;
   infoUser: FormGroup;
-  username: String = "Juanito";
-  lastname: String = "Alimaña Navaja";
-  cardNumber: Number = 12341234123412341234;
-  email: String = "juanitoalimaña@gmail.com";
-  dni: Number = 13151088;
   profileImg: File | any;
 
-  constructor(private formBuilder: FormBuilder, private router: Router) {
+  constructor(private formBuilder: FormBuilder, private router: Router, private route: ActivatedRoute) {
     this.infoUser = this.formBuilder.group({
-      title: ['', [Validators.required]],
+      name: ['',], 
+      numberCard: [''],
+      email: [''],
+      dni: [''],
     })
+  
   }
 
   ngOnInit(): void {
+    // Acceder a los datos de usuario desde history.state
+    this.userData = history.state.userData;
+    
+    // Verificar si se recibieron los datos
+    if (this.userData) {
+      console.log('Datos de usuario recibidos:', this.userData);
+      this.patchValueform()
+    } else {
+      console.log('No se recibieron datos de usuario.');
+    }
     // console.log(typeof(this.profileImg), " &" , this.profileImg);
     this.profileImg = "../../../../assets/user.jpg";
     /*setTimeout(() => {
@@ -32,9 +43,51 @@ export class InfoUserComponent implements OnInit{
     }, 3000); // 3000 milisegundos (3 segundos)*/
   }
 
-  editButtom(): void {
+  patchValueform():void{
+    this.infoUser.patchValue({
+      name: this.userData.name,
+      numberCard: this.userData.id,
+      email: this.userData.sub,
+      dni: this.userData.dni,
+    });
+  }
+  editButton(): void {
     this.isEditing = !this.isEditing;
     
+  }
+
+   
+
+  saveButton() {
+    console.log(this.infoUser);
+    /*
+    const userRegister: Usuario = {
+      identificacion: this.infoUser.value.name,
+      email: this.infoUser.value.email,
+    };
+
+    this.loading = true;
+    
+    this.usuarioService.saveUser(userRegister).subscribe((data) => {
+      console.log(data);
+      this.toastR.success("El usuario "+ userRegister.email +" fue registrado con éxito, por favor revise la bandeja de entrada de su correo y confirme", "Usuario registrado");
+      this.router.navigate(['/login']);
+      this.loading = false;
+    }, error => {
+      this.loading = false;
+      console.log(error);
+      this.toastR.error(error.error.message, "Error registrar usuario!");
+      this.registrationForm.reset();
+    });*/
+    
+    this.isEditing = false; // Desactiva el modo de edición
+  }
+
+  cancelButton() {
+    // Restaura los valores originales en el formulario
+    this.infoUser.reset(this.infoUser.value); // Esto restablece los campos al estado original
+    this.patchValueform();
+    this.isEditing = false; // Desactiva el modo de edición
   }
 
 }

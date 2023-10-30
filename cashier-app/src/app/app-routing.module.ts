@@ -18,6 +18,7 @@ import { MetricasComponent } from './component/Pages/dashboard/metricas/metricas
 import { ServicePageComponent } from './component/Pages/service-page/service-page.component';
 import { DashboardComponent } from './component/Pages/dashboard/dashboard.component';
 import { HelpComponent } from './component/Pages/helpPages/help/help.component';
+import { LoadingComponent } from './shared/loading/loading.component';
 
 
 const routes: Routes = [
@@ -43,6 +44,7 @@ const routes: Routes = [
       { path: 'info-user', component: InfoUserComponent },
     ],
   },
+  //{ path: 'loading', component: LoadingComponent },
   { path: 'login', component: LoginComponent, canActivate: [loginGuard] },
   { path: 'register', component: RegisterComponent, canActivate: [loginGuard] },
   { path: '**', component: Found404Component, pathMatch: 'full' },

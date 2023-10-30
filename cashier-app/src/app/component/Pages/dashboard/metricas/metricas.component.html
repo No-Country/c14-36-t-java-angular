@@ -1,6 +1,6 @@
+<app-loading *ngIf="isLoading===true"></app-loading>
 
-
-<div *ngIf="saldo != 0" class="container container-fluid">
+<div *ngIf="!isLoading" class="container container-fluid">
     <div class="row pt-5">
         <div class="col-sm text-center">
             <label>Tienes disponible</label>
