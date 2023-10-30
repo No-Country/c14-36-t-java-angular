@@ -7,13 +7,21 @@ import com.nocountry.cashier.controller.dto.response.TransactionResponseDTO;
 import com.nocountry.cashier.domain.usecase.TransactionService;
 import com.nocountry.cashier.enums.EnumsState;
 import com.nocountry.cashier.enums.EnumsTransactions;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,23 +38,39 @@ import static org.springframework.http.HttpStatus.OK;
 @RequestMapping(value = API_VERSION + RESOURCE_USER + RESOURECE_TRANSACTION)
 @RequiredArgsConstructor
 @SecurityRequirement(name = "bearerAuth")
+@Tag(name = "Management Transaction", description = "Transaction API")
 public class TransactionController {
-
     private static final Logger logger = LoggerFactory.getLogger(TransactionController.class);
-    @Autowired
-    private TransactionService transactionService;
+    private final TransactionService transactionService;
 
     //GetALLTransactions
     //http://localhost:8080/v1/api/customers/transactions?page=0&size=4&order=1&field=id
+    @Operation(
+            description = "Get All Transactions",
+            summary = "Recupera todas las transacciones",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Success",
+                            content = {
+                                    @Content(mediaType = "application/json",
+                                            schema = @Schema(implementation = Page.class)) }
+                    )
+            }
+    )
     @GetMapping
-    public ResponseEntity<?> getAllTransactions(@RequestParam String idAccount,
-                                                @RequestParam(value = "page", defaultValue = "0") Integer page,
-                                                @RequestParam(value = "size", defaultValue = "4") Integer size,
-                                                PageableDto pageableDto) throws Exception {
+    public ResponseEntity<?> getAllTransactions(@Parameter(description = "Id de la cuenta para ver sus movimientos",required = true) @RequestParam String idAccount,
+                                                @Parameter(description = "Página de donde comenzar") @RequestParam(value = "page", defaultValue = "0") Integer page,
+                                                @Parameter(description = "Cantidad de valores por página") @RequestParam(value = "size", defaultValue = "4") Integer size,
+                                                @Parameter(description = "Orden de la paginación, donde 0 DESC - 1 ASC") @RequestParam(value = "order", defaultValue = "1") Integer order,
+                                                @Parameter(description = "Campo de la entidad por la cual quieres ordenar") @RequestParam(value = "field", defaultValue = "id") String field) throws Exception {
         try {
+            PageableDto pageableDto= new PageableDto();
             pageableDto.setPage(page);
             pageableDto.setSize(size);
-            Page<TransactionResponseDTO> content = transactionService.findAllByIdAccount(idAccount, pageableDto);
+            pageableDto.setOrder(order);
+            pageableDto.setField(field);
+            Page<TransactionResponseDTO> content = transactionService.findAllByIdAccount(idAccount,  pageableDto);
             Map<String, Object> response = Map.of("message", "Listado de Transacciones", "data", content);
             return new ResponseEntity<>(response, OK);
         } catch (Exception e) {
@@ -56,10 +80,23 @@ public class TransactionController {
     }
 
 
+    @Operation(
+            description = "Created Transaction",
+            summary = "Crea una transferencia de un usuario a otro",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Success",
+                            content = {
+                                    @Content(mediaType = "application/json",
+                                            schema = @Schema(implementation = TransactionRequestDTO.class)) }
+                    )
+            }
+    )
     //NewTransaction
     //http://localhost:8080/v1/api/customers/transactions/new?idAccount=3de8f7f3-41a6-404c-ad4e-599bd9e74e98
     @PostMapping("/new")
-    public ResponseEntity<?> createTransaction(@Valid @RequestBody TransactionRequestDTO requestDTO) {
+    public ResponseEntity<?> createTransaction(@Valid @RequestBody @Parameter(description = "DTO el cual permite tomar datos para una transferencia",schema = @Schema(implementation = TransactionRequestDTO.class)) TransactionRequestDTO requestDTO) {
         TransactionResponseDTO transactionResponse = transactionService.createTransaction(requestDTO);
         return ResponseEntity.status(OK).body(transactionResponse);
     }
@@ -83,7 +120,7 @@ public class TransactionController {
                                                     @RequestParam EnumsState state,
                                                     @RequestParam(value = "page", defaultValue = "0") Integer page,
                                                     @RequestParam(value = "size", defaultValue = "4") Integer size,
-                                                    PageableDto pageableDto) {
+                                                    @Parameter(schema = @Schema(implementation = PageableDto.class)) PageableDto pageableDto) {
         pageableDto.setPage(page);
         pageableDto.setSize(size);
 
