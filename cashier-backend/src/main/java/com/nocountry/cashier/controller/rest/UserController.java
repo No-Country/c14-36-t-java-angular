@@ -103,7 +103,7 @@ public class UserController {
 //            pageableDto.setOrder(order);
             System.out.println(ramdom);
 
-            List<UserResponseDTO> content = userService.findByShortString(ramdom,pageableDto).getContent();
+            Page<UserResponseDTO> content = userService.findByShortString(ramdom,pageableDto);
             Map<String, Object> response = Map.of("message", "Listado de Personas Segun letras ingresadas ", "data", content);
             return new ResponseEntity<>(response, OK);
         } catch (Exception e) {
@@ -198,7 +198,7 @@ public class UserController {
 
     @Operation(
             description = "Find User By Id",
-            summary = "SEARCH FOR A USER BY THEIR ID",
+            summary = "SEARCH FOR AN USER BY THEIR ID",
             responses = {
                     @ApiResponse(
                             responseCode = "200",

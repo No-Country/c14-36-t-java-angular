@@ -13,16 +13,16 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "transaction")
+@Table(name = "bill")
+@SQLDelete(sql = "UPDATE bill SET enabled=false where id=?")
+@Where(clause = "enabled=true")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Getter
 @Setter
 @ToString
-@SQLDelete(sql = "UPDATE transaction SET enabled=FALSE where id=?")
-@Where(clause = "enabled=TRUE")
-public class TransactionEntity extends Auditable<LocalDateTime> {
+public class BillEntity extends Auditable<LocalDateTime> {
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     @Id
@@ -33,22 +33,19 @@ public class TransactionEntity extends Auditable<LocalDateTime> {
     @Enumerated(EnumType.STRING)
     @Column(name = "type_trans")
     private EnumsTransactions type;
+    @Column(name="type_bill")
+    private String bill_type;
+    @Column(name="bill_num")
+    private String bill_num;
     @Column(name="amount")
     private BigDecimal amount;
-
-    @Column(name = "origin")
-    private String origin; // String cvu
-
-    @Column(name = "destination")
-    private String destination;
-
+    @Column(name="voucher_num")
+    private String voucher_num;//para el numero utility generatorDTP
     @Enumerated(EnumType.STRING)
     @Column(name = "state")
     private EnumsState state;
-
+    @Column(name = "enabled")
     private Boolean enabled;
-
-    private String reason;
 
     @ManyToOne
     @JoinColumn(name = "idAccount")
@@ -57,7 +54,5 @@ public class TransactionEntity extends Auditable<LocalDateTime> {
     @PrePersist
     public void onCreate() {
         this.setEnabled(Boolean.TRUE);
-        this.dateEmit = LocalDateTime.now();
     }
-
 }

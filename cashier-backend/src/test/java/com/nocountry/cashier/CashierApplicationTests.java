@@ -2,8 +2,9 @@ package com.nocountry.cashier;
 
 
 import org.junit.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
-//@SpringBootTest
+@SpringBootTest
 class CashierApplicationTests {
 
 	@Test
