@@ -16,13 +16,10 @@ public interface BillRepository  extends JpaRepository<BillEntity,String> {
     @Meta(comment = "Factura Segun su Id  y el Id de la cuenta")
     @Query(value = "SELECT b FROM BillEntity b WHERE b.id = :id AND b.accountEntity.idAccount= :id_account")
     BillEntity findOneByIdAccount(@Param("id")String id, @Param("id_account") String id_account);
-//    @Meta(comment = "Facturas Segun su Id  y el  Id de la cuenta")
-//    @Query(value = "SELECT b FROM BillEntity b WHERE b.accountEntity.idAccount= :id_account")
-//            //,countQuery = "SELECT COUNT(t) FROM TransactionEntity t WHERE t.accountEntity.idAccount = :id_account")
-//    Page<BillEntity> findAllByIdAccount(@Param("id_account") String id_account, Pageable pageable);
-@Meta(comment = "Facturas Segun su Id  y el  Id de la cuenta")
-@Query(value = "SELECT b FROM BillEntity b WHERE b.accountEntity.idAccount = :id_account")
-Page<BillEntity> findAllByIdAccount(@Param("id_account") String id_account, Pageable pageable);
+
+    @Meta(comment = "Facturas Segun su Id  y el  Id de la cuenta")
+    @Query(value = "SELECT b FROM BillEntity b WHERE b.accountEntity.idAccount = :id_account")
+    Page<BillEntity> findAllByIdAccount(@Param("id_account") String id_account, Pageable pageable);
 
 //    @Meta(comment = "Facturas Segun su tipo  y el Id de la cuenta")
 //    @Query(value = "SELECT b FROM BillEntity b WHERE b.bill_type = :type AND b.accountEntity.idAccount = :id_account")

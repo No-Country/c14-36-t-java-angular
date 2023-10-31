@@ -62,7 +62,7 @@ public class BillController {
     }
 
     @Operation(
-            description = "Get All Transactions",
+            description = "Get All Bills",
             summary = "Recupera todas las facturas",
             responses = {
                     @ApiResponse(
@@ -74,7 +74,7 @@ public class BillController {
                     )
             }
     )
-    @GetMapping("bills")
+    @GetMapping("/bills")
     public ResponseEntity<?> getAllTransactions(@Parameter(description = "Id de la cuenta para ver sus movimientos", required = true) @RequestParam String idAccount,
                                                 @Parameter(description = "Página de donde comenzar") @RequestParam(value = "page", defaultValue = "0") Integer page,
                                                 @Parameter(description = "Cantidad de valores por página") @RequestParam(value = "size", defaultValue = "4") Integer size,
@@ -94,4 +94,39 @@ public class BillController {
 
         }
     }
+    @Operation(
+            description = "Get All Bills",
+            summary = "Recupera todas las facturas Por Id De Cuenta",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Success",
+                            content = {
+                                    @Content(mediaType = "application/json",
+                                            schema = @Schema(implementation = Page.class))}
+                    )
+            }
+    )
+    @GetMapping("bills_type")
+    public  ResponseEntity<?> findByType(@Parameter(description = "Tipos de facturas a buscar(agua , luz,gas)")@RequestParam  String bill_type,
+                                         @Parameter(description = "Id de la cuenta para ver sus movimientos", required = true) @RequestParam String idAccount,
+                                         @Parameter (description = "Página de donde comenzar") @RequestParam(value = "page", defaultValue = "0") Integer page,
+                                         @Parameter(description = "Cantidad de valores por página") @RequestParam(value = "size", defaultValue = "4") Integer size,
+                                         @Parameter(description = "Orden de la paginación, donde 0 DESC - 1 ASC") @RequestParam(value = "order", defaultValue = "1") Integer order,
+                                         @Parameter(description = "Campo de la entidad por la cual quieres ordenar") @RequestParam(value = "field", defaultValue = "id") String field)
+                                        {
+        try {
+            PageableDto pageableDto = new PageableDto();
+            pageableDto.setPage(page);
+            pageableDto.setSize(size);
+            pageableDto.setOrder(order);
+            pageableDto.setField(field);
+            Page<BillResponseDTO> content = billService.findByType(bill_type,idAccount,pageableDto);
+            Map<String,Object> response = Map.of("message", "Listado de Facturas", "data", content);
+            return new ResponseEntity<>(response,OK);
+        }catch (Exception e){
+            return  ResponseEntity.status(HttpStatus.NOT_FOUND).body(("{\"error\":\"" + e.getMessage() + "}"));
+        }
+    }
+
 }

@@ -3,7 +3,6 @@ package com.nocountry.cashier.domain.service;
 import com.nocountry.cashier.controller.dto.request.BillRequestDTO;
 import com.nocountry.cashier.controller.dto.request.PageableDto;
 import com.nocountry.cashier.controller.dto.response.BillResponseDTO;
-import com.nocountry.cashier.controller.dto.response.TransactionResponseDTO;
 import com.nocountry.cashier.domain.strategy.transaction.Bill;
 import com.nocountry.cashier.domain.strategy.transaction.TransactionStrategy;
 import com.nocountry.cashier.domain.usecase.BillService;
@@ -60,6 +59,7 @@ public class BillServiceImpl implements BillService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<BillResponseDTO> findAllByIdAccount(String idAccount, PageableDto pageableDto) throws Exception {
         try {
             Pageable pageable = utility.setPageable(pageableDto);
@@ -78,12 +78,23 @@ public class BillServiceImpl implements BillService {
 
     @Override
     public Page<BillResponseDTO> findByState(EnumsState state, String idAccount, PageableDto pageableDto) throws Exception {
-        return null;
+    return null;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<BillResponseDTO> findByType(String bill_type, String idAccount, PageableDto pageableDto) throws Exception {
-        return null;
+        try {
+            Pageable pageable = utility.setPageable(pageableDto);
+            Page<BillEntity> BillPage = billRepository.findByType(bill_type, idAccount, pageable);
+            // Mapear la lista de entidades a DTOs
+            List<BillResponseDTO> responseDtoList = BillPage.getContent().stream()
+                    .map(mapper::toBillResponseDto)
+                    .toList();
+            return new PageImpl<>(responseDtoList, pageable, BillPage.getTotalElements());
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
     }
 
     @Override
