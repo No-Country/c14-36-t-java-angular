@@ -16,7 +16,7 @@ public interface UserMapper {
     @Mapping(target = "qr", ignore = true)
     @Mapping(target = "token", ignore = true)
     @Mapping(target = "modifyUser", ignore = true)
-    @Mapping(target = "openAccountDate", ignore = true)
+    //@Mapping(target = "openAccountDate", ignore = true)
     @Mapping(target = "lastModifiedDate", ignore = true)
     @Mapping(target = "image", ignore = true)
     @Mapping(target = "id", ignore = true)

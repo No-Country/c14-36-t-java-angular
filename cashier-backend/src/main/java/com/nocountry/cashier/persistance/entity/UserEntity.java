@@ -50,7 +50,7 @@ public class UserEntity extends Auditable<LocalDateTime> {
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
-    private LocalDateTime openAccountDate;
+    //private LocalDateTime openAccountDate;
 
     private Boolean enabled;
 
@@ -70,7 +70,7 @@ public class UserEntity extends Auditable<LocalDateTime> {
     @JoinColumn(name = "id_token")
     private TokenEntity token;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "userEntity", fetch = FetchType.EAGER)
+    @OneToOne(mappedBy = "userEntity")
     private AccountEntity accountEntity;
 
     @OneToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE})
