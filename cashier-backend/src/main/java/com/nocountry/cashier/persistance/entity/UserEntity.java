@@ -70,7 +70,7 @@ public class UserEntity extends Auditable<LocalDateTime> {
     @JoinColumn(name = "id_token")
     private TokenEntity token;
 
-    @OneToOne(mappedBy = "userEntity")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "userEntity")
     private AccountEntity accountEntity;
 
     @OneToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE})
