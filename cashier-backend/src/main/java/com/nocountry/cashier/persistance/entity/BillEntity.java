@@ -4,9 +4,7 @@ import com.nocountry.cashier.enums.EnumsState;
 import com.nocountry.cashier.enums.EnumsTransactions;
 import com.nocountry.cashier.persistance.entity.listener.audit.Auditable;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -19,8 +17,11 @@ import java.time.LocalDateTime;
 @SQLDelete(sql = "UPDATE bill SET enabled=false where id=?")
 @Where(clause = "enabled=true")
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Getter
 @Setter
+@ToString
 public class BillEntity extends Auditable<LocalDateTime> {
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")

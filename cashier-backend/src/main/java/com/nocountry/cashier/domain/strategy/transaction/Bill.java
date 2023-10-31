@@ -7,9 +7,11 @@ import com.nocountry.cashier.exception.InputNotValidException;
 import com.nocountry.cashier.persistance.entity.AccountEntity;
 import com.nocountry.cashier.persistance.entity.BillEntity;
 import com.nocountry.cashier.persistance.entity.TransactionEntity;
+import com.nocountry.cashier.persistance.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import com.nocountry.cashier.util.Utility;
 
 import java.math.BigDecimal;
 
@@ -24,6 +26,10 @@ import java.math.BigDecimal;
 @RequiredArgsConstructor
 public class Bill extends Transaction{
 
+    private final AccountRepository accountRepository;
+    private final Utility utility;
+
+
     public EnumsTransactions getType() {
         return EnumsTransactions.PAYMENT;
     }
@@ -33,7 +39,7 @@ public class Bill extends Transaction{
         return null;
     }
 
-    public AccountEntity updateBalance(AccountEntity entity, BillRequestDTO data) {
+    public BillEntity updateBalance(AccountEntity entity, BillRequestDTO data) {
         BigDecimal total = entity.getTotalAccount();
         BigDecimal amount= data.getAmount();
         if(total.compareTo(amount)<0){
@@ -43,8 +49,15 @@ public class Bill extends Transaction{
         //BigDecimal montoEjecutado = data.getAmount();
         total = total.subtract(amount);
         entity.setTotalAccount(total);
+        accountRepository.save(entity);
+
         log.info("Ahora la cuenta Origen tiene $ {}" , entity.getTotalAccount());
         log.info("Pago realizado");
-        return entity;
+        return BillEntity.builder()
+                .bill_type(data.getBill_type())
+                .bill_num(data.getBill_num())
+                .amount(data.getAmount())
+                .voucher_num(utility.generatorOTP(8))
+                .build();
     }
 }
