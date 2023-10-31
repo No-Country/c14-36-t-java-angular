@@ -1,0 +1,82 @@
+@import "../../../stylesConfig/config";
+:host {
+  background-color: $colGreenDark;
+  display: flex;
+  height: 100%;
+}
+.cardInfo {
+  width: 100%;
+  padding: 2%;
+  overflow-x: hidden;
+  position: relative;
+  &__boxLeft {
+    width: 50%;
+    text-align: center;
+    &__creditCard {
+      margin-bottom: 1rem;
+      &__title {
+        color: $colGreenLight;
+        font-weight: normal;
+      }
+      &__subtitle {
+        color: $colWhite;
+      }
+      button {
+        border: solid $colGreenLight 2px;
+        border-radius: 1rem;
+        padding-inline: 4rem;
+        background-color: inherit;
+        color: $colGreenLight;
+        &:hover {
+          background-color: $colGreenLight;
+          color: $colWhite;
+          border: solid $colWhite 2px;
+        }
+      }
+    }
+    &__info {
+      width: min(300px, 70%);
+      h5 {
+        color: $colGreenLight;
+        font-weight: normal;
+      }
+      &__promo {
+        display: flex;
+        padding: 0.5rem;
+        align-items: center;
+        border-bottom: solid $colGreenLight 2px;
+        color: $colWhite;
+        .imgContainer {
+          overflow: hidden;
+          margin-right: 1rem;
+          img {
+            width: 2rem;
+            filter: drop-shadow(0 100px 0 gray);
+            transform: translateY(-100px);
+          }
+        }
+        a{
+          color: $colWhite;
+          @include transitionFast;
+          cursor: pointer;
+          &:hover{
+            color:$colGreenLight;
+          }
+        }
+      }
+    }
+  }
+}
+.active{
+  right: 0%;
+}
+@media screen and (max-width:550px){
+ .cardInfo__boxLeft{
+  width: 100%;
+ }
+}
+@media screen and (max-width:750px){
+  .cardInfo__boxLeft__info{
+    font-size: 0.7rem;
+  }
+}
