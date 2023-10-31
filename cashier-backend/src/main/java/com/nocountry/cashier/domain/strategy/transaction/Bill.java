@@ -55,7 +55,7 @@ public class Bill extends Transaction{
         log.info("Ahora la cuenta Origen tiene $ {}" , entity.getTotalAccount());
         log.info("Pago realizado");
         return BillEntity.builder()
-                .bill_type(data.getBill_type())
+                .bill_type(data.getBill_type().toLowerCase())
                 .bill_num(data.getBill_num())
                 .amount(data.getAmount())
                 .voucher_num(utility.generatorOTP(8))

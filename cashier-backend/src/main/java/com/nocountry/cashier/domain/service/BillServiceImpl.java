@@ -86,7 +86,7 @@ public class BillServiceImpl implements BillService {
     public Page<BillResponseDTO> findByType(String bill_type, String idAccount, PageableDto pageableDto) throws Exception {
         try {
             Pageable pageable = utility.setPageable(pageableDto);
-            Page<BillEntity> BillPage = billRepository.findByType(bill_type, idAccount, pageable);
+            Page<BillEntity> BillPage = billRepository.findByType(bill_type.toLowerCase(), idAccount, pageable);
             // Mapear la lista de entidades a DTOs
             List<BillResponseDTO> responseDtoList = BillPage.getContent().stream()
                     .map(mapper::toBillResponseDto)
