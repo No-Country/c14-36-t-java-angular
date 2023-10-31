@@ -39,8 +39,8 @@ public class ReSendEmailService implements EmailService {
         //Boolean send = Boolean.FALSE;
         try {
             SendEmailRequest sendEmailRequest = SendEmailRequest.builder()
-                    .from("jessepickman20@gmail.com")//necesita un domain
-                    .to("bosiocerati98@gmail.com")
+                    .from("@gmail.com")//necesita un domain
+                    .to("")
                     .subject("it works!")
                     .html("<strong>hello world</strong>")
                     .build();

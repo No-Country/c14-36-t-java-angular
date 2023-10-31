@@ -20,8 +20,8 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
-@SQLDelete(sql = "UPDATE transaction SET enabled=false where id=?")
-@Where(clause = "enabled=true")
+@SQLDelete(sql = "UPDATE transaction SET enabled=FALSE where id=?")
+@Where(clause = "enabled=TRUE")
 public class TransactionEntity extends Auditable<LocalDateTime> {
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")

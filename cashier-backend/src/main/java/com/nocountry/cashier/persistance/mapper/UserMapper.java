@@ -25,9 +25,9 @@ public interface UserMapper {
     @Mapping(target = "birthDate", source = "birthDate", qualifiedByName = "stringToLocalDate")
     @Mapping(target = "password", source = "password", qualifiedByName = "encoderPass")
     UserEntity toUserEntity(UserRequestDTO userRequestDTO);
+
     @Mapping(target = "idAccount", source = "accountEntity.idAccount")
     @Mapping(target = "idCard", source = "creditCardEntity.idCard")
-
     UserResponseDTO toUserResponseDto(UserEntity userEntity);
 
     @Named("stringToLocalDate")

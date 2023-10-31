@@ -22,11 +22,26 @@ public interface UserRepository extends JpaRepository<UserEntity, String> {
     Optional<UserEntity> findByDni(String dni);
     @Modifying
     @Transactional
-
-    @Meta(comment = "Obtener todos los usuarios segun caracteres ingresados ej:Car....")
-    @Query("SELECT u FROM UserEntity u WHERE u.name LIKE %:ramdom% OR u.lastName LIKE %:ramdom%")
-    Page<UserEntity> findByShortString(@Param("ramdom") String ramdom, Pageable pageable);
     @Query("UPDATE UserEntity u set u.verify=true where lower(u.email)= ?1")
     void setVerifiedUser(String email);
 
+    @Query("UPDATE UserEntity u set u.enabled=true where lower(u.email)= ?1")
+    int enabledUser(String email);
+
+
+//    @Query(value = "SELECT u FROM UserEntity u WHERE u.name LIKE '%'+:ramdom+'%' OR u.lastName LIKE '%'+:ramdom+'%'")
+////            countQuery = "SELECT COUNT(u) FROM UserEntity u WHERE u.name LIKE '%'+:ramdom+'%'OR u.lastName LIKE '%'+:ramdom+'%'")
+//    Page<UserEntity> findByShortString(@Param("ramdom") String ramdom, Pageable pageable);
+    @Meta(comment = "Obtener todos los usuarios segun caracteres ingresados ej:Car....")
+    @Query("SELECT u FROM UserEntity u WHERE u.name LIKE %:ramdom% OR u.lastName LIKE %:ramdom%")
+    Page<UserEntity> findByShortString(@Param("ramdom") String ramdom, Pageable pageable);
+
+
+
+    /*
+    *  @Query(value = "SELECT t FROM TransactionEntity t WHERE t.accountEntity.idAccount= :id_account",
+            countQuery = "SELECT COUNT(t) FROM TransactionEntity t WHERE t.accountEntity.idAccount = :id_account")
+    Page<TransactionEntity> findAllByIdAccount( @Param("id_account") String id_account,Pageable pageable);*/
+
+    //eL PUEDA BUSCAR EN LA BASE POR 3LETRAS QUE PUEDEN COINCIDIR CON NAME O LASTNAME
 }

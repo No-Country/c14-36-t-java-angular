@@ -1,6 +1,7 @@
 package com.nocountry.cashier.exception;
 
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.io.Serial;
 

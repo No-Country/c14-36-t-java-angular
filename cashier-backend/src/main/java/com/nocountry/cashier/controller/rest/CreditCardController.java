@@ -17,7 +17,7 @@ import static com.nocountry.cashier.util.Constant.*;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"http://localhost:4200","*"}, methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT,RequestMethod.PATCH, RequestMethod.DELETE})
 @RestController
 @RequestMapping(value = API_VERSION + RESOURCE_CARD)
 public class CreditCardController {

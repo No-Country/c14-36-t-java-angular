@@ -1094,7 +1094,7 @@ public class TemplateEmailConfirmation extends TemplateStrategy {
                                                       "
                                                     >
                                                       <strong
-                                                        >C14-36 Raul; Peche; Exequiel; Antonio; Machicado; Jorge and Alvaro</strong
+                                                        >C14-36 DEVS Raul; Peche; Exequiel; Antonio; Machicado and Jorge</strong
                                                       >
                                                     </p>
                                                   </td>
@@ -1133,9 +1133,6 @@ public class TemplateEmailConfirmation extends TemplateStrategy {
             int startIndex =sb.indexOf(placeholder);
             int endIndex= startIndex+placeholder.length();
             sb.replace(startIndex,endIndex,value);
-           /*while ((startIndex= sb.indexOf(placeholder)) !=-1){
-
-            }*/
         }
         return sb.toString();
     }
