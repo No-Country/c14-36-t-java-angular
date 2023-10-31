@@ -1,5 +1,6 @@
 package com.nocountry.cashier.controller.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -26,8 +27,6 @@ public class PageableDto implements Pageable, Serializable {
     private String field;
 
 
-
-
     public Sort getSort() {
         if (field != null) {
             Sort.Direction direction = order == 1 ? Sort.Direction.ASC : Sort.Direction.DESC;
@@ -36,41 +35,49 @@ public class PageableDto implements Pageable, Serializable {
         return Sort.unsorted();
     }
 
+    @JsonIgnore
     @Override
     public Pageable next() {
         return null;
     }
 
+    @JsonIgnore
     @Override
     public Pageable previousOrFirst() {
         return null;
     }
 
+    @JsonIgnore
     @Override
     public Pageable first() {
         return null;
     }
 
+    @JsonIgnore
     @Override
     public Pageable withPage(int pageNumber) {
         return null;
     }
 
+    @JsonIgnore
     @Override
     public boolean hasPrevious() {
         return false;
     }
 
+   @JsonIgnore
     @Override
     public int getPageNumber() {
         return page;
     }
 
+    @JsonIgnore
     @Override
     public int getPageSize() {
         return size;
     }
 
+    @JsonIgnore
     @Override
     public long getOffset() {
         return (long) page * (long) size;
@@ -79,56 +86,5 @@ public class PageableDto implements Pageable, Serializable {
 
 }
 
-//    @Override
-//    public int getPageNumber() {
-//        return page;
-//    }
-//
-//    @Override
-//    public int getPageSize() {
-//        return size;
-//    }
-//
-//    @Override
-//    public long getOffset() {
-//        // TODO Auto-generated method stub
-//        return 0;
-//    }
-//
-////    @Override
-////    public Sort getSort() {
-////        // TODO Auto-generated method stub
-////        return null;
-////    }
-//
-//    @Override
-//    public Pageable next() {
-//        // TODO Auto-generated method stub
-//        return null;
-//    }
-//
-//    @Override
-//    public Pageable previousOrFirst() {
-//        // TODO Auto-generated method stub
-//        return null;
-//    }
-//
-//    @Override
-//    public Pageable first() {
-//        // TODO Auto-generated method stub
-//        return null;
-//    }
-//
-//    @Override
-//    public Pageable withPage(int pageNumber) {
-//        // TODO Auto-generated method stub
-//        return null;
-//    }
-//
-//    @Override
-//    public boolean hasPrevious() {
-//        // TODO Auto-generated method stub
-//        return false;
-//    }
 
 

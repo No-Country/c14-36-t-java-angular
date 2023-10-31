@@ -83,17 +83,13 @@ public class JwtTokenProvider{
      * @return boolean
      */
     public boolean verifyToken(String token) {
-        try {
             if (Objects.isNull(token)) throw new GenericException("El token esta vació", HttpStatus.BAD_REQUEST);
-            if (isExpirationToken(token)) throw new JwtGenericException("Oops, el token ya expiró.", HttpStatus.BAD_REQUEST);
+            if (isExpirationToken(token)) return false;
             JWT.require(getSignatureKey())
                     .withIssuer("cashier")
                     .build()
                     .verify(token);
             return true;
-        } catch (Exception ex) {
-            throw new JwtGenericException(ex.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
     }
 
     public boolean isExpirationToken(String token) {

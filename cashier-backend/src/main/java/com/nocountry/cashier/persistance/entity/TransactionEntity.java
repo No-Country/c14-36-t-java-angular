@@ -16,11 +16,12 @@ import java.time.LocalDateTime;
 @Table(name = "transaction")
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Getter
 @Setter
 @ToString
-@SQLDelete(sql = "UPDATE transaction SET enabled=false where id=?")
-@Where(clause = "enabled=true")
+@SQLDelete(sql = "UPDATE transaction SET enabled=FALSE where id=?")
+@Where(clause = "enabled=TRUE")
 public class TransactionEntity extends Auditable<LocalDateTime> {
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
@@ -35,24 +36,20 @@ public class TransactionEntity extends Auditable<LocalDateTime> {
 
     @Column(name="amount")
     private BigDecimal amount;
+
     @Column(name = "origin")
     private String origin; // String cvu
+
     @Column(name = "destination")
     private String destination;
-    //STATE WITH enums OR boolean?
-    //private Boolean state;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "state")
     private EnumsState state;
 
     private Boolean enabled;
 
-//    @ManyToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "account_entity")
-//    private AccountEntity accountEntity;
-//    @ManyToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "account_entity")
-//    private AccountEntity accountEntity;
+    private String reason;
 
     @ManyToOne
     @JoinColumn(name = "idAccount")
@@ -61,6 +58,7 @@ public class TransactionEntity extends Auditable<LocalDateTime> {
     @PrePersist
     public void onCreate() {
         this.setEnabled(Boolean.TRUE);
+        this.dateEmit = LocalDateTime.now();
     }
 
 }

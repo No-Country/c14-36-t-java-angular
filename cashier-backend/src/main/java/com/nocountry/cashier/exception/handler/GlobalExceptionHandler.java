@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.net.URI;
@@ -37,6 +38,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      * @return
      */
     @Override
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException exception, HttpHeaders headers, HttpStatusCode status, WebRequest webRequest) {
 
         List<ApiError> errors = exception.getBindingResult().getFieldErrors()
@@ -56,6 +58,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(value = {DuplicateEntityException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ProblemDetail handleDuplicateEntityException(DuplicateEntityException ex, HttpServletRequest request) {
         ProblemDetail problemDetails = ProblemDetail
                 .forStatusAndDetail
@@ -65,6 +68,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return problemDetails;
     }
 
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     @ExceptionHandler(value = InvalidEmailException.class)
     public ProblemDetail handleNotFoundException(RuntimeException ex) {
         return ProblemDetail
@@ -115,6 +119,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ProblemDetail handlePSQLException(DataIntegrityViolationException ex) {
         String message = ex.getMostSpecificCause().getMessage();
         if (message.contains("Detail:"))
@@ -126,12 +131,24 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return problemDetail;
     }
     @ExceptionHandler(ResourceNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ProblemDetail handleResouceNotFoundE(ResourceNotFoundException ex, HttpServletRequest request){
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
                 HttpStatus.NOT_FOUND, ex.getLocalizedMessage()
         );
         problemDetail.setInstance(URI.create(request.getRequestURL().toString())); //getDescription(false).replace("uri=","")
         problemDetail.setTitle(HttpStatus.NOT_FOUND.getReasonPhrase());
+        problemDetail.setProperty("date", LocalDateTime.now());
+        return problemDetail;
+    }
+
+    @ExceptionHandler(InputNotValidException.class)
+    public ProblemDetail handleResouceNotFoundE(InputNotValidException ex, HttpServletRequest request){
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
+                ex.getStatusCode(), ex.getLocalizedMessage()
+        );
+        problemDetail.setInstance(URI.create(request.getRequestURL().toString()));
+        problemDetail.setTitle(ex.getStatusCode().toString());
         problemDetail.setProperty("date", LocalDateTime.now());
         return problemDetail;
     }

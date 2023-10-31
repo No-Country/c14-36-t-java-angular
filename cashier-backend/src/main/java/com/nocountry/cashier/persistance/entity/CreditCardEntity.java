@@ -14,8 +14,8 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-@SQLDelete(sql = "UPDATE credit_card_entity SET enabled=false where id=?")
-@Where(clause = "enabled=true")
+@SQLDelete(sql = "UPDATE credit_card_entity SET enabled=FALSE where id_card=?")
+@Where(clause = "enabled=TRUE")
 public class CreditCardEntity extends Auditable<LocalDateTime> {
 
     @Id

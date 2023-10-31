@@ -1,9 +1,5 @@
 package com.nocountry.cashier.enums;
 
-
-
-
-
 public enum EnumsState {
     EARRING("EARRING"), DONE("DONE"), REJECTED("REJECTED");
 
@@ -12,4 +8,10 @@ public enum EnumsState {
     EnumsState(String state) {
         this.state = state;
     }
+
+    public String getName() {
+        return state;
+    }
+
+
 }

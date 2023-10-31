@@ -1,12 +1,13 @@
 package com.nocountry.cashier.domain.service;
 
 import com.nocountry.cashier.controller.dto.request.PageableDto;
+import com.nocountry.cashier.controller.dto.request.UpdateRequestDTO;
 import com.nocountry.cashier.controller.dto.request.UserRequestDTO;
 import com.nocountry.cashier.controller.dto.response.ImageResponseDTO;
 import com.nocountry.cashier.controller.dto.response.TransactionResponseDTO;
 import com.nocountry.cashier.controller.dto.response.UserResponseDTO;
-import com.nocountry.cashier.domain.usecase.firebase.FirebaseService;
 import com.nocountry.cashier.domain.usecase.UserService;
+import com.nocountry.cashier.domain.usecase.firebase.FirebaseService;
 import com.nocountry.cashier.exception.DuplicateEntityException;
 import com.nocountry.cashier.exception.GenericException;
 import com.nocountry.cashier.exception.InvalidEmailException;
@@ -65,8 +66,6 @@ public class UserServiceImpl implements UserService {
         return mapper.toUserResponseDto(userSave);
     }
 
-
-
     @Override
     @Transactional(readOnly = true)
     public Page<UserResponseDTO> getAll(PageableDto pageableDto) {
@@ -89,17 +88,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
-    @Modifying
     public UserResponseDTO update(String uuid, UserRequestDTO data) {
-        Function<UserRequestDTO, Optional<UserEntity>> userId = userRequestDTO -> userRepository.findById(uuid);
-        Optional<UserEntity> userEntity = userId.apply(data);
-        if (userEntity.isEmpty())
-            throw new ResourceNotFoundException(String.format("El cliente a modificar con id %s, no se encuentra", uuid));
-
-        UserEntity modifyUser = userEntity.get().modifyUser(data);
-        UserEntity saveUser = userRepository.save(modifyUser);
-        return mapper.toUserResponseDto(saveUser);
+        return null;
     }
 
     @Override
@@ -124,6 +114,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDTO getClienteByDni(String dni) {
         return null;
+    }
+
+    @Override
+    @Transactional
+    @Modifying
+    public UserResponseDTO customisedUpdate(UpdateRequestDTO data, String uuid) {
+        Function<UpdateRequestDTO, Optional<UserEntity>> userId = userRequestDTO -> userRepository.findById(uuid);
+        Optional<UserEntity> userEntity = userId.apply(data);
+        if (userEntity.isEmpty())
+            throw new ResourceNotFoundException(String.format("El cliente a modificar con id %s, no se encuentra", uuid));
+
+        UserEntity modifyUser = userEntity.get().modifyUser(data);
+        UserEntity saveUser = userRepository.save(modifyUser);
+        return mapper.toUserResponseDto(saveUser);
+
     }
 
     @Override
