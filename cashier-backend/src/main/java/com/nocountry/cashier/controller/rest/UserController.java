@@ -198,7 +198,7 @@ public class UserController {
 
     @Operation(
             description = "Find User By Id",
-            summary = "SEARCH FOR A USER BY THEIR ID",
+            summary = "SEARCH FOR AN USER BY THEIR ID",
             responses = {
                     @ApiResponse(
                             responseCode = "200",
