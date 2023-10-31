@@ -2,6 +2,7 @@ package com.nocountry.cashier.domain.usecase;
 
 
 import com.nocountry.cashier.controller.dto.request.PageableDto;
+import com.nocountry.cashier.controller.dto.request.UpdateRequestDTO;
 import com.nocountry.cashier.controller.dto.request.UserRequestDTO;
 import com.nocountry.cashier.controller.dto.response.UserResponseDTO;
 import com.nocountry.cashier.domain.generic.ApiCrudGeneric;
@@ -11,6 +12,7 @@ public interface UserService extends ApiCrudGeneric<UserRequestDTO, UserResponse
     UserResponseDTO getClienteByEmail(String email);
 
     UserResponseDTO getClienteByDni(String dni);
+    UserResponseDTO customisedUpdate(UpdateRequestDTO updateRequestDTO, String id);
 
     UserResponseDTO addUserWithImage(String userRequestDTO, MultipartFile file);
 }

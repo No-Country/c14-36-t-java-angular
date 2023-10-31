@@ -14,7 +14,6 @@ import com.nocountry.cashier.persistance.entity.TransactionEntity;
 import com.nocountry.cashier.persistance.mapper.TransactionMapper;
 import com.nocountry.cashier.persistance.repository.AccountRepository;
 import com.nocountry.cashier.persistance.repository.TransactionRepository;
-import com.nocountry.cashier.persistance.repository.UserRepository;
 import com.nocountry.cashier.util.Utility;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

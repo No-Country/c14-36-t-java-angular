@@ -1,6 +1,7 @@
 package com.nocountry.cashier.controller.rest;
 
 import com.nocountry.cashier.controller.dto.request.PageableDto;
+import com.nocountry.cashier.controller.dto.request.UpdateRequestDTO;
 import com.nocountry.cashier.controller.dto.request.UserRequestDTO;
 import com.nocountry.cashier.controller.dto.response.AuthResponseDTO;
 import com.nocountry.cashier.controller.dto.response.GenericResponseDTO;
@@ -156,9 +157,9 @@ public class UserController {
             }
     )
     @PatchMapping("/{uuid}")
-    public ResponseEntity<?> updateCustomer(@Valid @RequestBody UserRequestDTO userRequestDTO,
+    public ResponseEntity<?> updateCustomer(@Valid @RequestBody UpdateRequestDTO updateRequestDTO,
                                             @PathVariable @NotBlank(message = "No puede ser vacío") String uuid) {
-        UserResponseDTO update = userService.update(uuid, userRequestDTO);
+        UserResponseDTO update = userService.customisedUpdate(updateRequestDTO,uuid);
         return ResponseEntity.ok(new GenericResponseDTO<>(true, "actualizado correctamente", update));
     }
 
