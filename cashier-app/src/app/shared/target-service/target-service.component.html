@@ -19,7 +19,7 @@
     <input type="number" id="amount" placeholder="Ej. $100.00" min="0" />
   </div>
   <p>Saldo: $100.50</p>
-  <button (click)="updateAlertStatus()"  type="submit">Pagar</button>
+  <button (click)="updateAlertStatus()"  type="button">Pagar</button>
   <div
     [@lateralEffect]
     *ngIf="viewStatus.alerts"
