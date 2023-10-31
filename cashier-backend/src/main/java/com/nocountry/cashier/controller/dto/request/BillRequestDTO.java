@@ -34,8 +34,7 @@ public class BillRequestDTO implements Serializable {
     @NotBlank(message = "no debe consistir solo en espacios en blanco")
     private String bill_num;
 
-    @NotEmpty(message = "Debe Ingresar El Monto De La Factura")
-    @NotBlank(message = "no debe consistir solo en espacios en blanco")
+
     @Min(value = 0, message = "El monto debe ser mayor a 0")
     private BigDecimal amount;
 }

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import com.nocountry.cashier.util.Utility;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 /**
  * @author ROMULO
@@ -58,6 +59,8 @@ public class Bill extends Transaction{
                 .bill_num(data.getBill_num())
                 .amount(data.getAmount())
                 .voucher_num(utility.generatorOTP(8))
+                .accountEntity(entity)
+                .dateEmit(LocalDateTime.now())
                 .build();
     }
 }
