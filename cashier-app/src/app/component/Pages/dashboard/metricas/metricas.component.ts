@@ -164,35 +164,6 @@ export class MetricasComponent implements OnInit{
   }
   
 
-
-/*
-  parsearData(): void {
-    setTimeout(() => {
-      this.datosTransaccionesSegmentados = this.obtenerSaldosPorTipo();
-      console.log(
-        'Montos por tipo (objeto):',
-        this.datosTransaccionesSegmentados
-      );
-      // Extraer los tipos de transacción del arreglo datosTransaccionesSegmentados
-      this.doughnutChartLabels = this.datosTransaccionesSegmentados.map(
-        (item: any) => item.tipo
-      );
-  
-      // Verificar si se han asignado correctamente
-      console.log('Tipos de transacción:', this.doughnutChartLabels);
-      // Extraer los montos de datosTransaccionesSegmentados y asignarlos a doughnutChartDatasets
-      this.doughnutChartDatasets[0].data = this.datosTransaccionesSegmentados.map(
-        (item: any) => item.monto
-      );
-  
-      // Verificar si se han asignado correctamente
-      console.log('Montos para el gráfico:', this.doughnutChartDatasets[0].data);
-      
-    }, 2000);
-    
-    
-  }*/
-
   showCvu():void{
     this.dashboardService.showCvu();
   }
