@@ -10,6 +10,7 @@ import com.nocountry.cashier.controller.dto.response.UserResponseDTO;
 import com.nocountry.cashier.domain.usecase.UserService;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -71,11 +72,12 @@ public class UserController {
             }
     )
     @GetMapping
-    public ResponseEntity<?> getAllCustomers(@RequestParam(value = "page", defaultValue = "0") Integer page,
-                                             @RequestParam(value = "size", defaultValue = "4") Integer size,
-                                             PageableDto pageableDto) {
-        pageableDto.setPage(page);
-        pageableDto.setSize(size);
+    public ResponseEntity<?> getAllCustomers(@Parameter(description = "DTO el cual permite listar usuarios", schema = @Schema(implementation = PageableDto.class)) PageableDto pageableDto) {
+
+        //@RequestParam(value = "page", defaultValue = "0") Integer page,
+        //@RequestParam(value = "size", defaultValue = "4") Integer size,
+        //pageableDto.setPage(page);
+        //pageableDto.setSize(size);
         Page<UserResponseDTO> content = userService.getAll(pageableDto);
         //Map<String, Object> response = Map.of("message", "Listado de Usuarios", "data", content);
         return new ResponseEntity<>(content, OK);
@@ -83,8 +85,6 @@ public class UserController {
 
     @GetMapping("search/{ramdom}")
     public ResponseEntity<?> getByShortString(@PathVariable String ramdom,
-                                              @RequestParam(value = "page", defaultValue = "0") Integer page,
-                                              @RequestParam(value = "size", defaultValue = "10") Integer size,
                                               PageableDto pageableDto){
         //@RequestParam(value = "order", defaultValue = "1") Integer order,
         // @RequestParam(value = "field", defaultValue = "id") String field)
@@ -96,14 +96,12 @@ public class UserController {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{'error':'El parámetro de búsqueda es requerido'}");
 
             }
-//            PageableDto pageableDto= new PageableDto();
-            pageableDto.setPage(page);
-            pageableDto.setSize(size);
-//            pageableDto.setField(field);
-//            pageableDto.setOrder(order);
+
             System.out.println(ramdom);
 
-            Page<UserResponseDTO> content = userService.findByShortString(ramdom,pageableDto);
+            String randomToLowerCase = ramdom.toLowerCase();
+
+            Page<UserResponseDTO> content = userService.findByShortString(randomToLowerCase,pageableDto);
             Map<String, Object> response = Map.of("message", "Listado de Personas Segun letras ingresadas ", "data", content);
             return new ResponseEntity<>(response, OK);
         } catch (Exception e) {

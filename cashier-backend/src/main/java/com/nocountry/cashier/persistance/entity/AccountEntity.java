@@ -42,7 +42,7 @@ public class AccountEntity extends Auditable<LocalDateTime> {
 
     private Boolean enabled;
 
-    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToOne
     @JoinColumn(name = "id_user")
     private UserEntity userEntity;
 

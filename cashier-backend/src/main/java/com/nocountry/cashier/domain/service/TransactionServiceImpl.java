@@ -52,7 +52,7 @@ public class TransactionServiceImpl implements TransactionService {
         var transaction = strategyTransaction.updateBalance(originAccount, destinyAccount, data.getAmount());
         transaction.setState(EnumsState.DONE);
         transaction.setType(EnumsTransactions.valueOf(data.getType()));
-
+        transaction.setReason(data.getReason());
         TransactionEntity saveTrasaction = transactionRepository.save(transaction);
         return mapper.toTransactionResponseDto(saveTrasaction);
     }

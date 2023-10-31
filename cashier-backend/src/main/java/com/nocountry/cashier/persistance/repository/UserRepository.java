@@ -33,7 +33,7 @@ public interface UserRepository extends JpaRepository<UserEntity, String> {
 ////            countQuery = "SELECT COUNT(u) FROM UserEntity u WHERE u.name LIKE '%'+:ramdom+'%'OR u.lastName LIKE '%'+:ramdom+'%'")
 //    Page<UserEntity> findByShortString(@Param("ramdom") String ramdom, Pageable pageable);
     @Meta(comment = "Obtener todos los usuarios segun caracteres ingresados ej:Car....")
-    @Query("SELECT u FROM UserEntity u WHERE u.name LIKE %:ramdom% OR u.lastName LIKE %:ramdom%")
+    @Query("SELECT u FROM UserEntity u WHERE lower(u.name) LIKE %:ramdom% OR lower(u.lastName) LIKE %:ramdom%")
     Page<UserEntity> findByShortString(@Param("ramdom") String ramdom, Pageable pageable);
 
 

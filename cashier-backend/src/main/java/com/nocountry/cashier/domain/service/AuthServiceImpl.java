@@ -156,7 +156,7 @@ public class AuthServiceImpl implements AuthService {
         }
 
         // ? GENERAMOS EL USUARIO , GENERAMOS NUEVO TOKEN CON NUEVO TIEMPO DE EXPIRACION
-        String newToken = jwtTokenProvider.generateToken(user, expirationToken);
+        //String newToken = jwtTokenProvider.generateToken(user, expirationToken);
         log.info("SE CONFIRMÓ SU EMAIL, CUENTA ACTIVADA");
         var nameUser = jwtTokenProvider.getClaimForToken(token, "name");
         return AuthConfirmedDTO.builder()

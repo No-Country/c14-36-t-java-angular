@@ -1,6 +1,7 @@
 package com.nocountry.cashier.controller.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -21,12 +22,17 @@ import java.io.Serializable;
 public class PageableDto implements Pageable, Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
+
+    @Schema(description = "Página", example = "0",defaultValue = "0")
     private Integer page;
+    @Schema(description = "Elementos por pagina",defaultValue = "4")
     private Integer size;
+    @Schema(description = "Orden de los elementos",example = "0 DESC - 1 ASC",defaultValue = "0")
     private Integer order;
+    @Schema(description = "Campo de la entidad a ordenar",defaultValue = "id")
     private String field;
 
-
+    @JsonIgnore
     public Sort getSort() {
         if (field != null) {
             Sort.Direction direction = order == 1 ? Sort.Direction.ASC : Sort.Direction.DESC;
@@ -69,6 +75,24 @@ public class PageableDto implements Pageable, Serializable {
     @Override
     public int getPageNumber() {
         return page;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isPaged() {
+        return Pageable.super.isPaged();
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isUnpaged() {
+        return Pageable.super.isUnpaged();
+    }
+
+    @JsonIgnore
+    @Override
+    public Sort getSortOr(Sort sort) {
+        return Pageable.super.getSortOr(sort);
     }
 
     @JsonIgnore
