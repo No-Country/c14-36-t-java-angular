@@ -25,7 +25,7 @@ export class DashboardService{
   }
 
   //COMO PROMESAS
-  getTransactionsByAccountId(idAccount: string, page: number = 0, size: number = 4, order: number = 1, field: string = 'dateEmit'): Promise<any> {
+  getTransactionsByAccountId(idAccount: string, page: number = 0, size: number = 4, order: number = 0, field: string = 'dateEmit'): Promise<any> {
     const params = `?idAccount=${idAccount}&page=${page}&size=${size}&order=${order}&field=${field}`;
     return this.http.get<any>(`${this.myAppUrl}${this.myApiCustomers}${this.myApiTransactions}${params}`).toPromise();
   }
