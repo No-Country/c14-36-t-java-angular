@@ -37,6 +37,15 @@ export class TransactionComponent {
 
   ngOnInit(){
     this.userData = this.tokenServ.dataUser;
+    this.updateDataAccount();
+  }
+  updateViewStatus($event:transactionView){
+    this.showComponents = $event;
+  }
+  updateIdTarget($event:IUserTarget){
+    this.userTarget = $event;
+  }
+  updateDataAccount(){
     const {id} = this.userData;
     this.userServ.getUser(id).subscribe({
       next:({data})=>{
@@ -48,10 +57,7 @@ export class TransactionComponent {
       error(err){console.log(err)}
     })
   }
-  updateViewStatus($event:transactionView){
-    this.showComponents = $event;
-  }
-  updateIdTarget($event:IUserTarget){
-    this.userTarget = $event;
+  updateAccountDataFromChild($event:IAccount){
+    this.accountData = $event;
   }
 }
