@@ -15,7 +15,7 @@ export class TargetServiceComponent {
   updateAlertStatus(){
     const newStatus:transactionView = {
       ...this.viewStatus,
-      alerts:true,
+      alertFail:true,
       contact:true,
     };
     this.updateViews.emit(newStatus);

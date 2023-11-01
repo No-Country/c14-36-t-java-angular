@@ -1,8 +1,13 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { textValidator } from 'src/app/CustomValidator/customValidator';
-import { enterLateral, fadeAnimation, scaling } from 'src/app/animations/animation';
-import { IUserProfile, IUserTarget, User } from 'src/app/interfaces/User.interface';
+import { textValidatorToFilter } from 'src/app/CustomValidator/customValidator';
+import {
+  enterLateral,
+  fadeAnimation,
+  scaling,
+} from 'src/app/animations/animation';
+import { IUserProfile, IUserTarget } from 'src/app/interfaces/User.interface';
+import { IAccount } from 'src/app/interfaces/account.interface';
 import { transactionView } from 'src/app/interfaces/transactionView.interface';
 import { UserService } from 'src/app/services/user.service';
 
@@ -14,12 +19,14 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class TransferFormComponent {
   @Input() viewStatus!: transactionView;
+  @Input() accountData!: IAccount;
   @Output() updateViews = new EventEmitter<transactionView>();
   @Output() idUserTarget = new EventEmitter<IUserTarget>();
   searchDataForm!: FormGroup;
   searchCvuForm!: FormGroup;
   userResults: IUserProfile[] = [];
   loading = false;
+  page = 0;
 
   constructor(private fb: FormBuilder, private userServ: UserService) {
     this.initDataForm();
@@ -31,7 +38,8 @@ export class TransferFormComponent {
       ...this.viewStatus,
       filterData,
       filterCVU: !filterData,
-      alerts: false,
+      alertSuccess: false,
+      alertFail:false,
       contact: false,
     };
     this.updateViews.emit(newStatus);
@@ -44,40 +52,33 @@ export class TransferFormComponent {
     };
     this.updateViews.emit(newStatus);
   }
-  updateResultFormStatus(){
-    const newStatus:transactionView = {
+  updateResultFormStatus() {
+    const newStatus: transactionView = {
       ...this.viewStatus,
-      formResult:true,
-      alerts:false,
-      contact:false
-    }
+      formResult: true,
+      alertSuccess: false,
+      alertFail: false,
+      contact: false,
+    };
     this.updateViews.emit(newStatus);
   }
-/* ------------------------------------------------------crear formularios */
+  /* ------------------------------------------------------crear formularios */
   initCvuForm() {
-    this.searchCvuForm = this.fb.group({cvu: [''],});
+    this.searchCvuForm = this.fb.group({ cvu: [''] });
   }
   initDataForm() {
     this.searchDataForm = this.fb.group({
-      data: ['', [Validators.required, textValidator]],
+      data: ['', [Validators.required, textValidatorToFilter]],
     });
   }
   /* ----------------------------------------------------- envio de formularios */
   searchDataSubmit() {
     this.updateResultFormStatus();
-    this.loading=true;
-    const { data } = this.searchDataForm.value;
-    this.userServ.getAllUsers().subscribe({
-      next: (res) => {
-        console.log(res)
-        this.userResults = res.data.filter((user) =>
-          this.matchName(user, data)
-        );
-      },
-      error(err) {console.log(err);},
-      complete:()=>(this.loading = false)
-    });
+    this.loading = true;
+    this.page = 0;
+    this.searchWordInPage(this.page);
   }
+  /* ----------------------------------------------------------FALTA IMPLEMTENTAR */
   searchCvuSubmit() {
     this.updateResultFormStatus();
     const { cvu } = this.searchCvuForm.value;
@@ -86,9 +87,24 @@ export class TransferFormComponent {
         this.userResults = res.data.filter((user) => this.matchName(user, cvu));
         console.log(this.userResults);
       },
-      error(err) {console.log(err);},
-      complete:()=>(this.loading = false)
+      error(err) {
+        console.log(err);
+      },
+      complete: () => (this.loading = false),
     });
+  }
+  /* ----------------------------------paginación */
+  forwardPage(isNext: boolean) {
+    if (this.userResults === null) return;
+
+    if (isNext && this.userResults.length > 0) {
+      this.page++;
+      this.searchWordInPage(this.page);
+    }
+    if (!isNext && this.page > 0) {
+      this.page--;
+      this.searchWordInPage(this.page);
+    }
   }
 
   matchName(data: IUserProfile, searchName: string) {
@@ -96,9 +112,28 @@ export class TransferFormComponent {
     return nameLastname.includes(searchName.toLowerCase().trim());
   }
   /* -----------------------------ver contacto */
-  initTransfer(id:number){
+  initTransfer(id: number) {
     const userTarget = this.userResults[id] as IUserTarget;
     this.idUserTarget.emit(userTarget);
     this.updateContactStatus();
+  }
+  /*--------------- consultar resultado en pagina "?"*/
+  searchWordInPage(page: number) {
+    const { data } = this.searchDataForm.value;
+    const nameSearch = (data as string).toLocaleLowerCase().trim();
+
+    this.userServ.filterUser(nameSearch, page).subscribe({
+      next: (res) => {
+        this.userResults = res.data.filter(
+          (user) =>
+            !(user.idAccount === this.accountData.idAccount ||
+            user.idCard === null)
+        );
+      },
+      error(err) {
+        console.log(err);
+      },
+      complete: () => (this.loading = false),
+    });
   }
 }

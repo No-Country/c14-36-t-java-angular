@@ -70,18 +70,12 @@ export class RegisterComponent implements OnInit {
       },
       error:(err)=>{
         this.messageStatus = false;
-        this.message = err.error.detail
+        this.message = err.error.detail;
       },
       complete:()=>(console.log("peticion realizada desde el register"))
     });
   }
 
-  // getAllData() {
-  //   this.userService.getUsers().subscribe(users => {
-  //     this.users = users;
-  //     console.log(this.users)
-  //   })
-  // }
   initForm(): FormGroup {
     return this.fb.group({
       email: ['', [Validators.required, emailValidator]],

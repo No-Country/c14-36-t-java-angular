@@ -4,5 +4,6 @@ export interface transactionView{
   filterCVU:boolean,
   formResult:boolean
   contact:boolean,
-  alerts:boolean
+  alertSuccess:boolean,
+  alertFail:boolean
 }
