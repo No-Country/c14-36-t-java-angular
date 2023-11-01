@@ -10,13 +10,12 @@
     <span>Para:</span>
     <div class="form__field__address">
       <span>{{userTarget.name + " "+ userTarget.lastName | titlecase}}</span>
-      <!-- <span>asdasdasdasdasd asdas dasdasdasdasdasd asdasdasdasda asadasdadasdas</span> -->
       <span>Cashier App</span>
     </div>
   </div>
   <div class="form__field">
     <span>CVU:</span>
-    <span>12312312312313213</span>
+    <span>{{accountData?accountData.cvu:0}}</span>
   </div>
   <div class="form__field">
     <label for="reason">Motivo:</label>

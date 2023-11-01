@@ -8,5 +8,7 @@ export const environment = {
     apiGetAccount:"http://localhost:8080/v1/api/accounts/",
     apiGetCard:"http://localhost:8080/v1/api/cards/",
     apiNewTransfer:"http://localhost:8080/v1/api/customers/transactions/new",
-    apiFilterUser:"http://localhost:8080/v1/api/customers/search/"
+    apiFilterUser:"http://localhost:8080/v1/api/customers/search/",
+    apiGetAllPayments:"/assets/temporaryServices.json",
+    apiNewPayment:"http://localhost:8080/v1/api/customers/transactions/bill_pay"
 }

@@ -84,7 +84,7 @@ export class TransferFormComponent {
     const { cvu } = this.searchCvuForm.value;
     this.userServ.getAllUsers().subscribe({
       next: (res) => {
-        this.userResults = res.data.filter((user) => this.matchName(user, cvu));
+        this.userResults = res.data.content.filter((user) => this.matchName(user, cvu));
         console.log(this.userResults);
       },
       error(err) {
@@ -111,7 +111,7 @@ export class TransferFormComponent {
     const nameLastname = (data.name + ' ' + data.lastName).toLowerCase();
     return nameLastname.includes(searchName.toLowerCase().trim());
   }
-  /* -----------------------------ver contacto */
+  /* -----------------------------ver contacto para la transferencia*/
   initTransfer(id: number) {
     const userTarget = this.userResults[id] as IUserTarget;
     this.idUserTarget.emit(userTarget);
@@ -124,7 +124,7 @@ export class TransferFormComponent {
 
     this.userServ.filterUser(nameSearch, page).subscribe({
       next: (res) => {
-        this.userResults = res.data.filter(
+        this.userResults = res.data.content.filter(
           (user) =>
             !(user.idAccount === this.accountData.idAccount ||
             user.idCard === null)

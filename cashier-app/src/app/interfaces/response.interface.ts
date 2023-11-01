@@ -1,4 +1,5 @@
-import { IUserProfile, User } from './User.interface';
+import { IUserProfile } from './User.interface';
+import { IAccount } from './account.interface';
 
 export interface ILoginRes {
   data: {
@@ -23,7 +24,22 @@ export interface IGetUserRes {
 }
 
 export interface IGetAllUserRes {
-  data: IUserProfile[];
+  data: {
+    content: IUserProfile[];
+    empty: boolean;
+    first: boolean;
+    last: boolean;
+    number: number;
+    numberOfElements: number;
+    pageabble: {
+      offset: number;
+      pageNumber: number;
+      pageSize: number;
+      paged: boolean;
+      unpaged: boolean;
+      size: number;
+    };
+  };
   message: string;
 }
 
@@ -36,4 +52,27 @@ export interface ItransactionRes {
   type: string;
   state: string;
   reason: string;
+}
+export interface IGetAccountRes {
+  success: boolean;
+  message: string;
+  data: IAccount;
+  timeStamp: string;
+}
+export interface IGetPayment {
+  entidad: string;
+  dataExpired: string;
+  idFactura: string;
+  monto: number;
+  img: string;
+}
+export interface IBillRes {
+  id: string;
+  dateEmit: string
+  bill_type: string;
+  bill_num: string;
+  amount: number;
+  voucher_num: string;
+  state: string;
+  type: string;
 }

@@ -20,6 +20,12 @@
     position: relative;
   }
 }
+.transferSuccess{
+  background-color: $colGreenLight;
+}
+.transferFail{
+  background-color: changeOpacity($colGreenLight, 0.5);
+}
 @media screen and (min-width: 480px) {
   .transferBox__right {
     padding-block: 30%;
