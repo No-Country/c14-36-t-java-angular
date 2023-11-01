@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, Output} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { enterLateral, fadeAnimation } from 'src/app/animations/animation';
 import { IUserTarget } from 'src/app/interfaces/User.interface';
@@ -19,20 +19,24 @@ export class SelectedUserComponent {
   @Input() accountData!:IAccount;
   @Input() userTarget!:IUserTarget;
   @Output() updateViews = new EventEmitter<transactionView>();
+  @Output() updateAccountData = new EventEmitter<IAccount>();
   transferForm!:FormGroup;
   userTargetAccount!:IAccount;
+  currentDate=new Date();
 
   constructor(
     private fb:FormBuilder,
-    private transferServ:TransferService
+    private transferServ:TransferService,
+    private accountServ:AccountService
   ){
     this.initTransferForm();
   }
 
-  updateAlertStatus(){
+  updateAlertStatus(statusResponse:boolean){
     const newStatus:transactionView = {
       ...this.viewStatus,
-      alerts:true,
+      alertSuccess:statusResponse,
+      alertFail:!statusResponse,
       contact:true,
     };
     this.updateViews.emit(newStatus);
@@ -40,27 +44,54 @@ export class SelectedUserComponent {
   /*_-------------------------------------------- creacion del form */
   initTransferForm(){
     this.transferForm = this.fb.group({
-      issue:['varios',[Validators.required]],
+      reason:['varios',[Validators.required]],
       amount:[0, [Validators.required]],
     })
   }
+  /* --------------------------------------------------iniciar transferencia */
   onTransferSubmit(){
-    const data = this.transferForm.value as {issue:string, amount:number}
-    const dataDTO= {
-      amount:50,
-      state:"DONE",
-      type:"DEPOSIT"
+    this.registerTransferTime();
+    const data = this.transferForm.value as {reason:string, amount:number}
+    const idDestination = this.userTarget.idAccount;
+    const idOrigin = this.accountData.idAccount;
+    const dataDTO:ITransactionDTO = {
+      ...data,
+      type:"TRANSFER",
+      origin:idOrigin,
+      destination:idDestination
     }
-    console.log(dataDTO);
-    const {idAccount} = this.userTarget;
-    console.log(idAccount)
-    this.transferServ.newTransfer(idAccount,dataDTO).subscribe({
+
+    this.transferServ.newTransfer(dataDTO).subscribe({
       next:(res)=>{
-        console.log(res)
-        this.updateAlertStatus();
+        this.updateAlertStatus(true);
+        this.updateAccountDataToParent();
+      },
+      error(err){
+        console.log(err)
+        this.updateAlertStatus(false);
+      }
+    })
+  }
+  updateAccountDataToParent(){
+    this.updateAccountData.emit(null);
+    this.accountServ.getAccount(this.accountData.idAccount).subscribe({
+      next:(res)=>{
+        this.updateAccountData.emit(res);
       },
       error(err){console.log(err)}
     })
   }
+  registerTransferTime(){
+    this.currentDate= new Date();
+  }
 
+  resetViewStatus(){
+    const newStatus:transactionView = {
+      ...this.viewStatus,
+      alertSuccess:false,
+      alertFail:false,
+      contact:false,
+    };
+    this.updateViews.emit(newStatus);
+  }
 }

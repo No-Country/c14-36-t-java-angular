@@ -1,0 +1,9 @@
+@import "../../../app/stylesConfig/config";
+
+.loading-container {
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    height: 100vh; /* Ajusta al alto de la ventana */
+    background-color: $colGreenDark;
+  }

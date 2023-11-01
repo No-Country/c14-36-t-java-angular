@@ -1,0 +1,34 @@
+<div class="transferBox">
+  <div *ngIf="accountData, else fallback" class="transferBox__left d-flex flex-column align-items-center">
+    <!-- -------------------------------------------caja del saldo -->
+    <app-balance
+    [accountData]="accountData"
+    [viewStatus]="showComponents"
+    (updateViews)="updateViewStatus($event)">
+    </app-balance>
+
+    <app-transfer-form
+    *ngIf="showComponents.form"
+    [accountData]="accountData"
+    [viewStatus]="showComponents"
+    (updateViews)="updateViewStatus($event)"
+    (idUserTarget)="updateIdTarget($event)"
+    >
+    </app-transfer-form>
+  </div>
+  <ng-template #fallback>
+    <p class="text-white">esperando...</p>
+  </ng-template>
+  <!-- ------------------------------------------------caja derecha -->
+  <div class="transferBox__right"
+  [ngClass]="showComponents.alertSuccess?'transferSuccess':''"
+  [ngClass]="showComponents.alertFail?'transferFail':''">
+    <app-selected-user
+    [accountData]="accountData"
+    [viewStatus]="showComponents"
+    [userTarget]="userTarget"
+    (updateViews)="updateViewStatus($event)"
+    (updateAccountData)="updateAccountDataFromChild($event)"
+    ></app-selected-user>
+  </div>
+</div>
