@@ -1,0 +1,7 @@
+@import "../../stylesConfig/config";
+:host {
+  display: flex;
+  background-color: $colGreenDark;
+  justify-content: center;
+  min-height: 100%;
+}

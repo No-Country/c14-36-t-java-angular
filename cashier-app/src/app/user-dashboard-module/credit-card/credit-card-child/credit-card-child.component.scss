@@ -1,0 +1,86 @@
+@import "../../../stylesConfig/config";
+:host{
+  position: absolute;
+  top: 0;
+  right: -150%;
+  height: 100%;
+  background-color: $colGreenDark;
+  transition: ease-in-out all 0.5s;
+  padding-inline: 1rem;
+  max-width: 380px;
+}
+.cardDetailBox{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  height: 100%;
+  &__card{
+    background-color: $colWhite;
+    border-radius: 1rem;
+    width: max(200px,100%);
+    &__magnet{
+      background-color: gray;
+      height: 50px;
+      margin-top: 30px;
+    }
+    &__info{
+      margin-top: 50px;
+      padding-inline: 1rem;
+    }
+  }
+  &__details{
+    display: flex;
+    flex-direction: column;
+    width: min(500px,100%);
+    &__field{
+      display: flex;
+      justify-content: space-between;
+      border-bottom: solid gray 2px;
+      color: $colWhite;
+      padding-bottom: 0.5rem;
+      &__data{
+        text-align: end;
+      }
+    }
+    .copyBtn{
+      all:initial;
+      cursor: pointer;
+      overflow-y: hidden;
+      @include transitionFast;
+      img{
+        @include changeColorPng($colGreenLight);
+        width: 2rem;
+        margin-left: 0.5rem;
+      }
+      &:active{
+        transform: scale(0.9);
+        box-shadow: 0 0 10px -1px $colGreenLight;
+        outline: 1px solid $colGreenLight;
+      }
+    }
+  }
+
+  &__close{
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    border-radius: 50%;
+    aspect-ratio: 1/1;
+    background-color: $colWhite;
+    transition: all ease-in-out 0.5s;
+    &:hover{
+      background-color: changeOpacity($colWhite,0.7);
+    }
+  }
+}
+
+@media screen and (max-width:420px){
+  .cardDetailBox__details__field{
+    flex-direction: column;
+    &__data{
+      text-align: start;
+    }
+  }
+}
