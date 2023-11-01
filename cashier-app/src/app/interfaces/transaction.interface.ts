@@ -1,5 +1,7 @@
 export interface ITransactionDTO{
   type:string,
   amount:number,
-  state:string
+  origin:string,
+  destination:string,
+  reason:string
 }

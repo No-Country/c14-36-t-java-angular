@@ -3,7 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { User } from '../interfaces/User.interface';
-import { IGetAllUser, IGetUserRes, ILoginRes, IRegistRes } from '../interfaces/response.interface';
+import { IGetAllUserRes, IGetUserRes, ILoginRes, IRegistRes } from '../interfaces/response.interface';
 
 
 @Injectable({
@@ -15,6 +15,7 @@ export class UserService {
   private readonly APIGETALLUSER = environment.apiGetAllUser;
   private readonly APIRegister = environment.apiRegister;
   private readonly http = inject(HttpClient);
+  private readonly APIFILTERUSER = environment.apiFilterUser;
 
   constructor() {}
 
@@ -24,12 +25,13 @@ export class UserService {
 
   getAllUsers() {
     const params = new HttpParams().set('size',10)
-    return this.http.get<IGetAllUser>(this.APIGETALLUSER, {params});
+    return this.http.get<IGetAllUserRes>(this.APIGETALLUSER, {params});
   }
 
   getUser(userId: string) {
     return this.http.get<IGetUserRes>(this.APIGETUSER+userId);
   }
+
   updateUser(user: User): Observable<User> {
     return this.http.put<User>(`${this.APILOGIN}/${user.id}`, user);
   }
@@ -45,5 +47,10 @@ export class UserService {
     };
 
     return this.http.post<ILoginRes>(this.APILOGIN, body);
+  }
+
+  filterUser(userData:string, page:number){
+    const params = new HttpParams().set('size', 10).set('page', page);
+    return this.http.get<IGetAllUserRes>(this.APIFILTERUSER+userData,{params})
   }
 }

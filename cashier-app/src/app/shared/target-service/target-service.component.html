@@ -22,7 +22,7 @@
   <button (click)="updateAlertStatus()"  type="button">Pagar</button>
   <div
     [@lateralEffect]
-    *ngIf="viewStatus.alerts"
+    *ngIf="viewStatus.alertFail"
     class="form__actions">
     <button class="form__actions__btnBox">
       <div>
@@ -49,7 +49,7 @@
     </button>
   </div>
 </form>
-<div class="alert" [@fadeEffect] *ngIf="viewStatus.alerts ">
+<div class="alert" [@fadeEffect] *ngIf="viewStatus.alertFail ">
   <div class="alert__imgBox">
     <img src="assets/check-circle.png" alt="check-circle_icon" />
   </div>

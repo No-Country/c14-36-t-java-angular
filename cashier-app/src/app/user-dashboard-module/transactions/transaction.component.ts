@@ -15,13 +15,14 @@ import { IUserTarget } from 'src/app/interfaces/User.interface';
   animations: [fadeAnimation, enterLateral ],
 })
 export class TransactionComponent {
-  showComponents={
+  showComponents:transactionView={
     form:false,
     filterData:true,
     filterCVU:false,
     formResult:false,
     contact:false,
-    alerts:false
+    alertSuccess:false,
+    alertFail:false,
   }
   userTarget!:IUserTarget;
 
