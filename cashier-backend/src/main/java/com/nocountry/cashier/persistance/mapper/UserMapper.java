@@ -16,7 +16,7 @@ public interface UserMapper {
     @Mapping(target = "qr", ignore = true)
     @Mapping(target = "token", ignore = true)
     @Mapping(target = "modifyUser", ignore = true)
-    //@Mapping(target = "openAccountDate", ignore = true)
+    //@Mapping(source= "",target = "openAccountDate")
     @Mapping(target = "lastModifiedDate", ignore = true)
     @Mapping(target = "image", ignore = true)
     @Mapping(target = "id", ignore = true)
@@ -28,6 +28,7 @@ public interface UserMapper {
 
     @Mapping(target = "idAccount", source = "accountEntity.idAccount")
     @Mapping(target = "idCard", source = "creditCardEntity.idCard")
+    @Mapping(source = "accountEntity.openAccountDate",target = "openAccountDate" )
     UserResponseDTO toUserResponseDto(UserEntity userEntity);
 
     @Named("stringToLocalDate")
