@@ -5,6 +5,7 @@ import { IUserTarget } from 'src/app/interfaces/User.interface';
 import { IAccount } from 'src/app/interfaces/account.interface';
 import { ITransactionDTO } from 'src/app/interfaces/transaction.interface';
 import { transactionView } from 'src/app/interfaces/transactionView.interface';
+import { AccountService } from 'src/app/services/account.service';
 import { TransferService } from 'src/app/services/transfer.service';
 
 @Component({
@@ -18,12 +19,15 @@ export class SelectedUserComponent {
   @Input() accountData!:IAccount;
   @Input() userTarget!:IUserTarget;
   @Output() updateViews = new EventEmitter<transactionView>();
+  @Output() updateAccountData = new EventEmitter<IAccount>();
   transferForm!:FormGroup;
   userTargetAccount!:IAccount;
+  currentDate=new Date();
 
   constructor(
     private fb:FormBuilder,
-    private transferServ:TransferService
+    private transferServ:TransferService,
+    private accountServ:AccountService
   ){
     this.initTransferForm();
   }
@@ -46,6 +50,7 @@ export class SelectedUserComponent {
   }
   /* --------------------------------------------------iniciar transferencia */
   onTransferSubmit(){
+    this.registerTransferTime();
     const data = this.transferForm.value as {reason:string, amount:number}
     const idDestination = this.userTarget.idAccount;
     const idOrigin = this.accountData.idAccount;
@@ -55,9 +60,11 @@ export class SelectedUserComponent {
       origin:idOrigin,
       destination:idDestination
     }
+
     this.transferServ.newTransfer(dataDTO).subscribe({
       next:(res)=>{
         this.updateAlertStatus(true);
+        this.updateAccountDataToParent();
       },
       error(err){
         console.log(err)
@@ -65,5 +72,26 @@ export class SelectedUserComponent {
       }
     })
   }
+  updateAccountDataToParent(){
+    this.updateAccountData.emit(null);
+    this.accountServ.getAccount(this.accountData.idAccount).subscribe({
+      next:(res)=>{
+        this.updateAccountData.emit(res);
+      },
+      error(err){console.log(err)}
+    })
+  }
+  registerTransferTime(){
+    this.currentDate= new Date();
+  }
 
+  resetViewStatus(){
+    const newStatus:transactionView = {
+      ...this.viewStatus,
+      alertSuccess:false,
+      alertFail:false,
+      contact:false,
+    };
+    this.updateViews.emit(newStatus);
+  }
 }
