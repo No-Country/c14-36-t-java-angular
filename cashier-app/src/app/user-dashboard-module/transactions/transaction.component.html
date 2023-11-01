@@ -6,8 +6,10 @@
     [viewStatus]="showComponents"
     (updateViews)="updateViewStatus($event)">
     </app-balance>
+
     <app-transfer-form
     *ngIf="showComponents.form"
+    [accountData]="accountData"
     [viewStatus]="showComponents"
     (updateViews)="updateViewStatus($event)"
     (idUserTarget)="updateIdTarget($event)"
@@ -18,7 +20,9 @@
     <p class="text-white">esperando...</p>
   </ng-template>
   <!-- ------------------------------------------------caja derecha -->
-  <div class="transferBox__right">
+  <div class="transferBox__right"
+  [ngClass]="showComponents.alertSuccess?'transferSuccess':''"
+  [ngClass]="showComponents.alertFail?'transferFail':''">
     <app-selected-user
     [accountData]="accountData"
     [viewStatus]="showComponents"

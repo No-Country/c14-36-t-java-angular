@@ -17,7 +17,8 @@ updateViewsStatus(){
     ...this.viewStatus,
     form:true,
     formResult:false,
-    alerts:false,
+    alertSuccess:false,
+    alertFail:false,
     contact:false,
   };
   this.updateViews.emit(newStatus);

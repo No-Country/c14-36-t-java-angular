@@ -33,4 +33,4 @@ export interface IUserProfile extends Omit<User, 'password' | 'birthDate'> {
   createdDate: string;
 }
 export interface IUserTarget extends Pick<
-IUserProfile, 'idAccount' | 'name' | 'lastName'> {}
+IUserProfile, 'idAccount' | 'name' | 'lastName'|'image'> {}

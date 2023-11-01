@@ -1,11 +1,10 @@
-import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, Output} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { enterLateral, fadeAnimation } from 'src/app/animations/animation';
 import { IUserTarget } from 'src/app/interfaces/User.interface';
 import { IAccount } from 'src/app/interfaces/account.interface';
 import { ITransactionDTO } from 'src/app/interfaces/transaction.interface';
 import { transactionView } from 'src/app/interfaces/transactionView.interface';
-import { AccountService } from 'src/app/services/account.service';
 import { TransferService } from 'src/app/services/transfer.service';
 
 @Component({
@@ -29,10 +28,11 @@ export class SelectedUserComponent {
     this.initTransferForm();
   }
 
-  updateAlertStatus(){
+  updateAlertStatus(statusResponse:boolean){
     const newStatus:transactionView = {
       ...this.viewStatus,
-      alerts:true,
+      alertSuccess:statusResponse,
+      alertFail:!statusResponse,
       contact:true,
     };
     this.updateViews.emit(newStatus);
@@ -40,26 +40,29 @@ export class SelectedUserComponent {
   /*_-------------------------------------------- creacion del form */
   initTransferForm(){
     this.transferForm = this.fb.group({
-      issue:['varios',[Validators.required]],
+      reason:['varios',[Validators.required]],
       amount:[0, [Validators.required]],
     })
   }
+  /* --------------------------------------------------iniciar transferencia */
   onTransferSubmit(){
-    const data = this.transferForm.value as {issue:string, amount:number}
-    const dataDTO= {
-      amount:50,
-      state:"DONE",
-      type:"DEPOSIT"
+    const data = this.transferForm.value as {reason:string, amount:number}
+    const idDestination = this.userTarget.idAccount;
+    const idOrigin = this.accountData.idAccount;
+    const dataDTO:ITransactionDTO = {
+      ...data,
+      type:"TRANSFER",
+      origin:idOrigin,
+      destination:idDestination
     }
-    console.log(dataDTO);
-    const {idAccount} = this.userTarget;
-    console.log(idAccount)
-    this.transferServ.newTransfer(idAccount,dataDTO).subscribe({
+    this.transferServ.newTransfer(dataDTO).subscribe({
       next:(res)=>{
-        console.log(res)
-        this.updateAlertStatus();
+        this.updateAlertStatus(true);
       },
-      error(err){console.log(err)}
+      error(err){
+        console.log(err)
+        this.updateAlertStatus(false);
+      }
     })
   }
 

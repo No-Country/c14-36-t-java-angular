@@ -24,8 +24,32 @@ export function textValidator(controller: AbstractControl) {
   if (value.length > 85) {
     return { maxLength: true, message: 'Máximo 85 carácteres.' };
   }
-  return null;
-}
+
+  return null
+};
+export function textValidatorToFilter(controller:AbstractControl){
+  const specialCharacter = /[^a-zA-Z0-9á-ýÁ-Ý\s]/g;
+  const spaces = /(\s{2,})/g
+
+  const value = controller.value as string;
+
+  if(value.length <4){
+    return {minLength:true, message:'Mínimo 4 carácteres.'}
+  }
+  if(specialCharacter.test(value)){
+    return {invalidChar:true, message:'No se permite carácteres especiales.'}
+  }
+  if(/\d/g.test(value)){
+    return {hasNumber:true, message: 'No se permiten números.'}
+  }
+  if(spaces.test(value)){
+    return {hasSpaces:true, message: 'Espacios excesivos'}
+  }
+  if(value.length > 50){
+    return {maxLength:true, message:'Máximo 50 carácteres.'}
+  }
+  return null
+};
 
 export function dniValidator(controller: AbstractControl) {
   const value = controller.value as string;
@@ -63,10 +87,8 @@ export function phoneValidator(controller: AbstractControl) {
   return null;
 }
 
-export function emailValidator(controller: AbstractControl) {
+export function emailValidator(controller:AbstractControl){
   const emailPattern = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
-  // const emailPattern = /^[\w-\.]+@gmail\.[\w-]{2,4}$/;
-
   const value = controller.value as string;
 
   if (!emailPattern.test(value)) {

@@ -26,6 +26,7 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    
     // Mostrar el indicador de carga.
     this.isLoading = true;
     const userDataDecoded = this.tokenService.getTokenDecoded();
@@ -33,11 +34,11 @@ export class DashboardComponent implements OnInit {
     console.log('idUser: ', idUser);
     console.log('token Decoded: ', userDataDecoded);
     this.obtenerDatosPorUUID(idUser);
-
+    
     setTimeout(() => {
       this.obtenerTransaccionesPorAccountId();
     }, 1000);
-
+    
     setTimeout(() => {
       this.obtenerDatosCuentaPorAccountId(this.idAccount);
     }, 1000);
@@ -47,13 +48,14 @@ export class DashboardComponent implements OnInit {
       this.isLoading= false;
     }, 1000);
   }
-
+  
   obtenerDatosPorUUID(uuid: string) {
     this.dashboardService.getUserDataById(uuid).subscribe(
       (response) => {
         if (response.success && response.message === 'Usuario Encontrado') {
           console.log('Datos Usuario : ', response.data);
           const userData = response.data;
+          console.log(userData.saldo);
           this.idAccount = userData.idAccount;
         } else {
           console.log('Error', 'No se encontró al usuario', 'error');

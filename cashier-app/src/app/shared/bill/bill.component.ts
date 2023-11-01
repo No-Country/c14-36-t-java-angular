@@ -17,8 +17,9 @@ export class BillComponent {
       ...this.viewStatus,
       filterData,
       filterCVU: !filterData,
-      alerts: false,
       contact: false,
+      alertSuccess: false,
+      alertFail: false,
     };
     this.updateViews.emit(newStatus);
   }

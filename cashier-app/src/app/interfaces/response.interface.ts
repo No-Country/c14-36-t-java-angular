@@ -21,8 +21,19 @@ export interface IGetUserRes {
   data: IUserProfile;
   timeStamp: string;
 }
-export interface IGetAllUser{
-  data:IUserProfile[],
-  message:string
+
+export interface IGetAllUserRes {
+  data: IUserProfile[];
+  message: string;
 }
 
+export interface ItransactionRes {
+  id: string;
+  origin: string;
+  destination: string;
+  amount: number;
+  dateEmit: string;
+  type: string;
+  state: string;
+  reason: string;
+}

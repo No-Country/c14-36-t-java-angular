@@ -4,7 +4,7 @@
  (submit)="onTransferSubmit()"
  >
   <div class="form__imgBox">
-    <img src="assets/DNI.png" alt="dni_icon" />
+    <img [src]="userTarget.image || 'assets/DNI.png'" alt="dni_icon" />
   </div>
   <div class="form__field">
     <span>Para:</span>
@@ -19,8 +19,8 @@
     <span>12312312312313213</span>
   </div>
   <div class="form__field">
-    <label for="issue">Motivo:</label>
-    <select id="issue" formControlName="issue" required>
+    <label for="reason">Motivo:</label>
+    <select id="reason" formControlName="reason" required>
       <option value="seguro">Seguros</option>
       <option value="alquiler">Alquileres</option>
       <option value="honorario">Honorarios</option>
@@ -64,7 +64,7 @@
     </button>
   </div>
 </form>
-<div class="alert" [@fadeEffect] *ngIf="viewStatus.alerts">
+<div class="alert" [@fadeEffect] *ngIf="viewStatus.alertSuccess || viewStatus.alertFail">
   <div class="alert__imgBox">
     <img src="assets/check-circle.png" alt="check-circle_icon">
   </div>

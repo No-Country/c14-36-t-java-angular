@@ -15,13 +15,14 @@ import { UserService } from 'src/app/services/user.service';
   animations: [fadeAnimation, enterLateral]
 })
 export class ServicePageComponent {
-  showComponents={
+  showComponents:transactionView={
     form:false,
     filterData:true,
     filterCVU:false,
     formResult:false,
     contact:false,
-    alerts:false
+    alertSuccess:false,
+    alertFail:false
   }
   userTarget!:IUserTarget;
 
