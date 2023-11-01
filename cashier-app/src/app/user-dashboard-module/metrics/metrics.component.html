@@ -33,8 +33,8 @@
                 <button type="button"  routerLink="/user/dashboard" class="btn btn-success btnCvu">Ver Movimientos</button>
             </div>
     </div>    
-    <div  class="row d-flex mt-4 mb-4 custom-centered" >
-                <div *ngIf="transacciones.length > 0; else noMetricas" class="col-sm text-center mx-auto my-auto" >
+    <div class="row d-flex mt-4 mb-4 custom-centered" >
+                <div  class="col-sm text-center mx-auto my-auto" >
                     <canvas baseChart
                     [labels]="doughnutChartLabels"
                     [datasets]="doughnutChartDatasets"
@@ -44,12 +44,6 @@
                     </canvas>
                 </div>
     </div>
-
-    <ng-template #noMetricas>
-        <div class="alert alert-info" *ngIf="transacciones.length === 0">
-            No hay métricas por mostrar
-        </div>
-    </ng-template>
 
 
     
