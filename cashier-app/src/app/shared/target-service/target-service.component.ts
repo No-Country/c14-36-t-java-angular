@@ -32,7 +32,7 @@ export class TargetServiceComponent {
   createBill(){
     const bill:IBillDTO={
       amount:this.targetService.monto,
-      bill_num:this.targetService.idFactura,
+      bill_num:this.targetService.entidad,
       bill_type:"servicio",
       origin:this.accountData.idAccount,
       type:"PAYMENT"

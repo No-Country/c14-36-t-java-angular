@@ -24,7 +24,7 @@ export class MetricasComponent implements OnInit{
   public doughnutChartOptions: ChartConfiguration<'doughnut'>['options'] = {responsive: true};
   public chartColors: any[] = [{backgroundColor:["#ffc107", "#6FC8CE", "#FAFFF2", "#FFFCC4", "#B9E8E0"] }];
 
-  constructor(private dashboardService:DashboardService, 
+  constructor(private dashboardService:DashboardService,
               private tokenService: TokenService) {}
 
   ngOnInit(): void {
@@ -43,7 +43,7 @@ export class MetricasComponent implements OnInit{
      setTimeout(() => {
       this.isLoading= false;
     }, 2000);
-     
+
   }
 
   obtenerDatosPorUUID(uuid: string) {
@@ -65,14 +65,13 @@ export class MetricasComponent implements OnInit{
 
   async obtenerTransaccionesPorAccountId() {
     try {
-      const response = await this.dashboardService.getTransactionsByAccountId(
-        this.idAccount
-      );
+      const response = await this.dashboardService
+      .getTransactionsByAccountId(this.idAccount);
       console.log('Transacciones: ', response);
 
-      if (response.data && response.data.length > 0) {
-        this.transacciones = Object.values(response.data);
-        this.transacciones = response.data.sort((a: any, b: any) => {
+      if (response.data.content && response.data.content.length > 0) {
+        this.transacciones = Object.values(response.data.content);
+        this.transacciones = response.data.content.sort((a: any, b: any) => {
           return (
             new Date(b.dateEmit).getTime() - new Date(a.dateEmit).getTime()
           );
@@ -94,14 +93,14 @@ export class MetricasComponent implements OnInit{
       this.saldo = response.data.totalAccount;
       this.cvu = response.data.cvu;
       this.showcvu = true;
-      this.isLoading = false; 
+      this.isLoading = false;
     } catch (error) {
       console.error('Error al obtener los datos de la cuenta', error);
-      this.isLoading = false; 
+      this.isLoading = false;
     }
   }
 
-  
+
 
   parsearData(): void {
     setTimeout(() => {
@@ -114,26 +113,26 @@ export class MetricasComponent implements OnInit{
       this.doughnutChartLabels = this.datosTransaccionesSegmentados.map(
         (item: any) => item.tipo
       );
-  
+
       // Verificar si se han asignado correctamente
       console.log('Tipos de transacción:', this.doughnutChartLabels);
       // Extraer los montos de datosTransaccionesSegmentados y asignarlos a doughnutChartDatasets
       this.doughnutChartDatasets[0].data = this.datosTransaccionesSegmentados.map(
         (item: any) => item.monto
       );
-  
+
       // Verificar si se han asignado correctamente
       console.log('Montos para el gráfico:', this.doughnutChartDatasets[0].data);
-      
+
     }, 2000);
-    
-    
+
+
   }
 
   showCvu():void{
     this.dashboardService.showCvu();
   }
-  
+
 
   obtenerSaldosPorTipo() {
     const saldosPorTipo: { [tipo: string]: number } = {};
@@ -147,13 +146,11 @@ export class MetricasComponent implements OnInit{
         saldosPorTipo[tipo] = monto;
       }
     }
-
     // Convierte el objeto en un arreglo de objetos
     const resultado = Object.keys(saldosPorTipo).map((tipo) => ({
       tipo,
       monto: saldosPorTipo[tipo],
     }));
-
     return resultado;
   }
 }

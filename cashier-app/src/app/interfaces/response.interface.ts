@@ -68,7 +68,7 @@ export interface IGetPayment {
 }
 export interface IBillRes {
   id: string;
-  dateEmit: string
+  dateEmit: string;
   bill_type: string;
   bill_num: string;
   amount: number;
@@ -81,4 +81,35 @@ export interface IcardRes {
   message: string;
   data: ICard;
   timeStamp: string;
+}
+export interface IBillHistoryRes {
+  data: {
+    content: IBillRes[];
+    pageable: {
+      pageNumber: number;
+      pageSize: number;
+      sort: {
+        empty: boolean;
+        unsorted: boolean;
+        sorted: boolean;
+      };
+      offset: number;
+      paged: boolean;
+      unpaged: boolean;
+    };
+    last: boolean;
+    totalElements: number;
+    totalPages: number;
+    first: boolean;
+    size: number;
+    number: number;
+    sort: {
+      empty: boolean;
+      unsorted: boolean;
+      sorted: boolean;
+    };
+    numberOfElements: number;
+    empty: boolean;
+  };
+  message: string;
 }

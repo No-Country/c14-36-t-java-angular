@@ -16,6 +16,7 @@
     <app-bill
     [@fadeEffect]
     *ngIf="showComponents.form"
+    [accountData]="accountData"
     [viewStatus]="showComponents"
     (updateViews)="updateViewStatus($event)"
     (updatePaymentTarget)="updateServiceTarget($event)"
