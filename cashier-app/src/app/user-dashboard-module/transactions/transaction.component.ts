@@ -50,7 +50,9 @@ export class TransactionComponent {
     this.userServ.getUser(id).subscribe({
       next:({data})=>{
         this.accountServ.getAccount(data.idAccount).subscribe({
-          next:(res)=>(this.accountData = res),
+          next:(res)=>{
+            this.accountData = res.data;
+          },
           error(err){console.log(err)}
         })
       },

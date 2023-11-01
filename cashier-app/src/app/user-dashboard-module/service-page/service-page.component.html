@@ -18,13 +18,18 @@
     *ngIf="showComponents.form"
     [viewStatus]="showComponents"
     (updateViews)="updateViewStatus($event)"
+    (updatePaymentTarget)="updateServiceTarget($event)"
     >
     </app-bill>
   </div>
   <!-- ------------------------------------------------caja derecha -->
-  <div class="transferBox__right">
+  <div class="transferBox__right"
+  [ngClass]="showComponents.alertSuccess?'transferSuccess':''"
+  [ngClass]="showComponents.alertFail?'transferFail':''">
     <app-target-service
     [@fadeEffect]
+    [accountData]="accountData"
+    [targetService]="paymentTarget"
     [viewStatus]="showComponents"
     (updateViews)="updateViewStatus($event)"
     *ngIf="showComponents.contact"

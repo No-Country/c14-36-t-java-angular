@@ -4,22 +4,25 @@
   </div>
   <div class="form__field">
     <span>Para:</span>
-    <span>Juanito Alimaña</span>
+    <span>{{targetService.entidad}}</span>
   </div>
   <div class="form__field">
     <span>Vence:</span>
-    <span>06/06/66</span>
+    <span>{{targetService.dataExpired}}</span>
   </div>
   <div class="form__field">
     <span>Nro. de Factura:</span>
-    <span>666999666-9</span>
+    <span>{{targetService.idFactura}}</span>
   </div>
-  <div class="form__fieldAmount">
-    <label for="amount">Monto</label>
-    <input type="number" id="amount" placeholder="Ej. $100.00" min="0" />
+  <div class="form__field">
+    <span class="amount">Monto:</span>
+    <span>{{targetService.monto | currency: 'USD':'symbol':'1.2-2'}}</span>
   </div>
-  <p>Saldo: $100.50</p>
-  <button (click)="updateAlertStatus()"  type="button">Pagar</button>
+  <div class="form__field">
+    <span>Saldo total</span>
+    <p>{{accountData.totalAccount | currency: 'USD':'symbol':'1.2-2'}}</p>
+  </div>
+  <button (click)="createBill()"  type="button">Pagar</button>
   <div
     [@lateralEffect]
     *ngIf="viewStatus.alertFail"
@@ -30,7 +33,7 @@
       </div>
       <span>Comprobante</span>
     </button>
-    <button class="form__actions__btnBox">
+    <a routerLink="../transfer" class="form__actions__btnBox">
       <div>
         <img src="assets/transfer.png" alt="transfer_icon" />
       </div>
@@ -38,7 +41,7 @@
         >Realizar <br />
         Transferencia</span
       >
-    </button>
+    </a>
     <button class="form__actions__btnBox">
       <div>
         <img src="assets/shop.png" alt="shop_icon" />

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { fadeAnimation, enterLateral } from 'src/app/animations/animation';
-import { IUserTarget } from 'src/app/interfaces/User.interface';
 import { IAccount } from 'src/app/interfaces/account.interface';
+import { IGetPayment } from 'src/app/interfaces/response.interface';
 import { transactionView } from 'src/app/interfaces/transactionView.interface';
 import { UserData } from 'src/app/interfaces/userData.inteface';
 import { AccountService } from 'src/app/services/account.service';
@@ -24,7 +24,7 @@ export class ServicePageComponent {
     alertSuccess:false,
     alertFail:false
   }
-  userTarget!:IUserTarget;
+  paymentTarget!:IGetPayment;
 
   userData!:UserData;
   accountData!:IAccount;
@@ -39,12 +39,11 @@ export class ServicePageComponent {
 
   ngOnInit(){
     this.userData = this.tokenServ.dataUser;
-    console.log(this.userData)
     const {id} = this.userData;
     this.userServ.getUser(id).subscribe({
       next:({data})=>{
         this.accountServ.getAccount(data.idAccount).subscribe({
-          next:(res)=>(this.accountData = res),
+          next:(res)=>(this.accountData = res.data),
           error(err){console.log(err)}
         })
       },
@@ -54,7 +53,7 @@ export class ServicePageComponent {
   updateViewStatus($event:transactionView){
     this.showComponents = $event;
   }
-  updateIdTarget($event:IUserTarget){
-    this.userTarget = $event;
+  updateServiceTarget($event:IGetPayment){
+    this.paymentTarget = $event;
   }
 }

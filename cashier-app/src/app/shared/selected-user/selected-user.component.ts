@@ -63,6 +63,7 @@ export class SelectedUserComponent {
 
     this.transferServ.newTransfer(dataDTO).subscribe({
       next:(res)=>{
+        console.log(res)
         this.updateAlertStatus(true);
         this.updateAccountDataToParent();
       },
@@ -76,7 +77,7 @@ export class SelectedUserComponent {
     this.updateAccountData.emit(null);
     this.accountServ.getAccount(this.accountData.idAccount).subscribe({
       next:(res)=>{
-        this.updateAccountData.emit(res);
+        this.updateAccountData.emit(res.data);
       },
       error(err){console.log(err)}
     })
