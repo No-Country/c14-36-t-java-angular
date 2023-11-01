@@ -10,5 +10,5 @@ export interface ICard {
   cardNumber: string;
   cardName: string;
   expirationDate: string;
-  securityCode: string
+  securityCode: string;
 }

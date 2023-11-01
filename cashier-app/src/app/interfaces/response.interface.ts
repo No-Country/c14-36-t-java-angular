@@ -1,5 +1,5 @@
 import { IUserProfile } from './User.interface';
-import { IAccount } from './account.interface';
+import { IAccount, ICard } from './account.interface';
 
 export interface ILoginRes {
   data: {
@@ -75,4 +75,10 @@ export interface IBillRes {
   voucher_num: string;
   state: string;
   type: string;
+}
+export interface IcardRes {
+  success: boolean;
+  message: string;
+  data: ICard;
+  timeStamp: string;
 }

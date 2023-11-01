@@ -64,18 +64,18 @@ export class DashboardComponent implements OnInit {
             resolve();
           } else {
             console.log('Error', 'No se encontró al usuario', 'error');
-            reject('No se encontró al usuario'); 
+            reject('No se encontró al usuario');
           }
         },
         (error) => {
           console.error('Error al obtener datos de usuario:', error);
-          reject(error); 
+          reject(error);
         }
       );
     });
   }
 
-  
+
   /**
    * The function obtains transactions by account ID and sorts them by date.
    * @returns a Promise of type void.
@@ -94,10 +94,10 @@ export class DashboardComponent implements OnInit {
               new Date(b.dateEmit).getTime() - new Date(a.dateEmit).getTime()
             );
           });
-          resolve(); 
+          resolve();
         } else {
           console.log('Información', 'No hay transacciones', 'info');
-          resolve(); 
+          resolve();
           //reject('No hay transacciones');
         }
       } catch (error) {
@@ -107,7 +107,7 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  
+
   /**
    * The function "obtenerDatosCuentaPorAccountId" retrieves account data by account ID and assigns the
    * total account balance and CVU to class variables.
@@ -122,13 +122,13 @@ export class DashboardComponent implements OnInit {
           idAccount
         );
         console.log('Data de la cuenta:', response);
-        this.saldo = response.totalAccount;
+        this.saldo = response.data.totalAccount;
         console.log('Saldo: ', this.saldo);
         this.cvu = response.cvu;
         this.showcvu = true;
         console.log("Acabé obtenerDatosCuentaPorAccountId");
-        
-        resolve(); 
+
+        resolve();
       } catch (error) {
         console.error('Error al obtener los datos de la cuenta', error);
         reject(error);

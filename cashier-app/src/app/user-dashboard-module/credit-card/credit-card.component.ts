@@ -23,7 +23,7 @@ export class CreditCardComponent {
     this.userServ.getUser(id).subscribe({
       next:({data})=>{
         this.accountServ.getCard(data.idCard).subscribe({
-          next:(res)=>(this.cardData = res),
+          next:(res)=>{this.cardData = res.data},
           error: (err)=>(console.log(err)),
           complete:()=>(console.log("consumo de creditcard exitoso.")),
         })
