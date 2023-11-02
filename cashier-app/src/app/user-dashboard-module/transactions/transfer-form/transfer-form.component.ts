@@ -78,22 +78,12 @@ export class TransferFormComponent {
     this.page = 0;
     this.searchWordInPage(this.page);
   }
-  /* ----------------------------------------------------------FALTA IMPLEMTENTAR */
+  /* ----------------------------------------------------------FALTA IMPLEMTENTAR desde el back */
   searchCvuSubmit() {
     this.updateResultFormStatus();
     const { cvu } = this.searchCvuForm.value;
-    this.userServ.getAllUsers().subscribe({
-      next: (res) => {
-        this.userResults = res.data.content.filter((user) => this.matchName(user, cvu));
-        console.log(this.userResults);
-      },
-      error(err) {
-        console.log(err);
-      },
-      complete: () => (this.loading = false),
-    });
   }
-  /* ----------------------------------paginación */
+  /* ----------------------------------funcion que hace paginación */
   forwardPage(isNext: boolean) {
     if (this.userResults === null) return;
 
@@ -111,13 +101,14 @@ export class TransferFormComponent {
     const nameLastname = (data.name + ' ' + data.lastName).toLowerCase();
     return nameLastname.includes(searchName.toLowerCase().trim());
   }
-  /* -----------------------------ver contacto para la transferencia*/
+
+  /* -----------------------------envia datos para iniciar la transferencia*/
   initTransfer(id: number) {
     const userTarget = this.userResults[id] as IUserTarget;
     this.idUserTarget.emit(userTarget);
     this.updateContactStatus();
   }
-  /*--------------- consultar resultado en pagina "?"*/
+  /*--------------- busca las coincidencias del formulario y las renderiza en la vista*/
   searchWordInPage(page: number) {
     const { data } = this.searchDataForm.value;
     const nameSearch = (data as string).toLocaleLowerCase().trim();
@@ -135,5 +126,18 @@ export class TransferFormComponent {
       },
       complete: () => (this.loading = false),
     });
+  }
+
+  /*---------------------------------------------------------------- primera carga de datos  */
+  ngOnInit(){
+    this.userServ.getAllUsers().subscribe({
+      next:(res)=>{
+        this.page = null; //evita la renderizacion de los btn de paginacion
+        console.log("carga de datos inciales en el resultado", res.content);
+        this.userResults = res.content;
+        this.updateResultFormStatus();
+      },
+      error(err){console.log(err)}
+    })
   }
 }

@@ -3,7 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { User } from '../interfaces/User.interface';
-import { IGetAllUserRes, IGetUserRes, ILoginRes, IRegistRes } from '../interfaces/response.interface';
+import { IFilterUserRes, IGetAllUserRes, IGetUserRes, ILoginRes, IRegistRes } from '../interfaces/response.interface';
 
 
 @Injectable({
@@ -23,8 +23,8 @@ export class UserService {
     return this.http.post<IRegistRes>(this.APIRegister, user);
   }
 
-  getAllUsers() {
-    const params = new HttpParams().set('size',10)
+  getAllUsers(page=0, size=4, order=0, field='id') {
+    const params = {page,size,order,field}
     return this.http.get<IGetAllUserRes>(this.APIGETALLUSER, {params});
   }
 
@@ -51,6 +51,6 @@ export class UserService {
 
   filterUser(userData:string, page:number){
     const params = new HttpParams().set('size', 10).set('page', page);
-    return this.http.get<IGetAllUserRes>(this.APIFILTERUSER+userData,{params})
+    return this.http.get<IFilterUserRes>(this.APIFILTERUSER+userData,{params})
   }
 }

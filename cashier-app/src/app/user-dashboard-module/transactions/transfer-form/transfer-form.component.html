@@ -63,8 +63,8 @@
       </div>
     </li>
     <li *ngIf="userResults.length>0 || page !==0">
-      <button class="btn me-1" [ngClass]="page===0?'btn-danger':'btn-success'" (click)="forwardPage(false)">prev</button>
-      <button class="btn me-1" [ngClass]="(page!==0 && userResults.length===0)?'btn-danger':'btn-success'" (click)="forwardPage(true)">next</button>
+      <button [disabled]="page===null" class="btn me-1" [ngClass]="page===0?'btn-danger':'btn-success'" (click)="forwardPage(false)">prev</button>
+      <button [disabled]="page===null" class="btn me-1" [ngClass]="(page!==0 && userResults.length===0)?'btn-danger':'btn-success'" (click)="forwardPage(true)">next</button>
       <span class="text-white">page: {{page+1}}</span>
     </li>
     <li [@fadeEffect] *ngIf="loading" class="text-center">

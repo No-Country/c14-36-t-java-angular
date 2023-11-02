@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserData } from 'src/app/interfaces/userData.inteface';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-info-user',
@@ -13,21 +14,26 @@ export class InfoUserComponent implements OnInit{
   isEditing: boolean = false;
   infoUser: FormGroup;
   profileImg: File | any;
+  loading = false;
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private route: ActivatedRoute,
+    private userServ:UserService) {
 
-  constructor(private formBuilder: FormBuilder, private router: Router, private route: ActivatedRoute) {
     this.infoUser = this.formBuilder.group({
-      name: ['',], 
+      name: ['',],
       numberCard: [''],
       email: [''],
       dni: [''],
     })
-  
+
   }
 
   ngOnInit(): void {
     // Acceder a los datos de usuario desde history.state
     this.userData = history.state.userData;
-    
+
     // Verificar si se recibieron los datos
     if (this.userData) {
       console.log('Datos de usuario recibidos:', this.userData);
@@ -53,33 +59,20 @@ export class InfoUserComponent implements OnInit{
   }
   editButton(): void {
     this.isEditing = !this.isEditing;
-    
+
   }
 
-   
+
 
   saveButton() {
     console.log(this.infoUser);
-    /*
-    const userRegister: Usuario = {
+
+    const userUpdate= {
       identificacion: this.infoUser.value.name,
       email: this.infoUser.value.email,
     };
-
     this.loading = true;
-    
-    this.usuarioService.saveUser(userRegister).subscribe((data) => {
-      console.log(data);
-      this.toastR.success("El usuario "+ userRegister.email +" fue registrado con éxito, por favor revise la bandeja de entrada de su correo y confirme", "Usuario registrado");
-      this.router.navigate(['/login']);
-      this.loading = false;
-    }, error => {
-      this.loading = false;
-      console.log(error);
-      this.toastR.error(error.error.message, "Error registrar usuario!");
-      this.registrationForm.reset();
-    });*/
-    
+
     this.isEditing = false; // Desactiva el modo de edición
   }
 

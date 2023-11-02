@@ -6,5 +6,10 @@ export const environment = {
   apiGetUser:"http://181.15.143.132:9698/v1/api/customers/",
   apiGetAllUser:"http://181.15.143.132:9698/v1/api/customers",
   apiGetAccount:"http://181.15.143.132:9698/v1/api/accounts/",
-  apiGetCard:"http://181.15.143.132:9698/v1/api/cards/"
+  apiGetCard:"http://181.15.143.132:9698/v1/api/cards/",
+  apiNewTransfer:"http://181.15.143.132:9698/v1/api/customers/transactions/new",
+  apiFilterUser:"http://181.15.143.132:9698/v1/api/customers/search/",
+  apiGetAllPayments:"/assets/temporaryServices.json",
+  apiNewPayment:"http://181.15.143.132:9698/v1/api/customers/transactions/bill_pay",
+  apiGetPayment:"http://181.15.143.132:9698/v1/api/customers/transactions/bills_type"
 }

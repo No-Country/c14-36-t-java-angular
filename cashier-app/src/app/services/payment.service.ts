@@ -20,14 +20,14 @@ export class PaymentService {
   newPayment(dataBill:IBillDTO){
     return this.http.post<IBillRes>(this.APINEWPAYMENT,dataBill);
   }
-  getBill(idAccount:string){
+  getBill(idAccount:string, page:number=0, size:number=0, order:number=0, field:string='dateEmit'){
     const params = new HttpParams()
       .set('bill_type','servicio')
       .set('idAccount',idAccount)
-      .set('page',0)
-      .set('size',20)
-      .set('order',0)
-      .set('field','dateEmit')
+      .set('page',page)
+      .set('size',size)
+      .set('order',order)
+      .set('field',field)
     return this.http.get<IBillHistoryRes>(this.APIGETBILL, {params})
   }
 }
