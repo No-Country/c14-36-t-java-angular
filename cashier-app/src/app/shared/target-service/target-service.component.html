@@ -20,9 +20,12 @@
   </div>
   <div class="form__field">
     <span>Saldo total</span>
-    <p>{{accountData.totalAccount | currency: 'USD':'symbol':'1.2-2'}}</p>
+    <p class="text-success">{{accountData.totalAccount | currency: 'USD':'symbol':'1.2-2'}}</p>
   </div>
-  <button (click)="createBill()"  type="button">Pagar</button>
+  <button
+  *ngIf="!(viewStatus.alertFail || viewStatus.alertSuccess)"
+  (click)="createBill()"
+  type="button">Pagar</button>
   <div
     [@lateralEffect]
     *ngIf="viewStatus.alertFail"

@@ -33,6 +33,7 @@
     [targetService]="paymentTarget"
     [viewStatus]="showComponents"
     (updateViews)="updateViewStatus($event)"
+    (updateAccountData)="updateAccountData($event)"
     *ngIf="showComponents.contact"
     >
     </app-target-service>

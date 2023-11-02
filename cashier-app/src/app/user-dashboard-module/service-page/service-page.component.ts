@@ -56,4 +56,7 @@ export class ServicePageComponent {
   updateServiceTarget($event:IGetPayment){
     this.paymentTarget = $event;
   }
+  updateAccountData($event:IAccount){
+    this.accountData=$event;
+  }
 }
