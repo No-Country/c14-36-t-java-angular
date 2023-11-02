@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from 'src/environments/environment';
+import { environment } from 'src/environments/environment.prod';
 import { IBillHistoryRes, IBillRes, IGetPayment } from '../interfaces/response.interface';
 import { IBillDTO } from '../interfaces/transaction.interface';
 

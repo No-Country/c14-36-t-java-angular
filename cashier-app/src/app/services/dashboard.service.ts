@@ -13,7 +13,7 @@ export class DashboardService{
   myApiAccounts: string;
 
   constructor(private http: HttpClient) {
-    this.myAppUrl = 'http://localhost:8080/v1/api';
+    this.myAppUrl = 'https://181.15.143.132:9698/v1/api';
     this.myApiCustomers = '/customers';
     this.myApiTransactions = '/transactions'
     this.myApiAccounts = '/accounts'
