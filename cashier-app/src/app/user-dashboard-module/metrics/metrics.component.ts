@@ -13,6 +13,7 @@ export class MetricasComponent implements OnInit{
   saldo: number = 0;
   cvu: number = 0;
   transacciones: any[] = [];
+  payments:any[] = [];
   datosTransaccionesSegmentados: any;
   isLoading: boolean = true;
   idAccount: string = "";
@@ -35,6 +36,9 @@ export class MetricasComponent implements OnInit{
      setTimeout(() => {
        this.obtenerTransaccionesPorAccountId();
      }, 1000);
+     setTimeout(() => {
+      this.obtenerPagosPorAccountId();
+    }, 1000);
      setTimeout(() => {
        this.obtenerDatosCuentaPorAccountId(this.idAccount);
        this.showcvu = true;
@@ -81,6 +85,27 @@ export class MetricasComponent implements OnInit{
       }
     } catch (error) {
       console.log('Error', 'No se pudieron obtener las transacciones', 'error');
+    }
+  }
+
+  async obtenerPagosPorAccountId() {
+    try {
+      const response = await this.dashboardService
+      .getPaymentsByAccountId(this.idAccount);
+      console.log('Pagos: ', response);
+
+      if (response.data.content && response.data.content.length > 0) {
+        this.payments = Object.values(response.data.content);
+        this.payments = response.data.content.sort((a: any, b: any) => {
+          return (
+            new Date(b.dateEmit).getTime() - new Date(a.dateEmit).getTime()
+          );
+        });
+      } else {
+        console.log('Información', 'No hay Pagos', 'info');
+      }
+    } catch (error) {
+      console.log('Error', 'No se pudieron obtener los Pagos', 'error');
     }
   }
 
@@ -139,6 +164,15 @@ export class MetricasComponent implements OnInit{
     for (const transaccion of this.transacciones) {
       const tipo = transaccion.type;
       const monto = transaccion.amount;
+      if (saldosPorTipo[tipo]) {
+        saldosPorTipo[tipo] += monto;
+      } else {
+        // Si el tipo no existe en el objeto, crea una nueva entrada
+        saldosPorTipo[tipo] = monto;
+      }
+    }for (const payment of this.payments) {
+      const tipo = payment.type;
+      const monto = payment.amount;
       if (saldosPorTipo[tipo]) {
         saldosPorTipo[tipo] += monto;
       } else {
