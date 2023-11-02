@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment';
 import { IBillHistoryRes, IBillRes, IGetPayment } from '../interfaces/response.interface';
 import { IBillDTO } from '../interfaces/transaction.interface';
 
@@ -17,10 +17,12 @@ export class PaymentService {
   getAllPayments(){
     return this.http.get<IGetPayment[]>(this.APIGETALLPAYMENT)
   }
+
   newPayment(dataBill:IBillDTO){
     return this.http.post<IBillRes>(this.APINEWPAYMENT,dataBill);
   }
-  getBill(idAccount:string, page:number=0, size:number=0, order:number=0, field:string='dateEmit'){
+
+  getBill(idAccount:string, page:number=0, size:number=10, order:number=0, field:string='dateEmit'){
     const params = new HttpParams()
       .set('bill_type','servicio')
       .set('idAccount',idAccount)
