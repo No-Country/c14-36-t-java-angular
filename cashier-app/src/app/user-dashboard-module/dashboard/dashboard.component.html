@@ -69,13 +69,13 @@
                                             [ngClass]="{
                                                 'exchangeSuccess': transaccion.type === 'TRANSFER',
                                                 'exchangePending': transaccion.type === 'DEPOSIT',
-                                                'exchangeCancel': transaccion.type === 'PAYMENT_QR',
+                                                'exchangeCancel': transaccion.type === 'PAYMENT',
                                                 'exchangeInvoice': transaccion.type === 'INVOICE'
                                               }"></i>
                                         </td>
                                         <td class="text-center">{{transaccion.destination}}<br>
                                             {{ transaccion.type === 'TRANSFER' ? 'Transferencia' : '' }}
-                                            {{ transaccion.type === 'PAYMENT_QR' ? 'Pago QR' : '' }}
+                                            {{ transaccion.type === 'PAYMENT' ? 'Pago ' : '' }}
                                             {{ transaccion.type === 'DEPOSIT' ? 'Deposito' : '' }}
                                             {{ transaccion.type === 'SUCCESS' ? 'Servicio pagado' : '' }}
                                             {{ transaccion.type === 'INVOICE' ? transaccion.email : '' }}</td>

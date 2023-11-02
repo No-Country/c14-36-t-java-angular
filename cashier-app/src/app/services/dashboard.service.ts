@@ -11,12 +11,14 @@ export class DashboardService{
   myApiCustomers: string;
   myApiTransactions: string;
   myApiAccounts: string;
+  myApiPayments:string;
 
   constructor(private http: HttpClient) {
     this.myAppUrl = 'https://181.15.143.132:9698/v1/api';
     this.myApiCustomers = '/customers';
     this.myApiTransactions = '/transactions'
     this.myApiAccounts = '/accounts'
+    this.myApiPayments = '/bills'
   }
 
   //PETICIONES
@@ -28,6 +30,12 @@ export class DashboardService{
   getTransactionsByAccountId(idAccount: string, page: number = 0, size: number = 4, order: number = 0, field: string = 'dateEmit'): Promise<any> {
     const params = `?idAccount=${idAccount}&page=${page}&size=${size}&order=${order}&field=${field}`;
     return this.http.get<any>(`${this.myAppUrl}${this.myApiCustomers}${this.myApiTransactions}${params}`).toPromise();
+  }
+  getAllTransactionsWhereDestiniIsMyId(){};
+  //PARA RECUPERAR LOS PAGOS DE FACTURAS
+  getPaymentsByAccountId(idAccount: string, page: number = 0, size: number = 4, order: number = 0, field: string = 'dateEmit'): Promise<any> {
+    const params = `?idAccount=${idAccount}&page=${page}&size=${size}&order=${order}&field=${field}`;
+    return this.http.get<any>(`${this.myAppUrl}${this.myApiCustomers}${this.myApiTransactions}${this.myApiPayments}${params}`).toPromise();
   }
   getAccountDataById(idAccount: string): Promise<any> {
     return this.http.get<any>(`${this.myAppUrl}${this.myApiAccounts}/${idAccount}`).toPromise();
