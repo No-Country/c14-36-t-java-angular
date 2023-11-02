@@ -49,7 +49,7 @@
     >Transferir</button>
     <!----------------------------------------------------- operaciones -->
     <div [@lateralEffect] *ngIf="viewStatus.alertSuccess" class="form__actions">
-    <button type="button" class="form__actions__btnBox">
+    <button type="button" (click)="showVoucher()" class="form__actions__btnBox">
       <div>
         <img src="assets/share.png" alt="share_icon">
       </div>

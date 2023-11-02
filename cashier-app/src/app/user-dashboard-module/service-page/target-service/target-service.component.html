@@ -30,7 +30,7 @@
     [@lateralEffect]
     *ngIf="viewStatus.alertFail"
     class="form__actions">
-    <button class="form__actions__btnBox">
+    <button type="button" (click)="showVoucher()" class="form__actions__btnBox">
       <div>
         <img src="assets/share.png" alt="share_icon" />
       </div>

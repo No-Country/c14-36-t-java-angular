@@ -129,6 +129,14 @@
     margin-bottom: 0;
   }
 }
+.swal{
+  &__content{
+    background-color: red;
+  }
+  &__confirmBtn{
+    background-color: green;
+  }
+}
 @media screen and (min-width: 850px) {
   .alert {
     padding-inline: 3rem;
