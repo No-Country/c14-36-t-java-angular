@@ -2,9 +2,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { MetricsRoutingModule } from './metrics-routing.module';
-import { MetricasComponent } from './metricas.component';
 import { NgChartsModule } from 'ng2-charts';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { MetricasComponent } from './metrics.component';
 
 
 @NgModule({

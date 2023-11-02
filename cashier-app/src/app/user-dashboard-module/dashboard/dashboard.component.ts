@@ -124,7 +124,7 @@ export class DashboardComponent implements OnInit {
         console.log('Data de la cuenta:', response);
         this.saldo = response.data.totalAccount;
         console.log('Saldo: ', this.saldo);
-        this.cvu = response.cvu;
+        this.cvu = response.data.cvu;
         this.showcvu = true;
         console.log("Acabé obtenerDatosCuentaPorAccountId");
 

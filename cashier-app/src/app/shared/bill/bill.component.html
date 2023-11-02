@@ -1,6 +1,6 @@
 <div [@fadeEffect] class="filter">
-  <button (click)="updateFilterStatus(true)">Facturas</button>
-  <button (click)="updateFilterStatus(false)">Historial</button>
+  <button [ngClass]="viewStatus.filterData?'isActive':''" (click)="updateFilterStatus(true)">Facturas</button>
+  <button [ngClass]="!viewStatus.filterData?'isActive':''" (click)="updateFilterStatus(false)">Historial</button>
 </div>
 <!--  ----------------------------------------caja de busqueda por datos-->
 <div
@@ -28,13 +28,16 @@
   </ul>
   <ng-template #history>
     <ul [@lateralEffect] class="searchBox__resultList list-unstyled">
-      <li class="searchBox__resultList__item">
+      <li
+      *ngFor="let bill of historyBill"
+      class="searchBox__resultList__item">
         <div class="imgBox">
           <img src="assets/business.svg" alt="dni_icon">
         </div>
         <div class="searchBox__resultList__item__info">
-          <span>Banco pichincha</span>
-          <span class="text-white">Pagado 06/09</span>
+          <span>{{bill.bill_num | titlecase}}</span>
+          <span class="text-white">Pagado:  {{bill.dateEmit | date: 'dd/MM/yy/ HH:mm'}}</span>
+          <span>Monto:  {{bill.amount | currency: 'USD':'symbol':'1.2-2'}}</span>
         </div>
       </li>
     </ul>

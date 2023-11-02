@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MetricasComponent } from './metricas.component';
+import { MetricasComponent } from './metrics.component';
 
 const routes: Routes = [
   { path:'', component:MetricasComponent}

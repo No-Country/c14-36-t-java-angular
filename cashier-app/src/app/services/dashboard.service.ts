@@ -6,7 +6,7 @@ import Swal from 'sweetalert2';
 @Injectable({
   providedIn: 'root'
 })
-export class DashboardService{ 
+export class DashboardService{
   myAppUrl: string;
   myApiCustomers: string;
   myApiTransactions: string;
@@ -25,14 +25,14 @@ export class DashboardService{
   }
 
   //COMO PROMESAS
-  getTransactionsByAccountId(idAccount: string, page: number = 0, size: number = 4, order: number = 1, field: string = 'id'): Promise<any> {
+  getTransactionsByAccountId(idAccount: string, page: number = 0, size: number = 4, order: number = 0, field: string = 'dateEmit'): Promise<any> {
     const params = `?idAccount=${idAccount}&page=${page}&size=${size}&order=${order}&field=${field}`;
     return this.http.get<any>(`${this.myAppUrl}${this.myApiCustomers}${this.myApiTransactions}${params}`).toPromise();
   }
   getAccountDataById(idAccount: string): Promise<any> {
     return this.http.get<any>(`${this.myAppUrl}${this.myApiAccounts}/${idAccount}`).toPromise();
   }
-  
+
 
   //COMO OBSERVABLES
 /*getTransactionsByAccountId(idAccount: string, page: number = 0, size: number = 4, order: number = 1, field: string = 'id'): Observable<any> {
@@ -45,7 +45,7 @@ export class DashboardService{
     return this.http.get<any>(`${this.myAppUrl}${this.myApiAccounts}/${idAccount}`);
   }*/
 
-  
+
   //MÉTODOS
   showCvu() {
     const cvuData = document.getElementById("cvuData");
