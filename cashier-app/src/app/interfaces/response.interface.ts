@@ -24,6 +24,23 @@ export interface IGetUserRes {
 }
 
 export interface IGetAllUserRes {
+  content: IUserProfile[];
+  empty: boolean;
+  pageable: 'INSTANCE';
+  last: boolean;
+  totalElements: number;
+  totalPages: number;
+  first: boolean;
+  size: number;
+  number: number;
+  sort: {
+    empty: boolean;
+    sorted: boolean;
+    unsorted: boolean;
+  };
+  numberOfElements: number;
+}
+export interface IFilterUserRes {
   data: {
     content: IUserProfile[];
     empty: boolean;
@@ -42,7 +59,6 @@ export interface IGetAllUserRes {
   };
   message: string;
 }
-
 export interface ItransactionRes {
   id: string;
   origin: string;

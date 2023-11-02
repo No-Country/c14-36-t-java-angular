@@ -1,17 +1,13 @@
-<div class="transferBox">
+<div class="transferBox"*ngIf="accountData, else fallback" >
   <div class="transferBox__left d-flex flex-column align-items-center">
     <!-- -------------------------------------------caja del saldo -->
     <app-balance
     *ngIf="accountData"
+    [btnTitle]="'Pagar'"
     [accountData]="accountData"
     [viewStatus]="showComponents"
     (updateViews)="updateViewStatus($event)">
     </app-balance>
-    <ng-template #loader>
-      <div class="spinner-border text-success" role="status">
-        <span class="sr-only">Loading...</span>
-      </div>
-    </ng-template>
     <!-- -----------------------------------------------caja de filtros -->
     <app-bill
     [@fadeEffect]
@@ -39,3 +35,6 @@
     </app-target-service>
   </div>
 </div>
+<ng-template #fallback>
+  <app-loading></app-loading>
+</ng-template>

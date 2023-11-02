@@ -1,7 +1,8 @@
-<div class="transferBox">
-  <div *ngIf="accountData, else fallback" class="transferBox__left d-flex flex-column align-items-center">
+<div class="transferBox" *ngIf="accountData, else fallback">
+  <div  class="transferBox__left d-flex flex-column align-items-center">
     <!-- -------------------------------------------caja del saldo -->
     <app-balance
+    [btnTitle]="'Transferir'"
     [accountData]="accountData"
     [viewStatus]="showComponents"
     (updateViews)="updateViewStatus($event)">
@@ -16,9 +17,6 @@
     >
     </app-transfer-form>
   </div>
-  <ng-template #fallback>
-    <p class="text-white">esperando...</p>
-  </ng-template>
   <!-- ------------------------------------------------caja derecha -->
   <div class="transferBox__right"
   [ngClass]="showComponents.alertSuccess?'transferSuccess':''"
@@ -32,3 +30,6 @@
     ></app-selected-user>
   </div>
 </div>
+<ng-template #fallback>
+  <app-loading></app-loading>
+</ng-template>
