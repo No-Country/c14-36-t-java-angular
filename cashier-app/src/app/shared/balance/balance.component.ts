@@ -8,6 +8,7 @@ import { transactionView } from 'src/app/interfaces/transactionView.interface';
   styleUrls: ['./balance.component.scss']
 })
 export class BalanceComponent {
+@Input() btnTitle="trasnferir";
 @Input() accountData!:IAccount;
 @Input() viewStatus!:transactionView;
 @Output() updateViews = new EventEmitter<transactionView>();

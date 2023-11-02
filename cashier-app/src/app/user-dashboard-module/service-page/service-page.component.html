@@ -3,6 +3,7 @@
     <!-- -------------------------------------------caja del saldo -->
     <app-balance
     *ngIf="accountData"
+    [btnTitle]="'Pagar'"
     [accountData]="accountData"
     [viewStatus]="showComponents"
     (updateViews)="updateViewStatus($event)">
