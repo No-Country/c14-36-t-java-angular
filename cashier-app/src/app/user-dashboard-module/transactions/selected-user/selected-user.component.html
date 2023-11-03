@@ -49,12 +49,23 @@
     >Transferir</button>
     <!----------------------------------------------------- operaciones -->
     <div [@lateralEffect] *ngIf="viewStatus.alertSuccess" class="form__actions">
-    <button type="button" (click)="showVoucher()" class="form__actions__btnBox">
+    <button
+    [@fadeEffect]
+    *ngIf="voucherData, else comprobanteFallback"
+    type="button"
+    (click)="showVoucher()"
+    class="form__actions__btnBox">
       <div>
         <img src="assets/share.png" alt="share_icon">
       </div>
       <span>Comprobante</span>
     </button>
+    <ng-template #comprobanteFallback>
+      <div class="spinner-border text-success" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </ng-template>
+
     <button type="button" (click)="resetViewStatus()" class="form__actions__btnBox">
       <div>
         <img src="assets/transfer.png" alt="transfer_icon">

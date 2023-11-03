@@ -130,12 +130,14 @@ export class TransferFormComponent {
 
   /*---------------------------------------------------------------- primera carga de datos  */
   ngOnInit(){
+    this.loading = true;
     this.userServ.getAllUsers().subscribe({
       next:(res)=>{
         this.page = null; //evita la renderizacion de los btn de paginacion
         console.log("carga de datos inciales en el resultado", res.content);
         this.userResults = res.content;
         this.updateResultFormStatus();
+        this.loading = false
       },
       error(err){console.log(err)}
     })

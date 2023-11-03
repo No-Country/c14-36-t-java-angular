@@ -64,7 +64,7 @@ export interface ItransactionRes {
   origin: string;
   destination: string;
   amount: number;
-  dateEmit: string;
+  dateEmit: number[];
   type: string;
   state: string;
   reason: string;

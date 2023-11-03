@@ -25,56 +25,49 @@ export class MetricasComponent implements OnInit{
   public doughnutChartOptions: ChartConfiguration<'doughnut'>['options'] = {responsive: true};
   public chartColors: any[] = [{backgroundColor:["#ffc107", "#6FC8CE", "#FAFFF2", "#FFFCC4", "#B9E8E0"] }];
 
-  constructor(private dashboardService:DashboardService,
-              private tokenService: TokenService) {}
+  constructor(
+    private dashboardService:DashboardService,
+    private tokenService: TokenService
+  ) {}
 
   ngOnInit(): void {
      this.isLoading = true;
      const userDataDecoded = this.tokenService.getTokenDecoded();
-     let idUser:any = userDataDecoded?.id;
-     this.obtenerDatosPorUUID(idUser);
-     setTimeout(() => {
-       this.obtenerTransaccionesPorAccountId();
-     }, 1000);
-     setTimeout(() => {
-      this.obtenerPagosPorAccountId();
-    }, 1000);
-     setTimeout(() => {
-       this.obtenerDatosCuentaPorAccountId(this.idAccount);
-       this.showcvu = true;
-     }, 1000);
-     this.parsearData()
-     setTimeout(() => {
+     const idUser = userDataDecoded.id;
+     (async()=>{
+      await this.obtenerDatosPorUUID(idUser);
+      await this.obtenerTransaccionesPorAccountId();
+      console.log("transacciones despues del request",this.transacciones)
+      await this.obtenerPagosPorAccountId();
+      await this.obtenerDatosCuentaPorAccountId(this.idAccount);
+      this.showcvu = true;
+      this.parsearData()
       this.isLoading= false;
-    }, 2000);
+     })()
 
   }
 
-  obtenerDatosPorUUID(uuid: string) {
-    this.dashboardService.getUserDataById(uuid).subscribe(
-      (response) => {
+  async obtenerDatosPorUUID(uuid: string) {
+    try {
+        const response = await this.dashboardService.getUserDataById(uuid).toPromise();
         if (response.success && response.message === 'Usuario Encontrado') {
-          console.log('Datos Usuario : ', response.data);
-          const userData = response.data;
-          this.idAccount = userData.idAccount;
+            console.log('Datos Usuario : ', response.data);
+            const userData = response.data;
+            this.idAccount = userData.idAccount;
         } else {
-          console.log('Error', 'No se encontró al usuario', 'error');
+            console.log('Error', 'No se encontró al usuario', 'error');
         }
-      },
-      (error) => {
-        console.log('Error', 'No se pudieron obtener los datos', 'error');
-      }
-    );
-  }
+    } catch (error) {
+        console.error('Error', 'No se pudieron obtener los datos', error);
+    }
+}
 
   async obtenerTransaccionesPorAccountId() {
     try {
-      const response = await this.dashboardService
-      .getTransactionsByAccountId(this.idAccount);
+      const response = await this.dashboardService.getTransactionsByAccountId(this.idAccount);
       console.log('Transacciones: ', response);
 
       if (response.data.content && response.data.content.length > 0) {
-        this.transacciones = Object.values(response.data.content);
         this.transacciones = response.data.content.sort((a: any, b: any) => {
           return (
             new Date(b.dateEmit).getTime() - new Date(a.dateEmit).getTime()
@@ -150,8 +143,6 @@ export class MetricasComponent implements OnInit{
       console.log('Montos para el gráfico:', this.doughnutChartDatasets[0].data);
 
     }, 2000);
-
-
   }
 
   showCvu():void{
@@ -170,7 +161,8 @@ export class MetricasComponent implements OnInit{
         // Si el tipo no existe en el objeto, crea una nueva entrada
         saldosPorTipo[tipo] = monto;
       }
-    }for (const payment of this.payments) {
+    }
+    for (const payment of this.payments) {
       const tipo = payment.type;
       const monto = payment.amount;
       if (saldosPorTipo[tipo]) {

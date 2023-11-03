@@ -43,7 +43,7 @@
   && searchCvuForm.invalid" class="text-danger">{{searchCvuForm.get('cvu')?.errors?.['message']}}</p>
   <!-- -----------------------------------------------------resultados -->
   <ul class="searchBox__resultList list-unstyled"
-    *ngIf="viewStatus.formResult">
+    *ngIf="viewStatus.formResult, else resultLoader">
     <li
     [@lateralEffect]
     class="text-white"
@@ -73,4 +73,11 @@
       </div>
     </li>
   </ul>
+  <ng-template #resultLoader>
+    <div
+      [@fadeEffect]
+      class="spinner-border text-success" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </ng-template>
 </div>

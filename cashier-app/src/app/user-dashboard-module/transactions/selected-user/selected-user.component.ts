@@ -107,8 +107,11 @@ export class SelectedUserComponent {
   /* btn para desplegar el comprobante */
   showVoucher(){
     registerLocaleData(localeEs);
-    const datePipe = new DatePipe('es');
-    const toCivilianDate = datePipe.transform(this.voucherData.dateEmit, 'yyyy/MM/dd, HH:mm:ss');
+    // const datePipe = new DatePipe('es');
+    // const toCivilianDate = datePipe.transform(this.voucherData.dateEmit, 'yyyy/MM/dd, HH:mm:ss');
+    const [yy,MM,dd]=this.voucherData.dateEmit;
+    const [,,,hh,mm,ss]=this.voucherData.dateEmit
+    const toCivilianDate=`${yy}/${MM}/${dd} ${hh}:${mm}:${ss}`
     const dataUser = this.tokenServ.dataUser
     const content = `
   <p><strong>ID de Transacción:</strong> ${this.voucherData.id}</p>
