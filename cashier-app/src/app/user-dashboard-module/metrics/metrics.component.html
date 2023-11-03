@@ -1,0 +1,62 @@
+<app-loading *ngIf="isLoading === true"></app-loading>
+
+<div *ngIf="!isLoading" class="container container-fluid">
+  <div class="row pt-5">
+    <div class="col-sm text-center">
+      <label>Tienes disponible</label>
+      <div>
+        <span class="saldo">${{ saldo }}</span>
+      </div>
+    </div>
+
+    <div class="col-sm text-center my-auto mx-auto">
+      <button type="button" (click)="showCvu()" class="btn btn-success btnCvu">
+        Ver CVU
+      </button>
+      <div>
+        <span id="cvuData" style="display: none">{{ cvu }}</span>
+        <button class="ms-2" id="copyButton" style="display: none">
+          <i class="fas fa-copy exchangePending"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row container2"></div>
+
+  <div class="row">
+    <div class="col-sm text-center">
+      <label>Métricas</label>
+    </div>
+
+    <div class="col-sm text-center my-auto mx-auto">
+      <button
+        type="button"
+        routerLink="/user/dashboard"
+        class="btn btn-success btnCvu"
+      >
+        Ver Movimientos
+      </button>
+    </div>
+  </div>
+  <div class="row d-flex mt-4 mb-4 custom-centered">
+    <div
+    *ngIf="datosTransaccionesSegmentados, else chartLoader"
+    class="col-sm text-center mx-auto my-auto">
+      <canvas
+        baseChart
+        [labels]="doughnutChartLabels"
+        [datasets]="doughnutChartDatasets"
+        [options]="doughnutChartOptions"
+        [legend]="true"
+        [type]="'doughnut'"
+      >
+      </canvas>
+    </div>
+    <ng-template #chartLoader>
+      <div class="spinner-border text-success" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </ng-template>
+  </div>
+</div>

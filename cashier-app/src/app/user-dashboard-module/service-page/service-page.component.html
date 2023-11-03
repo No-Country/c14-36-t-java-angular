@@ -1,0 +1,40 @@
+<div class="transferBox"*ngIf="accountData, else fallback" >
+  <div class="transferBox__left d-flex flex-column align-items-center">
+    <!-- -------------------------------------------caja del saldo -->
+    <app-balance
+    *ngIf="accountData"
+    [btnTitle]="'Pagar'"
+    [accountData]="accountData"
+    [viewStatus]="showComponents"
+    (updateViews)="updateViewStatus($event)">
+    </app-balance>
+    <!-- -----------------------------------------------caja de filtros -->
+    <app-bill
+    [@fadeEffect]
+    *ngIf="showComponents.form"
+    [accountData]="accountData"
+    [viewStatus]="showComponents"
+    (updateViews)="updateViewStatus($event)"
+    (updatePaymentTarget)="updateServiceTarget($event)"
+    >
+    </app-bill>
+  </div>
+  <!-- ------------------------------------------------caja derecha -->
+  <div class="transferBox__right"
+  [ngClass]="showComponents.alertSuccess?'transferSuccess':''"
+  [ngClass]="showComponents.alertFail?'transferFail':''">
+    <app-target-service
+    [@fadeEffect]
+    [accountData]="accountData"
+    [targetService]="paymentTarget"
+    [viewStatus]="showComponents"
+    (updateViews)="updateViewStatus($event)"
+    (updateAccountData)="updateAccountData($event)"
+    *ngIf="showComponents.contact"
+    >
+    </app-target-service>
+  </div>
+</div>
+<ng-template #fallback>
+  <app-loading></app-loading>
+</ng-template>

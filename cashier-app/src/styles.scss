@@ -3,4 +3,13 @@
     margin: 0;
     padding: 0;
   }
-  
+  .swal{
+    &__content{
+      color: #F9FCF8 !important;
+    }
+    &__confirmBtn{
+      background-color: #1DE290 !important;
+      outline: 3px solid #96f4cd8a !important;
+      color:#153230 !important;
+    }
+  }

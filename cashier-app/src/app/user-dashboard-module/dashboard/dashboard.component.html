@@ -1,0 +1,108 @@
+<app-loading *ngIf="isLoading===true"></app-loading>
+<div *ngIf="!isLoading" class="container container-fluid">
+    <div class="row pt-5">
+        <div class="col-sm text-center">
+            <label>Tienes disponible</label>
+            <div>
+                <span class="saldo">${{saldo}}</span>
+            </div>
+        </div>
+
+        <div class="col-sm text-center my-auto mx-auto">
+            <button type="button" *ngIf="showcvu" (click)="showCvu()" class="btn btn-success btnCvu">Ver CVU</button>
+            <div>
+                <span id="cvuData" style="display: none;">{{cvu}}</span>
+                <button class="ms-2 rounded" id="copyButton" style="display: none;">
+                    <i class="fas fa-copy exchangeSuccess"></i>
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row container2">
+
+    </div>
+
+    <div class="row">
+        <div class="col-sm mt-4 mb-4">
+
+            <div class="col-lg-12 d-flex justify-content-between">
+                <div class="ms-2 movement">
+                    <label>Movimientos</label>
+                </div>
+                <div class="metric">
+                    <button type="button"  routerLink="/user/metricas" class="btn btn-success btnCvu">Ver
+                        Métricas</button>
+                </div>
+            </div>
+            <div class="container mt-2">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <button type="button" disabled class="btn btn-outline-secondary search-button">
+                            <i class="fas fa-search search-icon"></i>
+                        </button>
+                    </div>
+                    <input type="text" style="color: white;"  [(ngModel)]="searchText" class="form-control search-input" placeholder="Buscar por destinatario...">
+                    <div class="input-group-append">
+                        <button type="button" (click)="sortBy('dateEmit')" class="btn btn-outline-secondary search-button">
+                            <i class="fas fa-filter search-icon "></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm">
+            <div class="card border-primary mb-3">
+                <div class="card-body text-primary">
+                    <div class=" table table-responsive table-striped ms-4">
+                        <table *ngIf="transacciones.length > 0; else noClientes" class="table ">
+
+
+                            <tbody>
+                                <tr style="background-color: transparent;" *ngFor="let transaccion of transacciones  | pipeTransform:searchText; ">
+                                    <ng-container class="container" *ngIf="!transaccion.noResults; else noResult">
+                                        <td><i class="fas fas fa-exchange-alt exchangeSuccess"
+                                            [ngClass]="{
+                                                'exchangeSuccess': transaccion.type === 'TRANSFER',
+                                                'exchangePending': transaccion.type === 'DEPOSIT',
+                                                'exchangeCancel': transaccion.type === 'PAYMENT',
+                                                'exchangeInvoice': transaccion.type === 'INVOICE'
+                                              }"></i>
+                                        </td>
+                                        <td class="text-center">{{transaccion.destination}}<br>
+                                            {{ transaccion.type === 'TRANSFER' ? 'Transferencia' : '' }}
+                                            {{ transaccion.type === 'PAYMENT' ? 'Pago ' : '' }}
+                                            {{ transaccion.type === 'DEPOSIT' ? 'Deposito' : '' }}
+                                            {{ transaccion.type === 'SUCCESS' ? 'Servicio pagado' : '' }}
+                                            {{ transaccion.type === 'INVOICE' ? transaccion.email : '' }}</td>
+                                        <td class="text-center">${{transaccion.amount}}<br>{{transaccion.dateEmit | date: 'dd/MM/yyyy'}}</td>
+                                    </ng-container>
+
+
+                                </tr>
+
+
+                            </tbody>
+
+                        </table>
+                    </div>
+                    <ng-template #noResult>
+                        <div class="alert alert-info  noResult" >
+                            No hay coincidencias.
+                        </div>
+                    </ng-template>
+
+                    <ng-template #noClientes>
+                        <div class="alert alert-info" *ngIf="transacciones.length === 0">
+                            No hay transacciones por mostrar
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Controles deben ir acá de paginación -->

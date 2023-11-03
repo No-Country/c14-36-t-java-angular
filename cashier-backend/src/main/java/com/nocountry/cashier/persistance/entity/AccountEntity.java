@@ -1,14 +1,8 @@
 package com.nocountry.cashier.persistance.entity;
 
 
-import jakarta.persistence.*;
-
 import com.nocountry.cashier.persistance.entity.listener.audit.Auditable;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,19 +11,17 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import java.math.BigDecimal;
-import java.sql.Date;
 import java.time.LocalDate;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
 
 @Entity
-//@Getter
-//@Setter
-@Data
-@SQLDelete(sql = "UPDATE account_entity SET enabled=false where id=?")
-//@Where(clause = "enabled=true")
+@Getter
+@Setter
+//@Data
+@SQLDelete(sql = "UPDATE account_entity SET enabled=FALSE where id_account=?")
+@Where(clause = "enabled=TRUE")
 public class AccountEntity extends Auditable<LocalDateTime> {
 
     @Id
@@ -42,7 +34,7 @@ public class AccountEntity extends Auditable<LocalDateTime> {
 
     private LocalDate openAccountDate;
 
-    private LocalDate updateAccountDate;
+    //private LocalDate updateAccountDate;
 
     private BigDecimal totalAccount;
 
@@ -50,13 +42,12 @@ public class AccountEntity extends Auditable<LocalDateTime> {
 
     private Boolean enabled;
 
-//    @OneToMany(mappedBy = "account_entity")
-//    private List<TransactionEntity> transaccionEntityList;
+    @OneToOne
+    @JoinColumn(name = "id_user")
+    private UserEntity userEntity;
 
     @OneToMany(mappedBy = "accountEntity")
     private List<TransactionEntity> transactionEntityList;
-
-
 
 
 }

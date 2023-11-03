@@ -1,0 +1,111 @@
+@import "../../stylesConfig/config";
+:host {
+  display: block;
+  height: 100vh;
+  width: 100vw;
+  background-color: $colGreenDark;
+}
+.messageContainer {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  .wave{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 200px;
+  }
+  .wave1 {
+    background-image: url("/assets/waves404/Vector-1.png");
+    background-size: 400% 50%;
+    background-repeat: no-repeat;
+    width: 100%;
+    animation: move1 4s infinite;
+  }
+  .wave2{
+    background-image: url("/assets/waves404/Vector-2.png");
+    background-size: 500% 50%;
+    background-repeat: no-repeat;
+    background-position: left;
+    width: 100%;
+    animation: move2 10s linear infinite;
+    animation-delay: 1s;
+  }
+  .wave3{
+    background-image: url("/assets/waves404/Vector-3.png");
+    background-size: 500% 50%;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 100%;
+    animation: move3 5s linear infinite;
+    animation-delay: 3s;
+  }
+  .wave4{
+    background-image: url("/assets/waves404/Vector-4.png");
+    background-size: 200% 50%;
+    background-repeat: no-repeat;
+    background-position: right;
+    width: 100%;
+    animation: move1 5s linear infinite;
+    animation-delay: 2s;
+  }
+  .wave5{
+    background-image: url("/assets/waves404/Vector-5.png");
+    background-size: 200% 50%;
+    background-repeat: no-repeat;
+    background-position: left;
+    width: 100%;
+    animation: move2 10s linear infinite;
+  }
+}
+.messageBox {
+  color: $colGreenLight;
+  text-align: center;
+  z-index: 2;
+  &__title {
+    font-size: 5rem;
+    font-weight: bolder;
+    border-bottom: 2px solid $colGray;
+  }
+  &__link {
+    text-decoration: none;
+    color: $colGreenLight;
+    @include btnStyle("empty", $colGreenLight);
+  }
+}
+@keyframes move1{
+  0%{
+    background-position: right;
+  }
+  50%{
+    background-position: left;
+  }
+  100%{
+    background-position: right;
+  }
+}
+@keyframes move2{
+  0%{
+    background-position: left;
+  }
+  50%{
+    background-position: right;
+  }
+  100%{
+    background-position: left;
+  }
+}
+@keyframes move3{
+  0%{
+    background-position: center;
+  }
+  50%{
+    background-position: right;
+  }
+  100%{
+    background-position: left;
+  }
+}

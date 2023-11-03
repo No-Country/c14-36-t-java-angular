@@ -1,0 +1,52 @@
+@import "/src/app/stylesConfig/config";
+:host {
+  height: 100%;
+}
+.transferBox {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  /* -------------------------------------------caja de la izquierda */
+  &__left {
+    background-color: $colGreenDark;
+    flex-grow: 1;
+  }
+  /* ---------------------------------------------caja derecha */
+  &__right {
+    background-color: changeOpacity($colGreenDark, 0.9);
+    flex-grow: 1;
+    display: grid;
+    place-items: center;
+    padding-block: 45%;
+    position: relative;
+    @include transitionFast;
+
+  }
+}
+.transferSuccess{
+  background-color: $colGreenLight;
+}
+.transferFail{
+  background-color: changeOpacity($colGreenLight, 0.5);
+}
+@media screen and (min-width: 480px) {
+  .transferBox__right {
+    padding-block: 30%;
+  }
+}
+@media screen and (min-width: 650px) {
+  .transferBox__right {
+    padding-block: 20%;
+  }
+}
+@media screen and (min-width: 850px) {
+  .transferBox {
+    flex-direction: row;
+    & > * {
+      width: 50%;
+    }
+    &__right {
+      padding-block: 0%;
+    }
+  }
+}

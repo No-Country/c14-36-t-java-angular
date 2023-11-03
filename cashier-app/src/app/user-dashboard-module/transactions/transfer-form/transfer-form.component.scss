@@ -1,0 +1,94 @@
+@import "/src/app/stylesConfig/config";
+:host{
+  width: min(100%, 500px);
+}
+.filter {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-inline: 1rem;
+  button {
+    @include btnStyle("fill", $colGreenLight);
+  }
+}
+/* ------------------------------------------caja de busqueda*/
+.searchBox {
+  &__field {
+    border-bottom: solid white 2px;
+    button {
+      all: initial;
+      cursor: pointer;
+      border-radius: 0.5rem;
+      overflow-y: hidden;
+      order: -1;
+      @include transitionFast;
+      img {
+        @include changeColorPng($colGray);
+      }
+      &:focus {
+        transform: scale(0.8);
+        box-shadow: 0 0 10px -2px $colGreenLight;
+      }
+    }
+    input {
+      all: initial;
+      color: $colWhite;
+      font-size: 1rem;
+      &:focus + button > img {
+        @include changeColorPng($colGreenLight);
+      }
+      &:-webkit-autofill,
+      &:-webkit-autofill:hover,
+      &:-webkit-autofill:focus,
+      &:-webkit-autofill:active {
+        -webkit-box-shadow: 0 0 0 30px $colGreenDark inset !important; /* Ajusta el color de fondo según tus necesidades */
+        -webkit-text-fill-color: $colWhite !important;
+        caret-color: $colWhite;
+      }
+    }
+  }
+  /* -----------------------.---------resultados */
+  &__resultList {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    &__item {
+      cursor: pointer;
+      border-bottom: $colGreenLight solid 2px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      overflow-y: hidden;
+      padding-right: 1rem;
+      @include transitionFast;
+      &:hover {
+        background-color: changeOpacity($colGreenLight, 0.3);
+      }
+      img {
+        @include changeColorPng($colGreenLight);
+      }
+      &__info {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        span {
+          color: $colGreenLight;
+        }
+      }
+    }
+  }
+}
+@media screen and (min-width: 480px) {
+  .filter {
+    flex-direction: row;
+    justify-content: space-evenly;
+  }
+}
+@media screen and (min-width: 1200px) {
+  .searchBox {
+    &__field > input {
+      font-size: 1.5rem;
+    }
+  }
+}

@@ -27,7 +27,7 @@ public record UserResponseDTO(
         String phone,
         String email,
         LocalDate birthDate,
-        LocalDateTime openAccountDate,
+        LocalDate openAccountDate,
         String idAccount,
         String idCard,
         LocalDateTime createdDate

@@ -1,1 +1,12 @@
-<p>header works!</p>
+
+<header class="header d-flex justify-content-between align-items-center h-100 ps-4 pe-4">
+  <a class="header__user text-white text-decoration-none" (click)="userInfo()" style="cursor: pointer;">
+    <div class="header__user__circle">
+      <span>{{pipeNameData(userData.name)}}</span>
+    </div>
+    <span class="header__user__name">{{userData.name | titlecase}}</span>
+  </a>
+  <div class="header__logout">
+    <button (click)="logOutUser()" class="btn bg-transparent btn-outline-none" >cerrar sesi&oacute;n</button>
+  </div>
+</header>

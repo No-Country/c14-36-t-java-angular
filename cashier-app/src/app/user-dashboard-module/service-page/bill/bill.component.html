@@ -1,0 +1,45 @@
+<div [@fadeEffect] class="filter">
+  <button [ngClass]="viewStatus.filterData?'isActive':''" (click)="updateFilterStatus(true)">Facturas</button>
+  <button [ngClass]="!viewStatus.filterData?'isActive':''" (click)="updateFilterStatus(false)">Historial</button>
+</div>
+<!--  ----------------------------------------caja de busqueda por datos-->
+<div
+  [@fadeEffect]
+  class="searchBox">
+  <ul [@lateralEffect]
+  *ngIf="viewStatus.filterData, else history"
+  class="searchBox__resultList list-unstyled">
+    <li
+    *ngFor="let bill of paymentData, let i=index"
+    (click)="selectPayment(i)"
+      class="searchBox__resultList__item">
+      <img [src]="bill.img? bill:'assets/DNI.png'" alt="dni_icon" />
+      <div class="searchBox__resultList__item__info">
+        <span>{{bill.entidad}}</span>
+        <span class="text-white">Vence el {{bill.dataExpired}}</span>
+      </div>
+    </li>
+    <li *ngIf="paymentData">
+      <span *ngIf="paymentData.length === 0" class="text-white">Sin facturas disponibles.</span>
+    </li>
+    <li *ngIf="paymentData === null" class="spinner-border text-success" role="status">
+        <span class="sr-only">Loading...</span>
+    </li>
+  </ul>
+  <ng-template #history>
+    <ul [@lateralEffect] class="searchBox__resultList list-unstyled">
+      <li
+      *ngFor="let bill of historyBill"
+      class="searchBox__resultList__item">
+        <div class="imgBox">
+          <img src="assets/business.svg" alt="dni_icon">
+        </div>
+        <div class="searchBox__resultList__item__info">
+          <span>{{bill.bill_num | titlecase}}</span>
+          <span class="text-white">Pagado:  {{bill.dateEmit | date: 'dd/MM/yy/ HH:mm'}}</span>
+          <span>Monto:  {{bill.amount | currency: 'USD':'symbol':'1.2-2'}}</span>
+        </div>
+      </li>
+    </ul>
+  </ng-template>
+</div>

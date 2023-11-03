@@ -1,0 +1,83 @@
+<div  [@fadeEffect] class="filter">
+  <button (click)="updateFilterStatus(true)">Usar datos</button>
+  <button (click)="updateFilterStatus(false)">Usar cbu/cvu</button>
+</div>
+<div [@fadeEffect] class="searchBox">
+  <!------------------------------------------- formulario para data -->
+  <form class="searchBox__field d-flex"
+  *ngIf="viewStatus.filterData"
+  [@lateralEffect]
+  [formGroup]="searchDataForm"
+  (submit)="searchDataSubmit()">
+    <input
+    formControlName="data"
+      type="text"
+      id="searchData"
+      placeholder="Buscar nombre apellido"
+    />
+    <button type="submit" [disabled]="searchDataForm.invalid">
+      <img src="assets/search.png" alt="search_icon" />
+    </button>
+  </form>
+  <p *ngIf="viewStatus.filterData
+  && searchDataForm.touched
+  && searchDataForm.invalid"
+  class="text-danger">{{searchDataForm.get('data')?.errors?.['message']}}</p>
+  <!-- ---------------------------------------------formulario para cvu -->
+  <form class="searchBox__field d-flex"
+  [@lateralEffect]
+  *ngIf="viewStatus.filterCVU"
+  [formGroup]="searchCvuForm"
+  (submit)="searchCvuSubmit()">
+    <input
+    formControlName="cvu"
+      type="text"
+      id="searchCVU"
+      placeholder="CVU/CBU">
+    <button type="submit" [disabled]="searchCvuForm.invalid">
+      <img src="assets/search.png" alt="search_icon" />
+    </button>
+  </form>
+  <p *ngIf="viewStatus.filterCVU
+  && searchCvuForm.touched
+  && searchCvuForm.invalid" class="text-danger">{{searchCvuForm.get('cvu')?.errors?.['message']}}</p>
+  <!-- -----------------------------------------------------resultados -->
+  <ul class="searchBox__resultList list-unstyled"
+    *ngIf="viewStatus.formResult, else resultLoader">
+    <li
+    [@lateralEffect]
+    class="text-white"
+    *ngIf="userResults.length === 0 && page===0">No se encontraron coincidencias.</li>
+    <li
+    [@lateralEffect]
+    class="text-white"
+    *ngIf="userResults.length === 0 && page!==0">No existen mas coincidencias.</li>
+    <li
+     *ngFor="let user of userResults, let i=index"
+        (click)="initTransfer(i)"
+      class="searchBox__resultList__item">
+      <img [src]="user.image || 'assets/DNI.png'" alt="dni_icon"/>
+      <div class="searchBox__resultList__item__info">
+        <span>{{user.name + " " + user.lastName | titlecase}}</span>
+        <span class="text-white">Cashier App</span>
+      </div>
+    </li>
+    <li *ngIf="userResults.length>0 || page !==0">
+      <button [disabled]="page===null" class="btn me-1" [ngClass]="page===0?'btn-danger':'btn-success'" (click)="forwardPage(false)">prev</button>
+      <button [disabled]="page===null" class="btn me-1" [ngClass]="(page!==0 && userResults.length===0)?'btn-danger':'btn-success'" (click)="forwardPage(true)">next</button>
+      <span class="text-white">page: {{page+1}}</span>
+    </li>
+    <li [@fadeEffect] *ngIf="loading" class="text-center">
+      <div class="spinner-border text-success" role="status">
+      <span class="sr-only">Loading...</span>
+      </div>
+    </li>
+  </ul>
+  <ng-template #resultLoader>
+    <div
+      [@fadeEffect]
+      class="spinner-border text-success" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </ng-template>
+</div>

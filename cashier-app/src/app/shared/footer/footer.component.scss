@@ -1,3 +1,42 @@
-*{
-    background-color: #153230;
+@import "../../stylesConfig/config";
+
+:host{
+  background-color: $colGreenDark;
+}
+.footer{
+  color: $colWhite;
+  justify-content: space-between;
+  padding-inline: 1rem;
+  padding-block: 1rem;
+  h5{
+    flex-grow: 2;
+  }
+  &__card{
+    display:flex;
+    margin-left: 1rem;
+    &__imgBox{
+      overflow-y: hidden;
+      img{
+        width: 3rem;
+        @include changeColorPng($colWhite);
+      }
+    }
+    &__box>p{
+      text-align: center;
+      margin: 0;
+    }
+  }
+}
+@media screen and (max-width:650px){
+  .footer__card{
+    &__box{
+      font-size: 0.5rem;
+    }
+    &__imgBox>img{
+      width: 1.5rem;
+    }
+  }
+  h5{
+    font-size: 0.7rem;
+  }
 }

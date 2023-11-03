@@ -5,6 +5,7 @@ import com.nocountry.cashier.controller.dto.request.UserRequestDTO;
 import com.nocountry.cashier.controller.dto.response.AuthConfirmedDTO;
 import com.nocountry.cashier.controller.dto.response.AuthResponseDTO;
 import com.nocountry.cashier.controller.dto.response.AuthenticatedUserDTO;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author ROMULO

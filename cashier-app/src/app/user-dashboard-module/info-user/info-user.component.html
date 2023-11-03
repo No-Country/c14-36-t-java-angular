@@ -1,0 +1,65 @@
+<div class="layout">
+    <div class="container  d-flex justify-content-center align-items-center">
+        <div class="row pt-5">
+            <div class="col-sm text-center">
+                <form [formGroup]="infoUser" (ngSubmit)="saveButton()">
+                    <div class="container">
+                        <div class="row">
+                            <div *ngIf="profileImg !== undefined">
+                                <div class="text-center ">
+                                    <img [src]="profileImg" class="img-fluid mx-auto d-block profileImg" alt="...">
+                                </div>
+                            </div>
+                            <div *ngIf="profileImg === undefined" class="mb-5">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" fill="currentColor"
+                                    class="bi bi-person-circle svgProfile" viewBox="0 0 16 16">
+                                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+                                    <path fill-rule="evenodd"
+                                        d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
+                                </svg>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <!--DATOS DEL FORMULARIO-->
+                            <div class="form-floating mb-3">
+                                <input type="text" formControlName="name" class="form-control" [readonly]="!isEditing" id="name" 
+                                [ngStyle]="{ 'background-color': isEditing === true ? '#0A5A54' : '' }">
+                                <label class="ms-2 lbl-input" for="name">Nombres</label>
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <input type="text" formControlName="numberCard" class="form-control" readonly id="numberCard"
+                                >
+                                <label class="ms-2 lbl-input" for="numberCard">Número de tarjeta</label>
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <input type="email" class="form-control"  formControlName="email" [readonly]="!isEditing"  id="email"
+                                [ngStyle]="{ 'background-color': isEditing === true ? '#0A5A54' : '' }">
+                                <label class="ms-2 lbl-input" for="email">Email</label>
+                            </div>
+                            
+
+                            <div class="form-floating mb-3">
+                                <input type="number" class="form-control" formControlName="dni" readonly  pattern="[^0-9]*"
+                                    id="dni">
+                                <label class="ms-2 transparent-background" for="dni">Dni</label>
+                            </div>
+                            <!--DATOS DEL FORMULARIO-->
+                            <div class="mt-5 mb-5">
+                                <button type="button" *ngIf="!isEditing" (click)="editButton()" class="btn btn-success">Editar</button>
+                                <button type="button" *ngIf="isEditing" (click)="cancelButton()" class="btn btn-danger mx-auto me-2">Cancelar</button>
+                                <button type="submit" *ngIf="isEditing" class="btn btn-success mx-auto"  >Guardar</button>
+                            </div>
+                                
+                        </div>
+                    </div>
+
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>

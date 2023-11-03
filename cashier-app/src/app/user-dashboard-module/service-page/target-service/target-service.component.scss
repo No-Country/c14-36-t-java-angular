@@ -1,0 +1,104 @@
+@import '/src/app/stylesConfig/config';
+:host{
+  width: min(100%, 500px);
+}
+.form {
+  background-color: $colBlack;
+  color: $colWhite;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 0.5rem;
+  box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.5);
+  padding: 1rem;
+  position: relative;
+  &__imgBox {
+    overflow: hidden;
+    img {
+      width: 6rem;
+      @include changeColorPng($colGreenLight);
+    }
+  }
+  /*-----------------------------------------campos de datos  */
+  &__field {
+    display: flex;
+    justify-content: space-between;
+    width: 90%;
+    margin-bottom: 0.5rem;
+    select {
+      border-radius: 0.5rem;
+      outline: none;
+      background-color: transparent;
+      color: $colGreenLight;
+      option {
+        background-color: $colBlack;
+      }
+    }
+  }
+  & > button {
+    @include btnStyle("empty", $colGreenLight);
+  }
+  /* -----------------------botones de accion postTransferencia */
+  &__actions {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+    position: absolute;
+    bottom: -20%;
+    &__btnBox {
+      all: initial;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      font-size: 0.8rem;
+      @include transitionFast;
+      border-radius: 0.5rem;
+      padding: 0.2rem;
+      &:hover{
+        background-color: changeOpacity($colWhite, 0.2);
+      }
+      cursor: pointer;
+      & > div {
+        overflow-y: hidden;
+        background-color: $colGreenDark;
+        border-radius: 0.5rem;
+        padding: 2px;
+        img {
+          @include changeColorPng($colGreenLight);
+          width: 2rem;
+        }
+      }
+    }
+  }
+}
+.alert {
+  width: max-content;
+  position: absolute;
+  padding-top: 0.5rem;
+  top: 0;
+  text-align: center;
+  left: calc(50% - 90px);
+  h5{
+    margin-bottom: 0;
+  }
+  &__imgBox {
+    overflow: hidden;
+    background-color: $colGreenDark;
+    border-radius: 0.5rem;
+    width: min-content;
+    margin: auto;
+    img {
+      @include changeColorPng($colGreenLight);
+      width: 2rem;
+    }
+  }
+  p {
+    margin-bottom: 0;
+  }
+}
+@media screen and (max-height:700px) {
+  .alert{
+    background-color: white;
+  }
+}

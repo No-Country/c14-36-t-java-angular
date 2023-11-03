@@ -1,0 +1,154 @@
+@import '/src/app/stylesConfig/config';
+:host{
+  width: min(100%, 500px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.form {
+  background-color: $colBlack;
+  color: $colWhite;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 0.5rem;
+  box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.5);
+  padding: 1rem;
+  position: relative;
+  width: clamp(220px, 80%, 450px);
+  &__imgBox {
+    overflow: hidden;
+    img {
+      width: 6rem;
+      @include changeColorPng($colGreenLight);
+    }
+  }
+  /*-----------------------------------------campos de datos  */
+  &__field {
+    display: flex;
+    justify-content: space-between;
+    width: 90%;
+    margin-bottom: 0.5rem;
+    &__address {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      text-align: end;
+    }
+    select {
+      border-radius: 0.5rem;
+      outline: none;
+      background-color: transparent;
+      color: $colGreenLight;
+      option {
+        background-color: $colBlack;
+      }
+    }
+  }
+  /* ----------------------------input cantidad */
+  &__fieldAmount {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    label {
+      align-self: flex-start;
+    }
+    input {
+      all: initial;
+      color: $colGreenLight;
+      font-size: 1.5rem;
+      width: min(75%, 200px);
+      &::placeholder {
+        color: changeOpacity($colGreenLight, 0.3);
+      }
+    }
+  }
+  & > button {
+    @include btnStyle("empty", $colGreenLight);
+    &:disabled{
+      opacity: 0.5;
+      transform: none;
+      cursor: auto;
+    }
+  }
+  /* -----------------------botones de accion postTransferencia */
+  &__actions {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+    position: absolute;
+    bottom: -20%;
+    &__btnBox {
+      all: initial;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      font-size: 0.8rem;
+      @include transitionFast;
+      border-radius: 0.5rem;
+      padding: 0.2rem;
+      &:hover{
+        background-color: changeOpacity($colWhite, 0.2);
+      }
+      cursor: pointer;
+      & > div {
+        overflow-y: hidden;
+        background-color: $colGreenDark;
+        border-radius: 0.5rem;
+        padding: 2px;
+        img {
+          @include changeColorPng($colGreenLight);
+          width: 2rem;
+        }
+      }
+    }
+  }
+}
+.alert {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  padding-top: 0.5rem;
+  top: 0;
+  h5{
+    margin-bottom: 0;
+  }
+  &__imgBox {
+    overflow: hidden;
+    background-color: $colGreenDark;
+    border-radius: 0.5rem;
+    img {
+      @include changeColorPng($colGreenLight);
+      width: 2rem;
+    }
+  }
+  p {
+    margin-bottom: 0;
+  }
+}
+.swal{
+  &__content{
+    background-color: red;
+  }
+  &__confirmBtn{
+    background-color: green;
+  }
+}
+@media screen and (min-width: 850px) {
+  .alert {
+    padding-inline: 3rem;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    column-gap: 1rem;
+  }
+
+}
+@media screen and (min-width: 1200px) {
+  .alert {
+    flex-direction: column;
+  }
+}

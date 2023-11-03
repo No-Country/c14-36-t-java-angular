@@ -1,0 +1,28 @@
+@import '../../stylesConfig/config';
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+h3 {
+  color: $colWhite;
+}
+.balance {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1/1;
+  min-width: 40%;
+  background-color: $colBlack;
+  background-image: url("/assets/waves-balance.png");
+  background-repeat: no-repeat;
+  background-size: 100% 40%;
+  background-position: bottom;
+  background-blend-mode: screen;
+  border-radius: 0.5rem;
+  color: $colGreenLight;
+  font-size: 2rem;
+}
+button {
+  align-self: center !important;
+  @include btnStyle("empty", $colGreenLight);
+}

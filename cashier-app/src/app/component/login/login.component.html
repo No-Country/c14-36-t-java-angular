@@ -1,0 +1,101 @@
+<div class="loginBox d-flex">
+  <div class="loginBox__left w-50">
+    <div class="loginBox__left__container">
+      <!-- -----------------------------------------contenedor del logo -->
+      <div
+        class="loginBox__left__container__imgContainer d-flex justify-content-center mb-5"
+      >
+        <img src="assets/cashier1.png" alt="logo_icon" />
+      </div>
+      <!-- ------------------------------formulario de login -------------->
+      <form class="loginBox__left__container__form" [formGroup]="user">
+        <div class="loginBox__left__container__form__field">
+          <label for="user">Correo</label>
+          <div class="loginBox__left__container__form__field__box"
+            [ngClass]="
+              user.get('email')?.errors && user.get('email')?.touched
+                ? 'error': ''">
+            <input
+              type="email"
+              id="user"
+              formControlName="email"
+              placeholder="example@gmail.com"
+              (input)="validateField('email')"
+            />
+            <img
+              src="assets/email.png"
+              alt="person_icon"
+              [ngClass]="
+                user.get('email')?.errors && user.get('email')?.touched
+                  ? 'fieldInvalid' : ''"/>
+          </div>
+          <div class="loginBox__left__container__form__field__message">
+            <span *ngIf="user.get('email')?.touched">{{
+              user.get("email")?.errors?.['message']
+            }}</span>
+          </div>
+        </div>
+
+        <div class="loginBox__left__container__form__field">
+          <label for="pass">Contraseña </label>
+          <div class="loginBox__left__container__form__field__box"
+            [ngClass]="
+              user.get('password')?.errors && user.get('password')?.touched
+                ? 'error': ''">
+            <input
+              [type]="eyeStatus ? 'text' : 'password'"
+              id="pass"
+              placeholder="********"
+              formControlName="password"
+              (input)="validateField('password')"
+            />
+            <img src="assets/llave.png" alt="key_icon"
+            [ngClass]="
+            user.get('password')?.errors && user.get('password')?.touched
+              ? 'fieldInvalid' : ''"/>
+            <button type="button" (click)="eyeStatus = !eyeStatus">
+              <img
+                class="eye"
+                [src]="eyeStatus ? 'assets/eyeOpen.png' : 'assets/eyeClose.png'"
+                alt="eye_icon"
+              />
+            </button>
+          </div>
+          <div class="loginBox__left__container__form__field__message">
+            <span *ngIf="user.get('password')?.touched && user.get('password')?.errors">
+              M&iacute;nimo 8 caracteres.
+            </span>
+          </div>
+        </div>
+
+        <div class="loginBox__left__container__form__actions">
+          <button [disabled]="user.invalid" (click)="login()" type="submit" class="btnLogin">
+            Iniciar Sesión
+          </button>
+          <button (click)="toRegist()" type="submit" class="btnRegist">
+            Desea Registrarse?
+          </button>
+        </div>
+      </form>
+      <div class="loginBox__left__container__message">
+        <p *ngIf="isShowMessage" [@lateralEffect]>
+          <span *ngIf="message, else fallback" class="text-danger">{{message}}</span>
+        </p>
+        <ng-template #fallback>
+          <div class="spinner-border text-success" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </ng-template>
+      </div>
+      <!---------------------- terminos y condiciones ----------------------->
+      <div class="loginBox__left__container__terms d-flex justify-content-end">
+        <a class="ms-2" href="#">Privacidad</a>
+        <a class="ms-2" href="#">Condiciones</a>
+      </div>
+    </div>
+  </div>
+  <div class="loginBox__right w-50">
+    <img src="assets/imgLogin.png" alt="img-login" />
+  </div>
+</div>
+<app-footer></app-footer>

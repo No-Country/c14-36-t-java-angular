@@ -35,7 +35,7 @@ export class AuthTimerService {
   }
 
   private clearToken(){
-    localStorage.removeItem('token');
+    localStorage.removeItem('tokenCashier');
     this.router.navigate(['login'])
   }
 }

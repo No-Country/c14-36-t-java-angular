@@ -1,0 +1,75 @@
+<form class="form" [@fadeEffect]>
+  <div class="form__imgBox">
+    <img src="assets/DNI.png" alt="dni_icon" />
+  </div>
+  <div class="form__field">
+    <span>Para:</span>
+    <span>{{targetService.entidad}}</span>
+  </div>
+  <div class="form__field">
+    <span>Vence:</span>
+    <span>{{targetService.dataExpired}}</span>
+  </div>
+  <div class="form__field">
+    <span>Nro. de Factura:</span>
+    <span>{{targetService.idFactura}}</span>
+  </div>
+  <div class="form__field">
+    <span class="amount">Monto:</span>
+    <span>{{targetService.monto | currency: 'USD':'symbol':'1.2-2'}}</span>
+  </div>
+  <div class="form__field">
+    <span>Saldo total</span>
+    <p class="text-success">{{accountData.totalAccount | currency: 'USD':'symbol':'1.2-2'}}</p>
+  </div>
+  <button
+  *ngIf="!(viewStatus.alertFail || viewStatus.alertSuccess)"
+  (click)="createBill()"
+  type="button">Pagar</button>
+  <div
+    [@lateralEffect]
+    *ngIf="viewStatus.alertFail"
+    class="form__actions">
+    <button
+    [@fadeEffect]
+    *ngIf="voucherData, else comprobanteFallback"
+    type="button"
+    (click)="showVoucher()"
+    class="form__actions__btnBox">
+      <div>
+        <img src="assets/share.png" alt="share_icon" />
+      </div>
+      <span>Comprobante</span>
+    </button>
+    <ng-template #comprobanteFallback>
+      <div class="spinner-border text-success" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </ng-template>
+    <a routerLink="../transfer" class="form__actions__btnBox">
+      <div>
+        <img src="assets/transfer.png" alt="transfer_icon" />
+      </div>
+      <span
+        >Realizar <br />
+        Transferencia</span
+      >
+    </a>
+    <button class="form__actions__btnBox">
+      <div>
+        <img src="assets/shop.png" alt="shop_icon" />
+      </div>
+      <span>Pagar <br />
+        Servicio</span
+      >
+    </button>
+  </div>
+</form>
+<div class="alert" [@fadeEffect] *ngIf="viewStatus.alertFail ">
+  <div class="alert__imgBox">
+    <img src="assets/check-circle.png" alt="check-circle_icon" />
+  </div>
+  <h5>Servicio pagado</h5>
+  <p class="alert__ref">Referencia 12345-1</p>
+  <p class="alert__time">06/06/2000 16:30hrs</p>
+</div>

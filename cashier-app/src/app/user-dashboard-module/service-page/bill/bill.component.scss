@@ -1,0 +1,71 @@
+@import "/src/app/stylesConfig/config";
+:host{
+  display: block;
+  width: 100%;
+}
+.filter {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-inline: 1rem;
+  button {
+    @include btnStyle("empty", $colGreenLight);
+  }
+}
+/* ------------------------------------------caja de busqueda*/
+.searchBox {
+  margin: auto;
+  width: 80%;
+  max-height: 300px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  /* -----------------------.---------resultados */
+  &__resultList {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    &__item {
+      cursor: pointer;
+      border-bottom: $colGreenLight solid 2px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      overflow-y: hidden;
+      padding-right: 1rem;
+      @include transitionFast;
+      &:hover{
+        background-color: changeOpacity($colGreenLight,.3);
+      }
+      &>.imgBox{overflow: hidden}
+      img {
+        @include changeColorPng($colGreenLight);
+        width: 2rem;
+      }
+      &__info {
+        display: flex;
+        flex-direction: column;
+        span {
+          color: $colGreenLight;
+        }
+      }
+    }
+  }
+}
+@media screen and (min-width: 480px) {
+  .filter {
+    flex-direction: row;
+    justify-content: space-evenly;
+  }
+}
+@media screen and (min-width: 1200px) {
+    .searchBox {
+      width: 80%;
+      &__field > input {
+        font-size: 1.5rem;
+      }
+    }
+}
+.isActive{
+  transform: scale(1.2) translateY(-5px) !important;
+}

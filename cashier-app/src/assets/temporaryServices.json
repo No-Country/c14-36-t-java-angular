@@ -1,0 +1,37 @@
+[
+  {
+    "entidad":"Banco Pichincha",
+    "dataExpired":"2023-06-06",
+    "idFactura":"1231231231-9",
+    "monto":900000,
+    "img":null
+  },
+  {
+    "entidad":"ENEL Perú",
+    "dataExpired":"2023-06-06",
+    "idFactura":"9767876-9",
+    "monto":50000,
+    "img":null
+  },
+  {
+    "entidad":"EPS Perú",
+    "dataExpired":"2023-06-06",
+    "idFactura":"131234654-1",
+    "monto":20000,
+    "img":null
+  },
+  {
+    "entidad":"Seguro TECMED",
+    "dataExpired":"2023-06-06",
+    "idFactura":"76341256-9",
+    "monto":50000,
+    "img":null
+  },
+  {
+    "entidad":"SOAT",
+    "dataExpired":"2023-06-06",
+    "idFactura":"1324126531-9",
+    "monto":100000,
+    "img":null
+  }
+]

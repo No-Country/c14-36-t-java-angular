@@ -1,0 +1,71 @@
+<form
+  class="form d-flex mb-5 rounded-4 overflow-auto w-50"
+  (submit)="onSubmit($event)"
+  [formGroup]="searchForm"
+  ngClass="{{
+    searchForm.valid || searchForm.untouched
+      ? ''
+      : 'border border-3 border-danger'
+  }}"
+>
+  <button
+    type="submit"
+    ngClass="{{ !btn.disabled || searchForm.untouched ? '' : 'invalid' }}"
+    [disabled]="!searchForm.valid"
+    #btn
+    class="form__btn"
+  >
+    <img src="assets/search.png" alt="search_icon" />
+  </button>
+  <input
+    type="text"
+    formControlName="keyword"
+    class="form__field w-100 px-2"
+    placeholder="Palabra clave de la pregunta."
+  />
+</form>
+<div class="questionContainer d-flex flex-column align-items-center">
+  <h4 class="text-white mb-4">Preguntas frecuentes</h4>
+  <ul class="questionContainer__list list-unstyled">
+    <li class="mb-2">
+      <a
+        (click)="toResponse($event)"
+        id="1"
+        class="text-decoration-none text-white"
+        >1. ¿Como pago un servicio?</a
+      >
+    </li>
+    <li class="mb-2">
+      <a
+        (click)="toResponse($event)"
+        id="2"
+        class="text-decoration-none text-white"
+        >2. ¿Como transferir dinero a otra persona?</a
+      >
+    </li>
+    <li class="mb-2">
+      <a
+        (click)="toResponse($event)"
+        id="3"
+        class="text-decoration-none text-white"
+        >3. ¿Como puedo ver los detalles de la ultima transferencia?</a
+      >
+    </li>
+    <li class="mb-2">
+      <a
+        (click)="toResponse($event)"
+        id="4"
+        class="text-decoration-none text-white"
+        >4. ¿como cerrar sesi&oacute;n?</a
+      >
+    </li>
+    <li class="mb-2">
+      <a
+        (click)="toResponse($event)"
+        id="5"
+        class="text-decoration-none text-white"
+        >6. ¿Como ver datos de la tarjeta?</a
+      >
+    </li>
+  </ul>
+</div>

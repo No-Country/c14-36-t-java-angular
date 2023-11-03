@@ -1,0 +1,5 @@
+  <h3>Saldo Actual</h3>
+  <div class="balance">
+    <span>{{accountData.totalAccount | currency: 'USD':'symbol':'1.2-2'}}</span>
+  </div>
+  <button (click)="updateViewsStatus()">{{btnTitle}}</button>
