@@ -27,9 +27,9 @@ export class DashboardService{
   }
 
   //COMO PROMESAS
-  getTransactionsByAccountId(idAccount: string, page: number = 0, size: number = 4, order: number = 0, field: string = 'dateEmit'): Promise<any> {
+  getTransactionsByAccountId(idAccount: string, page: number = 0, size: number = 4, order: number = 0, field: string = 'id'): Promise<any> {
     const params = `?idAccount=${idAccount}&page=${page}&size=${size}&order=${order}&field=${field}`;
-    return this.http.get<any>(`${this.myAppUrl}${this.myApiCustomers}${this.myApiTransactions}${params}`).toPromise();
+    return (this.http.get<any>(`${this.myAppUrl}${this.myApiCustomers}${this.myApiTransactions}${params}`)).toPromise();
   }
   getAllTransactionsWhereDestiniIsMyId(){};
   //PARA RECUPERAR LOS PAGOS DE FACTURAS

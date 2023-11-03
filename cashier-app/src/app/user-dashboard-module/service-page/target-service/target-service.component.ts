@@ -67,8 +67,11 @@ export class TargetServiceComponent {
    showVoucher(){
     registerLocaleData(localeEs);
     const dataUser = this.tokenServ.dataUser;
-    const datePipe = new DatePipe('es');
-    const toCivilianDate = datePipe.transform(this.voucherData.dateEmit, 'yyyy/MM/dd, HH:mm:ss');
+    // const datePipe = new DatePipe('es');
+    // const toCivilianDate = datePipe.transform(this.voucherData.dateEmit, 'yyyy/MM/dd, HH:mm:ss');
+    const [yy,MM,dd]=this.voucherData.dateEmit;
+    const [,,,hh,mm,ss]=this.voucherData.dateEmit
+    const toCivilianDate=`${yy}/${MM}/${dd} ${hh}:${mm}:${ss}`
     const content = `
   <p><strong>ID de Transacción:</strong> ${this.voucherData.id}</p>
   <p><strong>Origen:</strong> ${dataUser.name}</p>
