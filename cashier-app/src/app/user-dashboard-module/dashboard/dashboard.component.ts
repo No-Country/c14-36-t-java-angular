@@ -1,5 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { IUserProfile } from 'src/app/interfaces/User.interface';
+import { IAccount } from 'src/app/interfaces/account.interface';
 import { DashboardService } from 'src/app/services/dashboard.service';
 import { TokenService } from 'src/app/services/token.service';
 
@@ -18,6 +20,7 @@ export class DashboardComponent implements OnInit {
   showcvu: boolean = false;
   idAccount: string = '';
   isLoading: boolean = true;
+  qrUrl=""
 
   constructor(
     private formBuilder: FormBuilder,
@@ -61,6 +64,7 @@ export class DashboardComponent implements OnInit {
             console.log('Datos Usuario0 : ', response.data);
             const userData = response.data;
             this.idAccount = userData.idAccount;
+            this.qrUrl = `https://181.15.143.132:9698/v1/api/register/confirm/${userData.dni}_${userData.lastName}_QRCODE.png/view`;
             resolve();
           } else {
             console.log('Error', 'No se encontró al usuario', 'error');

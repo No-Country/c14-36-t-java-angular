@@ -6,13 +6,15 @@ import { DashboardComponent } from './dashboard.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { PipeTransformPipe } from 'src/app/pipes/pipe-transform.pipe';
 import { FormsModule } from '@angular/forms';
+import { DateTemporaryPipe } from 'src/app/pipes/dateTemporary.pipe';
 
 
 
 @NgModule({
   declarations: [
     DashboardComponent,
-    PipeTransformPipe
+    PipeTransformPipe,
+    DateTemporaryPipe
   ],
   imports: [
     CommonModule,
