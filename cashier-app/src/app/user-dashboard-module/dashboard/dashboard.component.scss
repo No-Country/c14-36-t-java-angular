@@ -14,7 +14,18 @@
 }
 
 .container2{
-      height: 150px;
+  padding: 0 !important;
+  width: 100%;
+  display: grid;
+  place-items: center;
+  img{
+    width: clamp(200px,100%,400px);
+    aspect-ratio: 1;
+    padding: 0 !important;
+    object-fit: cover;
+    animation: 1s blink infinite linear;
+    animation-delay: 2s;
+  }
 }
 
 .row{
@@ -183,6 +194,13 @@
 
 }
 
-
+@keyframes blink {
+  0%{
+    box-shadow: 0 0 10px -2px $colGreenLight;
+  }
+  100%{
+    box-shadow: 0 0 10px -2px transparent;
+  }
+}
 
 

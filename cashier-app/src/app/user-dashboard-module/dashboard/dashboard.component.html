@@ -21,7 +21,13 @@
     </div>
 
     <div class="row container2">
-
+      <p class="text-center">Puedes escanear el QR para ver tus datos</p>
+      <img *ngIf="idAccount!='', else qrLoader" [src]="qrUrl" alt="qr_image">
+      <ng-template #qrLoader>
+        <div class="spinner-border text-success" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </ng-template>
     </div>
 
     <div class="row">
@@ -79,7 +85,7 @@
                                             {{ transaccion.type === 'DEPOSIT' ? 'Deposito' : '' }}
                                             {{ transaccion.type === 'SUCCESS' ? 'Servicio pagado' : '' }}
                                             {{ transaccion.type === 'INVOICE' ? transaccion.email : '' }}</td>
-                                        <td class="text-center">${{transaccion.amount}}<br>{{transaccion.dateEmit | date: 'dd/MM/yyyy'}}</td>
+                                        <td class="text-center">${{transaccion.amount}}<br>{{transaccion.dateEmit | dateTemporary}}</td>
                                     </ng-container>
 
 

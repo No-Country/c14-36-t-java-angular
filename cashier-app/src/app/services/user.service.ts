@@ -53,4 +53,8 @@ export class UserService {
     const params = new HttpParams().set('size', 10).set('page', page);
     return this.http.get<IFilterUserRes>(this.APIFILTERUSER+userData,{params})
   }
+  getQR(){
+    const url ="https://181.15.143.132:9698/v1/api/register/confirm/72162793_machicado gomez_QRCODE.png/view"
+    return this.http.get<any>(url);
+  }
 }
