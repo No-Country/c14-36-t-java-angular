@@ -32,7 +32,7 @@ Todo esto logra que los usuarios de cashier puedan usarlo en cualquier dispositi
 
 ## Despliegue 📦
 
-![Netlify](https://img.shields.io/badge/netlify-%23000000.svg?style=for-the-badge&logo=netlify&logoColor=#00C7B7) https://cashier-app-23.netlify.app/login (FRONTEND)
+![Netlify](https://img.shields.io/badge/netlify-%23000000.svg?style=for-the-badge&logo=netlify&logoColor=#00C7B7) https://cashier-app-23.netlify.app (FRONTEND)
 
 ![Ubuntu](https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white) servidor fisico IBM X3550 M4 (API)
 
